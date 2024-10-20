@@ -41,3 +41,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+#API
+/android/app/src/main/kotlin/com/example/app/api.kt
+.env
+/ios/Runner/*.xcconfig

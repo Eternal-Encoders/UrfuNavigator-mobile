@@ -1,16 +1,12 @@
-# urfunavigator_mobile
+# urfu_navigator_mobile
 
 A new Flutter project.
 
-## Getting Started
+#API
+/android/app/src/main/kotlin/com/example/app/api.kt
 
-This project is a starting point for a Flutter application.
+->
 
-A few resources to get you started if this is your first Flutter project:
+package api
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+val MAPKIT_API_KEY: String = "api"

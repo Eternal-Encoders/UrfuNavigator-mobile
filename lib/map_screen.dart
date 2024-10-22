@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/main.dart';
 import 'package:urfu_navigator_mobile/map_point.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -20,8 +22,12 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MapModel state = Provider.of<MapModel>(context);
     return Scaffold(
       body: YandexMap(
+        onCameraPositionChanged: (position, reason, isChanged) {
+          state.onCameraPositionChanged(position, reason, isChanged);
+        },
         onMapCreated: (controller) async {
           _mapController = controller;
           // приближаем вид карты ближе к Европе
@@ -38,6 +44,8 @@ class _MapScreenState extends State<MapScreen> {
           );
         },
         mapObjects: _getPlacemarkObjects(context),
+        onMapTap: (Point point) => print('map tapped on $point'),
+        onMapLongTap: (Point point) => print('map long-tapped on $point'),
       ),
     );
   }
@@ -90,38 +98,38 @@ List<PlacemarkMapObject> _getPlacemarkObjects(BuildContext context) {
                 offsetFromIcon: true,
                 color: Color.fromARGB(255, 0, 0, 0),
               )),
-          onTap: (_, __) => showModalBottomSheet(
-            context: context,
-            builder: (context) => _ModalBodyView(
-              point: point,
-            ),
-          ),
+          // onTap: (_, __) => showModalBottomSheet(
+          //   context: context,
+          //   builder: (context) => _ModalBodyView(
+          //     point: point,
+          //   ),
+          // ),
         ),
       )
       .toList();
 }
 
-/// Содержимое модального окна с информацией о точке на карте
-class _ModalBodyView extends StatelessWidget {
-  const _ModalBodyView({required this.point});
+// /// Содержимое модального окна с информацией о точке на карте
+// class _ModalBodyView extends StatelessWidget {
+//   const _ModalBodyView({required this.point});
 
-  final MapPoint point;
+//   final MapPoint point;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 40),
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Text(point.name, style: const TextStyle(fontSize: 20)),
-        const SizedBox(height: 20),
-        Text(
-          '${point.latitude}, ${point.longitude}',
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
-        ),
-      ]),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(vertical: 40),
+//       child: Column(mainAxisSize: MainAxisSize.min, children: [
+//         Text(point.name, style: const TextStyle(fontSize: 20)),
+//         const SizedBox(height: 20),
+//         Text(
+//           '${point.latitude}, ${point.longitude}',
+//           style: const TextStyle(
+//             fontSize: 16,
+//             color: Colors.grey,
+//           ),
+//         ),
+//       ]),
+//     );
+//   }
+// }

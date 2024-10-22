@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/map_screen.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -87,7 +88,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // darkTheme: ThemeData(),
-      home: const Home(),
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<MapModel>.value(value: MapModel()),
+        ],
+        child: const Home(),
+      ),
     );
   }
 }
@@ -174,12 +180,14 @@ class FABWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MapModel state = Provider.of<MapModel>(context);
     return FloatingActionButton.extended(
       backgroundColor: Color(backgroundColor),
       // foregroundColor: Colors.black,
       onPressed: () {
         // Respond to button press
       },
+      isExtended: state.userChangedMap,
       icon: Text(
         icon,
         style: TextStyle(
@@ -252,7 +260,7 @@ class _TopSearchBarState extends State<TopSearchBar> {
           leading: const Icon(Icons.search),
           trailing: <Widget>[
             Tooltip(
-              message: 'Join acc',
+              message: 'Profile',
               child: IconButton(
                 isSelected: isDark,
                 onPressed: () {
@@ -400,5 +408,28 @@ class UncontainedLayoutCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class MapModel extends ChangeNotifier {
+  bool _cameraPositionChanged = false;
+  CameraUpdateReason _cameraPositionChangedReason = CameraUpdateReason.gestures;
+  CameraPosition _cameraPosition =
+      CameraPosition(target: Point(latitude: 0, longitude: 0));
+
+  bool get cameraPositionChangedValue => _cameraPositionChanged;
+  CameraUpdateReason get cameraPositionChangedReasonValue =>
+      _cameraPositionChangedReason;
+  CameraPosition get cameraPositionValue => _cameraPosition;
+  bool get userChangedMap =>
+      _cameraPositionChangedReason == CameraUpdateReason.application
+          ? true
+          : false;
+
+  void onCameraPositionChanged(position, reason, isChanged) {
+    _cameraPositionChanged = isChanged;
+    _cameraPositionChangedReason = reason;
+    _cameraPosition = position;
+    notifyListeners();
   }
 }

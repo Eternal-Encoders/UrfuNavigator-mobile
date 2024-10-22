@@ -92,7 +92,74 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<MapModel>.value(value: MapModel()),
         ],
-        child: const Home(),
+        child: Stack(
+          children: [
+            const Home(),
+            Positioned(top: 56, left: 10, right: 10, child: OverlayProfile()),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class OverlayProfile extends StatelessWidget {
+  OverlayProfile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
+        decoration: BoxDecoration(
+          color: Color(0xFFFFFFFF),
+          borderRadius: BorderRadius.all(Radius.circular(24)),
+        ),
+        child: SizedBox(
+          width: 312,
+          height: 445,
+          child: Column(
+            children: [
+              Stack(children: [
+                IconButton(
+                  iconSize: 24,
+                  padding: EdgeInsets.all(0),
+                  icon: Icon(Icons.close),
+                  onPressed: () {},
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Image.asset(
+                      'assets/img/favicon/favicon.png',
+                    ),
+                  ),
+                )
+              ]),
+              Row(
+                children: [
+                  IconButton(
+                    iconSize: 48,
+                    color: Color(0xFF5E97F6),
+                    icon: Icon(
+                      Icons.account_circle_rounded,
+                    ),
+                    onPressed: () {},
+                  ),
+                  SizedBox(width: 24),
+                  Text(
+                    "Степан Сурков",
+                    style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Color(0xFF3A3A3A)),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -187,6 +254,7 @@ class FABWidget extends StatelessWidget {
       onPressed: () {
         // Respond to button press
       },
+
       isExtended: state.userChangedMap,
       icon: Text(
         icon,

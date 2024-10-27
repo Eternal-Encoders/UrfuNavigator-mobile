@@ -91,15 +91,31 @@ class MyApp extends StatelessWidget {
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider<MapModel>.value(value: MapModel()),
+          ChangeNotifierProvider<OverlayModel>.value(value: OverlayModel()),
         ],
         child: Stack(
           children: [
             const Home(),
-            Positioned(top: 56, left: 10, right: 10, child: OverlayProfile()),
+            Positioned(
+              top: 56,
+              left: 10,
+              right: 10,
+              child: OverlayVisibility(),
+            ),
           ],
         ),
       ),
     );
+  }
+}
+
+class OverlayVisibility extends StatelessWidget {
+  OverlayVisibility({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    OverlayModel state = Provider.of<OverlayModel>(context);
+    return Visibility(visible: state.isVisibleValue, child: OverlayProfile());
   }
 }
 
@@ -108,25 +124,29 @@ class OverlayProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return Center(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
         decoration: BoxDecoration(
           color: Color(0xFFFFFFFF),
           borderRadius: BorderRadius.all(Radius.circular(24)),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(29, 0, 0, 0).withOpacity(0.5),
+              spreadRadius: 999999,
+              // blurRadius: 7,
+              // offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
         ),
         child: SizedBox(
-          width: 312,
-          height: 445,
+          width: screenSize.width - 32,
+          height: 340,
           child: Column(
             children: [
               Stack(children: [
-                IconButton(
-                  iconSize: 24,
-                  padding: EdgeInsets.all(0),
-                  icon: Icon(Icons.close),
-                  onPressed: () {},
-                ),
+                IconExitWidget(),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8.0),
@@ -136,27 +156,250 @@ class OverlayProfile extends StatelessWidget {
                   ),
                 )
               ]),
-              Row(
-                children: [
-                  IconButton(
-                    iconSize: 48,
-                    color: Color(0xFF5E97F6),
-                    icon: Icon(
-                      Icons.account_circle_rounded,
+              SizedBox(
+                height: 8,
+              ),
+              SizedBox(
+                width: screenSize.width - 32 - 32,
+                height: 64,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.feedback_outlined,
+                            color: Color(0xFF3A3A3A),
+                            size: 24,
+                          ),
+                          SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              DefaultTextStyle(
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Color(0xFF3A3A3A)),
+                                  child: SizedBox(
+                                    width: screenSize.width - 32 - 32 - 80,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            "Обратная связь",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              DefaultTextStyle(
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 10,
+                                      color: Color(0xFF3A3A3A)),
+                                  child: SizedBox(
+                                    width: screenSize.width - 32 - 32 - 40,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            "Расскажите о своем опыте использования приложения",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    onPressed: () {},
-                  ),
-                  SizedBox(width: 24),
-                  Text(
-                    "Степан Сурков",
-                    style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: Color(0xFF3A3A3A)),
-                  )
-                ],
-              )
+                    SizedBox(
+                      width: screenSize.width - 32 - 32,
+                      child: Divider(
+                        height: 1,
+                        color: Color.fromARGB(40, 204, 204, 204),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: screenSize.width - 32 - 32,
+                height: 64,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.bug_report_outlined,
+                            color: Color(0xFF3A3A3A),
+                            size: 24,
+                          ),
+                          SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              DefaultTextStyle(
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Color(0xFF3A3A3A)),
+                                  child: SizedBox(
+                                    width: screenSize.width - 32 - 32 - 80,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            "Сообщить об ошибке",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              DefaultTextStyle(
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 10,
+                                      color: Color(0xFF3A3A3A)),
+                                  child: SizedBox(
+                                    width: screenSize.width - 32 - 32 - 40,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            "Сообщите об ошибках в работе приложения или неточностях в картах",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width - 32 - 32,
+                      child: Divider(
+                        height: 1,
+                        color: Color.fromARGB(40, 204, 204, 204),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: screenSize.width - 32 - 32,
+                height: 64,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.settings_outlined,
+                            color: Color(0xFF3A3A3A),
+                            size: 24,
+                          ),
+                          SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              DefaultTextStyle(
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Color(0xFF3A3A3A)),
+                                  child: SizedBox(
+                                    width: screenSize.width - 32 - 32 - 80,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            "Настройки",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              DefaultTextStyle(
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 10,
+                                      color: Color(0xFF3A3A3A)),
+                                  child: SizedBox(
+                                    width: screenSize.width - 32 - 32 - 40,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            "Смена языка, персонализация, уведомления",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width - 32 - 32,
+                      child: Divider(
+                        height: 1,
+                        color: Color.fromARGB(40, 204, 204, 204),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              SizedBox(
+                width: screenSize.width - 32 - 16,
+                height: 80,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/img/socials/tg.png',
+                    ),
+                    SizedBox(
+                      width: 24,
+                    ),
+                    Image.asset(
+                      'assets/img/socials/vk.png',
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -165,18 +408,25 @@ class OverlayProfile extends StatelessWidget {
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class IconExitWidget extends StatelessWidget {
+  const IconExitWidget({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  Widget build(BuildContext context) {
+    OverlayModel state = Provider.of<OverlayModel>(context);
+    return IconButton(
+      iconSize: 24,
+      padding: EdgeInsets.all(0),
+      icon: Icon(Icons.close),
+      onPressed: () {
+        state.getVisibleOrNot();
+      },
+    );
+  }
 }
 
-class _HomeState extends State<Home> {
-  final _key1 = GlobalKey();
-  final _key2 = GlobalKey();
-  // final _key3 = GlobalKey();
-  // final _key4 = GlobalKey();
+class Home extends StatelessWidget {
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -186,15 +436,12 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
-          key: _key1,
           color: const Color.fromARGB(255, 241, 238, 238),
           height: screenSize.height,
           width: screenSize.width,
           child: Stack(
             children: [
-              MainContent(
-                key: _key2,
-              ),
+              MainContent(),
               // CustomBottomSheet(key: _key4),
               const Positioned(
                   top: 56, left: 10, right: 10, child: TopSearchBar()),
@@ -290,6 +537,7 @@ class _TopSearchBarState extends State<TopSearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    OverlayModel state = Provider.of<OverlayModel>(context);
     return SearchAnchor(suggestionsBuilder:
         (BuildContext context, SearchController controller) {
       return List<ListTile>.generate(3, (int index) {
@@ -334,6 +582,7 @@ class _TopSearchBarState extends State<TopSearchBar> {
                 onPressed: () {
                   setState(() {
                     isDark = !isDark;
+                    state.getVisibleOrNot();
                   });
                 },
                 icon: const Icon(
@@ -479,6 +728,17 @@ class UncontainedLayoutCard extends StatelessWidget {
   }
 }
 
+class OverlayModel extends ChangeNotifier {
+  bool _isVisible = false;
+
+  bool get isVisibleValue => _isVisible;
+
+  void getVisibleOrNot() {
+    _isVisible ? _isVisible = false : _isVisible = true;
+    notifyListeners();
+  }
+}
+
 class MapModel extends ChangeNotifier {
   bool _cameraPositionChanged = false;
   CameraUpdateReason _cameraPositionChangedReason = CameraUpdateReason.gestures;
@@ -498,6 +758,7 @@ class MapModel extends ChangeNotifier {
     _cameraPositionChanged = isChanged;
     _cameraPositionChangedReason = reason;
     _cameraPosition = position;
+    // print('camera position reason: $userChangedMap');
     notifyListeners();
   }
 }

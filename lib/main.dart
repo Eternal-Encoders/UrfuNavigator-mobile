@@ -3,9 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/map_screen.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+//ORDER OF BODIES
 enum EBody { guk, iritrtf, fti, isa, uralanin, inmitxti, inau }
 
-extension ImageRouteExtension on EBody {
+extension EBodyExtension on EBody {
+  static const List<EBody> values = EBody.values;
+
+  int get index => values.indexOf(this);
+
   String get route {
     switch (this) {
       case EBody.guk:
@@ -27,7 +32,7 @@ extension ImageRouteExtension on EBody {
     }
   }
 
-  String get name {
+  String get nameRU {
     switch (this) {
       case EBody.guk:
         return 'ГУК';
@@ -47,9 +52,6 @@ extension ImageRouteExtension on EBody {
         return 'no such name';
     }
   }
-  // void talk() {
-  //   print(this);
-  // }
 }
 
 bool isSwipeUp = false;
@@ -105,6 +107,16 @@ class MyApp extends StatelessWidget {
           ],
         ),
       ),
+      initialRoute: '/',
+      routes: {
+        '/${EBody.guk.name}': (context) => BodyPage(),
+        '/${EBody.iritrtf.name}': (context) => IritrtfPage(),
+        '/${EBody.fti.name}': (context) => BodyPage(),
+        '/${EBody.isa.name}': (context) => BodyPage(),
+        '/${EBody.uralanin.name}': (context) => BodyPage(),
+        '/${EBody.inmitxti.name}': (context) => BodyPage(),
+        '/${EBody.inau.name}': (context) => BodyPage(),
+      },
     );
   }
 }
@@ -501,6 +513,7 @@ class FABWidget extends StatelessWidget {
       onPressed: () {
         // Respond to button press
       },
+      heroTag: null,
 
       isExtended: state.userChangedMap,
       icon: Text(
@@ -629,18 +642,16 @@ class _CarouselExampleState extends State<CarouselExample> {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 132, maxWidth: screenSize - 16),
         child: CarouselView(
+          onTap: (int index) {
+            Navigator.pushNamed(
+                context, '/${EBodyExtension.values[index].name}');
+          },
           // backgroundColor: Color(value),
           itemExtent: 100,
           shrinkExtent: 100,
-          children: [
-            cardBody(EBody.guk.route, EBody.guk.name),
-            cardBody(EBody.iritrtf.route, EBody.iritrtf.name),
-            cardBody(EBody.fti.route, EBody.fti.name),
-            cardBody(EBody.isa.route, EBody.isa.name),
-            cardBody(EBody.uralanin.route, EBody.uralanin.name),
-            cardBody(EBody.inmitxti.route, EBody.inmitxti.name),
-            cardBody(EBody.inau.route, EBody.inau.name)
-          ],
+          children: EBody.values
+              .map((EBody body) => cardBody(body.route, body.nameRU))
+              .toList(),
         ),
       ),
     );
@@ -760,5 +771,45 @@ class MapModel extends ChangeNotifier {
     _cameraPosition = position;
     // print('camera position reason: $userChangedMap');
     notifyListeners();
+  }
+}
+
+class IritrtfPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('IRIT-RTF PAGE'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: FloatingActionButton.extended(
+            heroTag: null,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            label: Text('Go back')),
+      ),
+    );
+  }
+}
+
+class BodyPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('IN DEVELOPING'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: FloatingActionButton.extended(
+            heroTag: null,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            label: Text('Go back')),
+      ),
+    );
   }
 }

@@ -1,12 +1,11 @@
 # urfu_navigator_mobile
 
-A new Flutter project.
+## Installation
 
-#API
-/android/app/src/main/kotlin/com/example/app/api.kt
-
-->
-
-package api
-
-val MAPKIT_API_KEY: String = "api"
+* Install flutter sdk
+* ``` flutter pub get ```
+* ``` flutter run ```
+### For Android
+* Create env file **(not .env)** inside ./android/app/src/main/assets
+* Get Yandex Map Api Key on https://developer.tech.yandex.ru/
+* Inside env file paste ``` MAPKIT_API_KEY="{Your api key}" ```

@@ -1,58 +1,12 @@
+// ignore_for_file: library_prefixes
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/api/institutes_api.dart';
 import 'package:urfu_navigator_mobile/map_screen.dart';
+import 'package:urfu_navigator_mobile/models/path/path.dart' as PathModel;
+import 'package:urfu_navigator_mobile/utils/const.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
-
-//ORDER OF BODIES
-enum EBody { guk, iritrtf, fti, isa, uralanin, inmitxti, inau }
-
-extension EBodyExtension on EBody {
-  static const List<EBody> values = EBody.values;
-
-  int get index => values.indexOf(this);
-
-  String get route {
-    switch (this) {
-      case EBody.guk:
-        return 'assets/img/urfu-bodies-img/GUK.png';
-      case EBody.iritrtf:
-        return 'assets/img/urfu-bodies-img/IRIT-RTF.png';
-      case EBody.fti:
-        return 'assets/img/urfu-bodies-img/FTI.png';
-      case EBody.isa:
-        return 'assets/img/urfu-bodies-img/ISA.png';
-      case EBody.uralanin:
-        return 'assets/img/urfu-bodies-img/URALANIN.png';
-      case EBody.inmitxti:
-        return 'assets/img/urfu-bodies-img/INMIT_XTI.png';
-      case EBody.inau:
-        return 'assets/img/urfu-bodies-img/INAU.png';
-      default:
-        return 'no such body';
-    }
-  }
-
-  String get nameRU {
-    switch (this) {
-      case EBody.guk:
-        return 'ГУК';
-      case EBody.iritrtf:
-        return 'ИРИТ-РТФ';
-      case EBody.fti:
-        return 'ФТИ';
-      case EBody.isa:
-        return 'ИСА';
-      case EBody.uralanin:
-        return 'УралЭНИН';
-      case EBody.inmitxti:
-        return 'ИнМИТ/ХТИ';
-      case EBody.inau:
-        return 'ИнЭУ';
-      default:
-        return 'no such name';
-    }
-  }
-}
 
 bool isSwipeUp = false;
 
@@ -95,28 +49,51 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<MapModel>.value(value: MapModel()),
           ChangeNotifierProvider<OverlayModel>.value(value: OverlayModel()),
         ],
-        child: Stack(
-          children: [
-            const Home(),
-            Positioned(
-              top: 56,
-              left: 10,
-              right: 10,
-              child: OverlayVisibility(),
-            ),
-          ],
-        ),
+        child: MainPage(),
       ),
       initialRoute: '/',
-      routes: {
-        '/${EBody.guk.name}': (context) => BodyPage(),
-        '/${EBody.iritrtf.name}': (context) => IritrtfPage(),
-        '/${EBody.fti.name}': (context) => BodyPage(),
-        '/${EBody.isa.name}': (context) => BodyPage(),
-        '/${EBody.uralanin.name}': (context) => BodyPage(),
-        '/${EBody.inmitxti.name}': (context) => BodyPage(),
-        '/${EBody.inau.name}': (context) => BodyPage(),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case RoutePaths.main:
+            return MaterialPageRoute(builder: (context) => MainPage());
+          case RoutePaths.guk:
+            return MaterialPageRoute(builder: (context) => BodyPage());
+          case RoutePaths.iritrtf:
+            return MaterialPageRoute(builder: (context) => IritrtfPage());
+          case RoutePaths.fti:
+            return MaterialPageRoute(builder: (context) => BodyPage());
+          case RoutePaths.isa:
+            return MaterialPageRoute(builder: (context) => BodyPage());
+          case RoutePaths.uralanin:
+            return MaterialPageRoute(builder: (context) => BodyPage());
+          case RoutePaths.inmitxti:
+            return MaterialPageRoute(builder: (context) => BodyPage());
+          case RoutePaths.inau:
+            return MaterialPageRoute(builder: (context) => BodyPage());
+        }
+        return null;
       },
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  const MainPage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        const Home(),
+        Positioned(
+          top: 56,
+          left: 10,
+          right: 10,
+          child: OverlayVisibility(),
+        ),
+      ],
     );
   }
 }
@@ -650,7 +627,7 @@ class _CarouselExampleState extends State<CarouselExample> {
           itemExtent: 100,
           shrinkExtent: 100,
           children: EBody.values
-              .map((EBody body) => cardBody(body.route, body.nameRU))
+              .map((EBody body) => cardBody(body.imgRoute, body.nameRU))
               .toList(),
         ),
       ),
@@ -783,33 +760,80 @@ class IritrtfPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: FloatingActionButton.extended(
-            heroTag: null,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            label: Text('Go back')),
+        child: CustomPaint(
+          painter: MasterPainter(),
+          size: Size(300, 400),
+        ),
       ),
     );
   }
 }
 
-class BodyPage extends StatelessWidget {
+class MasterPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint();
+    paint.strokeWidth = 2;
+    paint.color = Colors.black;
+    canvas.drawLine(Offset.zero, Offset(size.width, 0), paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+class BodyPage extends StatefulWidget {
+  @override
+  State<BodyPage> createState() => _BodyPageState();
+}
+
+class _BodyPageState extends State<BodyPage> {
+  late Future<PathModel.Path> path;
+
+  @override
+  void initState() {
+    super.initState();
+    path = InstitutesApi.getPath(from: '225:419', to: '248:547');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('IN DEVELOPING'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: FloatingActionButton.extended(
-            heroTag: null,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            label: Text('Go back')),
-      ),
-    );
+        appBar: AppBar(
+          title: Text('IN DEVELOPING'),
+          centerTitle: true,
+        ),
+        body: FutureBuilder<PathModel.Path>(
+            future: path,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.result?['0']?['0']?.length,
+                  itemBuilder: (context, index) {
+                    print(
+                        snapshot.data!.result?['ИРИТ-РТФ']?['1']?[0][0].floor);
+                    return Card(
+                        child: ListTile(
+                      title: Text(snapshot
+                              .data!.result?['ИРИТ-РТФ']?['1']?[0][0].floor
+                              .toString() ??
+                          'not found'),
+                      subtitle: Text(snapshot
+                              .data!.result?['ИРИТ-РТФ']?['1']?[0][0].floor
+                              .toString() ??
+                          'not found'),
+                    ));
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Text(snapshot.error.toString());
+              }
+              return Center(
+                  child: CircularProgressIndicator(
+                backgroundColor: Colors.blue[200],
+              ));
+            }));
   }
 }

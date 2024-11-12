@@ -1,14 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: library_prefixes
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/api/institutes_api.dart';
+import 'package:urfu_navigator_mobile/helpers/body_helper.dart';
 import 'package:urfu_navigator_mobile/map_screen.dart';
+import 'package:urfu_navigator_mobile/models/floor/floor.dart';
 import 'package:urfu_navigator_mobile/models/path/path.dart' as PathModel;
 import 'package:urfu_navigator_mobile/utils/const.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
-
-bool isSwipeUp = false;
 
 void main() {
   AndroidYandexMap.useAndroidViewSurface = false;
@@ -751,21 +753,123 @@ class MapModel extends ChangeNotifier {
   }
 }
 
-class IritrtfPage extends StatelessWidget {
+class MapSize {
+  late double? width;
+  late double? height;
+
+  MapSize({required this.width, required this.height});
+}
+
+class IritrtfPage extends StatefulWidget {
+  final double scale;
+  // final String type;
+
+  const IritrtfPage({this.scale = Constants.CANVAS_SVG_SCALE});
+
+  @override
+  State<IritrtfPage> createState() => _IritrtfPageState();
+}
+
+class _IritrtfPageState extends State<IritrtfPage> {
+  late Future<PathModel.Path> pathData;
+  late Future<Floor> floorData;
+  Floor? floor;
+  MapSize? mapSize;
+
+  final Map<String, PictureInfo?> svgPictures = {};
+
+  PictureInfo? wardrobeSvgPicture;
+  PictureInfo? vendingSvgPicture;
+  PictureInfo? toiletwSvgPicture;
+  PictureInfo? toiletmSvgPicture;
+  PictureInfo? stairsUpSvgPicture;
+  PictureInfo? stairsDownSvgPicture;
+  PictureInfo? printSvgPicture;
+  PictureInfo? elevatorSvgPicture;
+  PictureInfo? dinningSvgPicture;
+  PictureInfo? coworkingSvgPicture;
+  PictureInfo? cafeSvgPicture;
+  PictureInfo? atmSvgPicture;
+
+  Future<void> loadSvgIcon(String svgString, String key) async {
+    final pictureInfo = await vg.loadPicture(SvgStringLoader(svgString), null);
+    setState(() {
+      svgPictures[key] = pictureInfo;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    pathData = InstitutesApi.getPath(from: '225:419', to: '248:547');
+    floorData = InstitutesApi.getFloorList(floor: '1', instNameRU: 'ИРИТ-РТФ');
+    floorData.then((data) {
+      floor = data;
+      mapSize = MapSize(width: data.width, height: data.height);
+    });
+
+    loadSvgIcon(SvgIcons.wardrobeSvg, 'wardrobe');
+    loadSvgIcon(SvgIcons.vendingSvg, 'vending');
+    loadSvgIcon(SvgIcons.atmSvg, 'atm');
+    loadSvgIcon(SvgIcons.cafeSvg, 'cafe');
+    loadSvgIcon(SvgIcons.coworkingSvg, 'coworking');
+    loadSvgIcon(SvgIcons.dinningSvg, 'dinning');
+    loadSvgIcon(SvgIcons.elevatorSvg, 'elevator');
+    loadSvgIcon(SvgIcons.printSvg, 'print');
+    loadSvgIcon(SvgIcons.stairsDownSvg, 'stairsDown');
+    loadSvgIcon(SvgIcons.stairsUpSvg, 'stairsUp');
+    loadSvgIcon(SvgIcons.toiletmSvg, 'toiletm');
+    loadSvgIcon(SvgIcons.toiletwSvg, 'toiletw');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('IRIT-RTF PAGE'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: CustomPaint(
-          painter: MasterPainter(),
-          size: Size(300, 400),
+        appBar: AppBar(
+          title: Text('IRIT-RTF PAGE'),
+          centerTitle: true,
         ),
-      ),
-    );
+        // body: Center(
+        //   child: CustomPaint(
+        //     painter: MasterPainter(),
+        //     size: Size(300, 400),
+        //   ),
+        // ),
+        body: FutureBuilder<PathModel.Path>(
+            future: pathData,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.blue[200],
+                    ),
+                  );
+                case ConnectionState.done:
+                  if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  } else {
+                    return Center(
+                      child: InteractiveViewer(
+                        panEnabled: true, // Set it to false to prevent panning.
+                        boundaryMargin: EdgeInsets.all(80),
+                        // alignment: Alignment.center,
+                        minScale: 0.5,
+                        maxScale: 10,
+                        child: Stack(
+                          children: Floor.getFloor(floor!, svgPictures),
+                        ),
+                      ),
+                    );
+                    // return CustomPaint(
+                    //   painter: MasterPainter(),
+                    //   size: Size(300, 400),
+                    // );
+                  }
+                default:
+                  return Text('Unhandle State');
+              }
+            }));
   }
 }
 
@@ -779,7 +883,7 @@ class MasterPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+  bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
   }
 }
@@ -810,30 +914,31 @@ class _BodyPageState extends State<BodyPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
-                  itemCount: snapshot.data!.result?['0']?['0']?.length,
+                  itemCount: 1000,
                   itemBuilder: (context, index) {
-                    print(
-                        snapshot.data!.result?['ИРИТ-РТФ']?['1']?[0][0].floor);
-                    return Card(
-                        child: ListTile(
-                      title: Text(snapshot
-                              .data!.result?['ИРИТ-РТФ']?['1']?[0][0].floor
-                              .toString() ??
-                          'not found'),
-                      subtitle: Text(snapshot
-                              .data!.result?['ИРИТ-РТФ']?['1']?[0][0].floor
-                              .toString() ??
-                          'not found'),
-                    ));
+                    List<Widget> cards = [];
+                    snapshot.data!.result?.forEach((bodyName, points) {
+                      print(bodyName);
+                      points.forEach((key, point) {
+                        cards.add(Card(
+                          child: ListTile(
+                            title: Text(point[0][0].floor.toString()),
+                            subtitle: Text(point[0][0].floor.toString()),
+                          ),
+                        ));
+                      });
+                    });
+                    return Column(children: cards);
                   },
                 );
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               }
               return Center(
-                  child: CircularProgressIndicator(
-                backgroundColor: Colors.blue[200],
-              ));
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.blue[200],
+                ),
+              );
             }));
   }
 }

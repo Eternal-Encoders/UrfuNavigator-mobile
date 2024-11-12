@@ -9,8 +9,8 @@ part of 'floor.dart';
 Floor _$FloorFromJson(Map<String, dynamic> json) => Floor(
       institute: json['institute'] as String?,
       floor: (json['floor'] as num?)?.toInt(),
-      width: (json['width'] as num?)?.toInt(),
-      height: (json['height'] as num?)?.toInt(),
+      width: (json['width'] as num?)?.toDouble(),
+      height: (json['height'] as num?)?.toDouble(),
       audiences: (json['audiences'] as List<dynamic>?)
           ?.map((e) => Audience.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -32,8 +32,8 @@ Audience _$AudienceFromJson(Map<String, dynamic> json) => Audience(
       id: json['id'] as String?,
       x: (json['x'] as num?)?.toDouble(),
       y: (json['y'] as num?)?.toDouble(),
-      width: (json['width'] as num?)?.toInt(),
-      height: (json['height'] as num?)?.toInt(),
+      width: (json['width'] as num?)?.toDouble(),
+      height: (json['height'] as num?)?.toDouble(),
       fill: json['fill'] as String?,
       stroke: json['stroke'] as String?,
       pointId: json['pointId'] as String?,
@@ -61,7 +61,7 @@ Map<String, dynamic> _$AudienceToJson(Audience instance) => <String, dynamic>{
 Child _$ChildFromJson(Map<String, dynamic> json) => Child(
       type: json['type'] as String?,
       x: (json['x'] as num?)?.toDouble(),
-      y: (json['y'] as num?)?.toInt(),
+      y: (json['y'] as num?)?.toDouble(),
       identifier: json['identifier'] as String?,
       alignX: json['alignX'] as String?,
       alignY: json['alignY'] as String?,
@@ -79,7 +79,7 @@ Map<String, dynamic> _$ChildToJson(Child instance) => <String, dynamic>{
 Door _$DoorFromJson(Map<String, dynamic> json) => Door(
       x: (json['x'] as num?)?.toDouble(),
       y: (json['y'] as num?)?.toDouble(),
-      width: (json['width'] as num?)?.toInt(),
+      width: (json['width'] as num?)?.toDouble(),
       height: (json['height'] as num?)?.toDouble(),
       fill: json['fill'] as String?,
     );

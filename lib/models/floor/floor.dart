@@ -1,11 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:urfu_navigator_mobile/helpers/color_helper.dart';
 import 'package:urfu_navigator_mobile/helpers/text_helper.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 
 part 'floor.g.dart';
+
+class FloorPainter extends CustomPainter {
+  final List<Audience> audiences;
+  final List<Service> services;
+  final Map<String, PictureInfo?> svgPictures;
+
+  FloorPainter({
+    required this.audiences,
+    required this.services,
+    required this.svgPictures,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.scale(Constants.CANVAS_SCALE);
+    // Рисуем аудитории
+    for (final audience in audiences) {
+      AudiencePainter(
+        x: audience.x,
+        y: audience.y,
+        width: audience.width,
+        height: audience.height,
+        stroke: audience.stroke,
+        fill: audience.fill,
+        children: audience.children,
+        doors: audience.doors,
+        svgPictures: svgPictures,
+      ).paint(canvas, size);
+    }
+    // Рисуем сервисы
+    for (final service in services) {
+      ServicePainter(
+        x: service.x,
+        y: service.y,
+        data: service.data,
+        fill: service.fill,
+        stroke: service.stroke,
+      ).paint(canvas, size);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+CustomPaint getFloorPaint(List<Audience> audiences, List<Service> services,
+    Map<String, PictureInfo?> svgPictures, double width, double height) {
+  return CustomPaint(
+    isComplex: true,
+    painter: FloorPainter(
+      audiences: audiences,
+      services: services,
+      svgPictures: svgPictures,
+    ),
+    size: Size(width / 6.5, height / 6.5),
+  );
+}
 
 @JsonSerializable()
 class Floor {
@@ -30,41 +90,6 @@ class Floor {
     this.audiences,
     this.service,
   });
-
-  static List<Widget> getFloor(
-    Floor floor,
-    Map<String, PictureInfo?> svgPictures,
-  ) {
-    List<Widget> filledAudiences = [];
-    List<Widget> filledServices = [];
-
-    for (var auditorium in floor.audiences!) {
-      filledAudiences.add(Audience.getRectAudience(
-        key: auditorium.id,
-        x: auditorium.x,
-        y: auditorium.y,
-        width: auditorium.width,
-        height: auditorium.height,
-        stroke: auditorium.stroke,
-        fill: auditorium.fill,
-        children: auditorium.children,
-        doors: auditorium.doors,
-        svgPictures: svgPictures,
-      ));
-    }
-
-    for (var service in floor.service!) {
-      filledServices.add(Service.getRectService(
-        x: service.x,
-        y: service.y,
-        data: service.data,
-        fill: service.fill,
-        stroke: service.stroke,
-      ));
-    }
-    //TODO: add with service after implementation
-    return filledAudiences;
-  }
 
   factory Floor.fromJson(Map<String, dynamic> json) => _$FloorFromJson(json);
 
@@ -95,11 +120,11 @@ class AudiencePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.scale(Constants.CANVAS_SCALE);
-
-    paintRectStroke(canvas);
+    // canvas.scale(Constants.CANVAS_SCALE);
 
     paintFilledRect(canvas);
+
+    paintRectStroke(canvas);
 
     paintTextAndIcons(size, canvas);
 
@@ -112,10 +137,10 @@ class AudiencePainter extends CustomPainter {
         for (var door in doors!) {
           canvas.save();
           canvas.translate(x!, y!);
-          Paint paint = Paint();
-          paint.color = HexColor(door.fill!);
-          paint.strokeWidth = Constants.PAINT_DOOR_STROKE_WIDTH;
-          paint.style = PaintingStyle.fill;
+          Paint paint = Paint()
+            ..color = HexColor(door.fill ?? '#cccccc')
+            ..strokeWidth = Constants.PAINT_DOOR_STROKE_WIDTH
+            ..style = PaintingStyle.fill;
           final p1 = Offset(door.x! + 2.5, door.y! + 2.5);
           final p2 =
               Offset(door.x! + 2.5 + door.width!, door.y! + 2.5 + door.height!);
@@ -138,7 +163,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Лестница вверх':
                   if (svgPictures['stairsUp'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['stairsUp']!.picture);
                     canvas.restore();
@@ -146,7 +170,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Лестница вниз':
                   if (svgPictures['stairsDown'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['stairsDown']!.picture);
                     canvas.restore();
@@ -154,7 +177,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Банкомат':
                   if (svgPictures['atm'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['atm']!.picture);
                     canvas.restore();
@@ -162,7 +184,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Торговый автомат':
                   if (svgPictures['vending'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['vending']!.picture);
                     canvas.restore();
@@ -170,7 +191,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Столовая':
                   if (svgPictures['dinning'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['dinning']!.picture);
                     canvas.restore();
@@ -178,7 +198,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Женский туалет':
                   if (svgPictures['toiletw'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['toiletw']!.picture);
                     canvas.restore();
@@ -186,7 +205,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Мужской туалет':
                   if (svgPictures['toiletm'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['toiletm']!.picture);
                     canvas.restore();
@@ -194,7 +212,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Кафе':
                   if (svgPictures['cafe'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['cafe']!.picture);
                     canvas.restore();
@@ -202,7 +219,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Коворкинг':
                   if (svgPictures['coworking'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['coworking']!.picture);
                     canvas.restore();
@@ -210,7 +226,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Гардероб':
                   if (svgPictures['wardrobe'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['wardrobe']!.picture);
                     canvas.restore();
@@ -218,7 +233,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Лифт':
                   if (svgPictures['elevator'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['elevator']!.picture);
                     canvas.restore();
@@ -226,7 +240,6 @@ class AudiencePainter extends CustomPainter {
                 case 'Принтер':
                   if (svgPictures['printer'] != null) {
                     canvas.save();
-                    // canvas.scale(50, 50);
                     canvas.translate(x! + child.x!, y! + child.y!);
                     canvas.drawPicture(svgPictures['printer']!.picture);
                     canvas.restore();
@@ -273,25 +286,21 @@ class AudiencePainter extends CustomPainter {
   }
 
   void paintFilledRect(Canvas canvas) {
-    canvas.save();
-    Paint paintWidth = Paint();
-    paintWidth.color = HexColor(fill ?? "FCFCFC");
-    paintWidth.style = PaintingStyle.fill;
+    Paint paint = Paint();
+    paint.color = HexColor(fill ?? "FCFCFC");
+    paint.style = PaintingStyle.fill;
     Rect rectFilled = Rect.fromLTWH(x!, y!, width!, height!);
-    canvas.drawRect(rectFilled, paintWidth);
-    canvas.restore();
+    canvas.drawRect(rectFilled, paint);
   }
 
   void paintRectStroke(Canvas canvas) {
-    canvas.save();
-    Paint paintStroke = Paint();
-    paintStroke.strokeWidth =
+    Paint paint = Paint();
+    paint.strokeWidth =
         stroke != null ? Constants.PAINT_AUDIENCE_STROKE_WIDTH : 0;
-    paintStroke.color = HexColor(stroke ?? "FCFCFC");
-    paintStroke.style = PaintingStyle.stroke;
+    paint.color = HexColor(stroke ?? "FCFCFC");
+    paint.style = PaintingStyle.stroke;
     Rect rectStroke = Rect.fromLTWH(x!, y!, width!, height!);
-    canvas.drawRect(rectStroke, paintStroke);
-    canvas.restore();
+    canvas.drawRect(rectStroke, paint);
   }
 
   @override
@@ -340,33 +349,6 @@ class Audience {
       _$AudienceFromJson(json);
 
   Map<String, dynamic> toJson() => _$AudienceToJson(this);
-
-  static CustomPaint getRectAudience({
-    required String? key,
-    required double? x,
-    required double? y,
-    required double? width,
-    required double? height,
-    required String? stroke,
-    required String? fill,
-    required List<Child>? children,
-    required List<Door>? doors,
-    required Map<String, PictureInfo?> svgPictures,
-  }) {
-    return CustomPaint(
-      painter: AudiencePainter(
-          x: x,
-          y: y,
-          width: width,
-          height: height,
-          stroke: stroke,
-          fill: fill,
-          children: children,
-          doors: doors,
-          svgPictures: svgPictures),
-      size: Size(width!, height!),
-    );
-  }
 }
 
 @JsonSerializable()
@@ -440,15 +422,15 @@ class ServicePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // canvas.scale(Constants.CANVAS_SCALE);
     canvas.save();
-    Paint paint = Paint();
-
-    paint.strokeWidth = 5;
-    paint.color = HexColor(fill!);
-    paint.style = PaintingStyle.stroke;
-
-    // canvas.drawPath(path, paint);
+    canvas.translate(x!, y!);
+    if (x != null && y != null && data != null) {
+      var border = Paint()
+        ..color = HexColor(stroke ?? fill ?? '#cccccc')
+        ..strokeWidth = Constants.PAINT_SERVICE_STROKE_WIDTH
+        ..style = PaintingStyle.stroke;
+      canvas.drawPath(parseSvgPath(data!), border);
+    }
     canvas.restore();
   }
 
@@ -470,19 +452,6 @@ class Service {
   final String? stroke;
   @JsonKey(name: "fill")
   final dynamic fill;
-
-  static CustomPaint getRectService(
-      {required double? x,
-      required double? y,
-      required String? data,
-      required fill,
-      required String? stroke}) {
-    return CustomPaint(
-      painter:
-          ServicePainter(x: x, y: y, data: data, fill: fill, stroke: stroke),
-      size: Size(200, 200),
-    );
-  }
 
   Service({
     this.x,

@@ -14,6 +14,9 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 void main() {
   AndroidYandexMap.useAndroidViewSurface = false;
+  // for debug;
+  // debugRepaintRainbowEnabled = true;
+  // debugRepaintTextRainbowEnabled = true;
   runApp(const MyApp());
 }
 
@@ -23,58 +26,58 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'UrfuApp',
-      // themeMode: ThemeMode.system,
-      themeMode: ThemeMode.light,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: const ColorScheme(
-          brightness: Brightness.light,
-          primary: Color(0xFFFCFCFC),
-          onPrimary: Color(0xFF3A3A3A),
-          secondary: Color(0xFFFFFFFF),
-          onSecondary: Color(0xFF6D6D6D),
-          error: Color(0xFFFCFCFC),
-          onError: Color.fromARGB(255, 150, 46, 46),
-          surface: Color(0xFFFCFCFC),
-          onSurface: Color(0xFF6D6D6D),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<MapModel>.value(value: MapModel()),
+        ChangeNotifierProvider<OverlayModel>.value(value: OverlayModel()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'UrfuApp',
+        // themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: const ColorScheme(
+            brightness: Brightness.light,
+            primary: Color(0xFFFCFCFC),
+            onPrimary: Color(0xFF3A3A3A),
+            secondary: Color(0xFFFFFFFF),
+            onSecondary: Color(0xFF6D6D6D),
+            error: Color(0xFFFCFCFC),
+            onError: Color.fromARGB(255, 150, 46, 46),
+            surface: Color(0xFFFCFCFC),
+            onSurface: Color(0xFF6D6D6D),
+          ),
+          textTheme: const TextTheme(
+              bodyLarge: TextStyle(fontSize: 14, color: Colors.green)),
+          primarySwatch: Colors.blue,
         ),
-        textTheme: const TextTheme(
-            bodyLarge: TextStyle(fontSize: 14, color: Colors.green)),
-        primarySwatch: Colors.blue,
+        // darkTheme: ThemeData(),
+        home: MainPage(),
+        initialRoute: '/',
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case RoutePaths.main:
+              return MaterialPageRoute(builder: (context) => MainPage());
+            case RoutePaths.guk:
+              return MaterialPageRoute(builder: (context) => BodyPage());
+            case RoutePaths.iritrtf:
+              return MaterialPageRoute(builder: (context) => IritrtfPage());
+            case RoutePaths.fti:
+              return MaterialPageRoute(builder: (context) => BodyPage());
+            case RoutePaths.isa:
+              return MaterialPageRoute(builder: (context) => BodyPage());
+            case RoutePaths.uralanin:
+              return MaterialPageRoute(builder: (context) => BodyPage());
+            case RoutePaths.inmitxti:
+              return MaterialPageRoute(builder: (context) => BodyPage());
+            case RoutePaths.inau:
+              return MaterialPageRoute(builder: (context) => BodyPage());
+          }
+          return null;
+        },
       ),
-      // darkTheme: ThemeData(),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<MapModel>.value(value: MapModel()),
-          ChangeNotifierProvider<OverlayModel>.value(value: OverlayModel()),
-        ],
-        child: MainPage(),
-      ),
-      initialRoute: '/',
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case RoutePaths.main:
-            return MaterialPageRoute(builder: (context) => MainPage());
-          case RoutePaths.guk:
-            return MaterialPageRoute(builder: (context) => BodyPage());
-          case RoutePaths.iritrtf:
-            return MaterialPageRoute(builder: (context) => IritrtfPage());
-          case RoutePaths.fti:
-            return MaterialPageRoute(builder: (context) => BodyPage());
-          case RoutePaths.isa:
-            return MaterialPageRoute(builder: (context) => BodyPage());
-          case RoutePaths.uralanin:
-            return MaterialPageRoute(builder: (context) => BodyPage());
-          case RoutePaths.inmitxti:
-            return MaterialPageRoute(builder: (context) => BodyPage());
-          case RoutePaths.inau:
-            return MaterialPageRoute(builder: (context) => BodyPage());
-        }
-        return null;
-      },
     );
   }
 }
@@ -435,32 +438,39 @@ class Home extends StatelessWidget {
               MainContent(),
               // CustomBottomSheet(key: _key4),
               const Positioned(
-                  top: 56, left: 10, right: 10, child: TopSearchBar()),
+                  top: 56,
+                  left: 10,
+                  right: 10,
+                  child: RepaintBoundary(child: TopSearchBar())),
               const Positioned(
                   bottom: 172,
                   // bottom: 232,
                   right: 16,
-                  child: FABWidget(
-                    title: 'Маршрут',
-                    icon: 'explore_outlined',
-                    backgroundColor: 0xffFAE2CF,
-                    color: 0xFFE77011,
+                  child: RepaintBoundary(
+                    child: FABWidget(
+                      title: 'Маршрут',
+                      icon: 'explore_outlined',
+                      backgroundColor: 0xffFAE2CF,
+                      color: 0xFFE77011,
+                    ),
                   )),
               const Positioned(
                   bottom: 240,
                   // bottom: 300,
                   right: 16,
-                  child: FABWidget(
-                    title: 'Кампус',
-                    icon: 'sync_outlined',
-                    backgroundColor: 0xffFCFCFC,
-                    color: 0xFF6D6D6D,
+                  child: RepaintBoundary(
+                    child: FABWidget(
+                      title: 'Кампус',
+                      icon: 'sync_outlined',
+                      backgroundColor: 0xffFCFCFC,
+                      color: 0xFF6D6D6D,
+                    ),
                   )),
               const Positioned(
                   // bottom: 88,
                   bottom: 28,
                   left: 16,
-                  child: CarouselExample()),
+                  child: RepaintBoundary(child: CarouselExample())),
             ],
           ),
         ),
@@ -655,37 +665,39 @@ class _CarouselExampleState extends State<CarouselExample> {
         ),
       ),
       margin: const EdgeInsets.all(0),
-      child: SizedBox(
-        height: 124,
-        width: 100,
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          // textDirection: TextDirection.ltr,
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          // verticalDirection: VerticalDirection.down,
-          children: [
-            Image(
-              image: AssetImage(imageRoute),
-              height: 92,
-              width: 100,
-              fit: BoxFit.fill,
-            ),
-            SizedBox(
+      child: RepaintBoundary(
+        child: SizedBox(
+          height: 124,
+          width: 100,
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.start,
+            // textDirection: TextDirection.ltr,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            // verticalDirection: VerticalDirection.down,
+            children: [
+              Image(
+                image: AssetImage(imageRoute),
+                height: 92,
                 width: 100,
-                height: 32,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 14, top: 7),
-                  child: Text(
-                    title,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 12,
-                        color: Color(0xFF6D6D6D),
-                        fontWeight: FontWeight.w600),
-                  ),
-                )),
-          ],
+                fit: BoxFit.fill,
+              ),
+              SizedBox(
+                  width: 100,
+                  height: 32,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 14, top: 7),
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 12,
+                          color: Color(0xFF6D6D6D),
+                          fontWeight: FontWeight.w600),
+                    ),
+                  )),
+            ],
+          ),
         ),
       ),
     );
@@ -753,31 +765,55 @@ class MapModel extends ChangeNotifier {
   }
 }
 
-class MapSize {
-  late double? width;
-  late double? height;
-
-  MapSize({required this.width, required this.height});
-}
-
-class IritrtfPage extends StatefulWidget {
-  final double scale;
-  // final String type;
-
-  const IritrtfPage({this.scale = Constants.CANVAS_SVG_SCALE});
+class IritrtfPage extends StatelessWidget {
+  const IritrtfPage();
 
   @override
-  State<IritrtfPage> createState() => _IritrtfPageState();
+  Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('IRIT-RTF PAGE'),
+            centerTitle: true,
+          ),
+          body: Container(
+            color: const Color(0xFFFCFCFC),
+            height: screenSize.height,
+            width: screenSize.width,
+            child: Stack(
+              children: [
+                InstituteScreen(),
+                const Positioned(
+                    bottom: 96,
+                    // bottom: 232,
+                    right: 16,
+                    child: RepaintBoundary(
+                      child: FABWidget(
+                        title: 'Маршрут',
+                        icon: 'explore_outlined',
+                        backgroundColor: 0xffCBD8E4,
+                        color: 0xFF074683,
+                      ),
+                    )),
+              ],
+            ),
+          )),
+    );
+  }
 }
 
-class _IritrtfPageState extends State<IritrtfPage> {
+class InstituteScreen extends StatefulWidget {
+  @override
+  State<InstituteScreen> createState() => _InstituteScreenState();
+}
+
+class _InstituteScreenState extends State<InstituteScreen> {
   late Future<PathModel.Path> pathData;
   late Future<Floor> floorData;
   Floor? floor;
-  MapSize? mapSize;
-
   final Map<String, PictureInfo?> svgPictures = {};
-
   PictureInfo? wardrobeSvgPicture;
   PictureInfo? vendingSvgPicture;
   PictureInfo? toiletwSvgPicture;
@@ -790,7 +826,6 @@ class _IritrtfPageState extends State<IritrtfPage> {
   PictureInfo? coworkingSvgPicture;
   PictureInfo? cafeSvgPicture;
   PictureInfo? atmSvgPicture;
-
   Future<void> loadSvgIcon(String svgString, String key) async {
     final pictureInfo = await vg.loadPicture(SvgStringLoader(svgString), null);
     setState(() {
@@ -800,12 +835,12 @@ class _IritrtfPageState extends State<IritrtfPage> {
 
   @override
   void initState() {
+    //5sec of loading Data;
     super.initState();
     pathData = InstitutesApi.getPath(from: '225:419', to: '248:547');
     floorData = InstitutesApi.getFloorList(floor: '1', instNameRU: 'ИРИТ-РТФ');
     floorData.then((data) {
       floor = data;
-      mapSize = MapSize(width: data.width, height: data.height);
     });
 
     loadSvgIcon(SvgIcons.wardrobeSvg, 'wardrobe');
@@ -824,67 +859,40 @@ class _IritrtfPageState extends State<IritrtfPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('IRIT-RTF PAGE'),
-          centerTitle: true,
-        ),
-        // body: Center(
-        //   child: CustomPaint(
-        //     painter: MasterPainter(),
-        //     size: Size(300, 400),
-        //   ),
-        // ),
-        body: FutureBuilder<PathModel.Path>(
-            future: pathData,
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.blue[200],
+    return FutureBuilder<PathModel.Path>(
+        future: pathData,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(
+                child: RepaintBoundary(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.blue[200],
+                  ),
+                ),
+              );
+            case ConnectionState.done:
+              if (snapshot.hasError) {
+                return Text('Что-то пошло не так');
+              } else {
+                return Center(
+                  child: RepaintBoundary(
+                    child: InteractiveViewer(
+                      panEnabled: true, // Set it to false to prevent panning.
+                      boundaryMargin: EdgeInsets.all(80),
+                      // alignment: Alignment.center,
+                      minScale: 0.5,
+                      maxScale: 10,
+                      child: getFloorPaint(floor!.audiences!, floor!.service!,
+                          svgPictures, floor!.width!, floor!.height!),
                     ),
-                  );
-                case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
-                  } else {
-                    return Center(
-                      child: InteractiveViewer(
-                        panEnabled: true, // Set it to false to prevent panning.
-                        boundaryMargin: EdgeInsets.all(80),
-                        // alignment: Alignment.center,
-                        minScale: 0.5,
-                        maxScale: 10,
-                        child: Stack(
-                          children: Floor.getFloor(floor!, svgPictures),
-                        ),
-                      ),
-                    );
-                    // return CustomPaint(
-                    //   painter: MasterPainter(),
-                    //   size: Size(300, 400),
-                    // );
-                  }
-                default:
-                  return Text('Unhandle State');
+                  ),
+                );
               }
-            }));
-  }
-}
-
-class MasterPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint();
-    paint.strokeWidth = 2;
-    paint.color = Colors.black;
-    canvas.drawLine(Offset.zero, Offset(size.width, 0), paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
+            default:
+              return Text('Unhandle State');
+          }
+        });
   }
 }
 

@@ -61,8 +61,9 @@ class Constants {
   static const double CANVAS_SVG_SCALE = 1;
   static const double CANVAS_TEXT_OFFSET_RATIO = 0.8;
 
-  static const double PAINT_AUDIENCE_STROKE_WIDTH = 4;
+  static const double PAINT_AUDIENCE_STROKE_WIDTH = 5;
   static const double PAINT_DOOR_STROKE_WIDTH = 5;
+  static const double PAINT_SERVICE_STROKE_WIDTH = 5;
 }
 
 class RoutePaths {

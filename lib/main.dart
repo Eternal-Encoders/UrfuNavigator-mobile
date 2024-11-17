@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/api/institutes_api.dart';
 import 'package:urfu_navigator_mobile/helpers/body_helper.dart';
@@ -447,9 +448,9 @@ class Home extends StatelessWidget {
                   // bottom: 232,
                   right: 16,
                   child: RepaintBoundary(
-                    child: FABWidget(
+                    child: FABWidgetExtended(
                       title: 'Маршрут',
-                      icon: 'explore_outlined',
+                      icon: Icons.explore_outlined,
                       backgroundColor: 0xffFAE2CF,
                       color: 0xFFE77011,
                     ),
@@ -459,9 +460,9 @@ class Home extends StatelessWidget {
                   // bottom: 300,
                   right: 16,
                   child: RepaintBoundary(
-                    child: FABWidget(
+                    child: FABWidgetExtended(
                       title: 'Кампус',
-                      icon: 'sync_outlined',
+                      icon: Icons.sync_outlined,
                       backgroundColor: 0xffFCFCFC,
                       color: 0xFF6D6D6D,
                     ),
@@ -479,13 +480,13 @@ class Home extends StatelessWidget {
   }
 }
 
-class FABWidget extends StatelessWidget {
+class FABWidgetExtended extends StatelessWidget {
   final int backgroundColor;
   final int color;
   final String title;
-  final String icon;
+  final IconData icon;
 
-  const FABWidget({
+  const FABWidgetExtended({
     super.key,
     required this.backgroundColor,
     required this.title,
@@ -496,30 +497,87 @@ class FABWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MapModel state = Provider.of<MapModel>(context);
-    return FloatingActionButton.extended(
-      backgroundColor: Color(backgroundColor),
-      // foregroundColor: Colors.black,
-      onPressed: () {
-        // Respond to button press
-      },
-      heroTag: null,
-
-      isExtended: state.userChangedMap,
-      icon: Text(
-        icon,
-        style: TextStyle(
-            fontFamily: 'MaterialIcons',
-            fontSize: 24,
-            color: Color(color),
-            fontWeight: FontWeight.w600),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 0,
+            blurRadius: 3,
+            // offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
       ),
-      label: Text(
-        title,
-        style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 12,
-            color: Color(color),
-            fontWeight: FontWeight.w600),
+      child: Center(
+        child: FloatingActionButton.extended(
+          elevation: 0,
+          backgroundColor: Color(backgroundColor),
+          // foregroundColor: Colors.black,
+          onPressed: () {
+            // Respond to button press
+          },
+          heroTag: null,
+
+          isExtended: state.userChangedMap,
+          icon: Icon(icon, color: Color(color), size: 24.0, semanticLabel: ''),
+          label: Text(
+            title,
+            style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 12,
+                color: Color(color),
+                fontWeight: FontWeight.w600),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FABWidgetSmall extends StatelessWidget {
+  final int backgroundColor;
+  final int color;
+  final String title;
+  final String semanticLabel;
+  final IconData icon;
+
+  const FABWidgetSmall({
+    super.key,
+    required this.backgroundColor,
+    required this.title,
+    required this.icon,
+    required this.color,
+    required this.semanticLabel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    MapModel state = Provider.of<MapModel>(context);
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.10),
+            spreadRadius: 0,
+            blurRadius: 3,
+            // offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Center(
+        child: FloatingActionButton.small(
+          elevation: 0,
+          backgroundColor: Color(backgroundColor),
+          // foregroundColor: Colors.black,
+          onPressed: () {
+            // Respond to button press
+          },
+          heroTag: null,
+          child: Icon(icon,
+              color: Color(color), size: 24.0, semanticLabel: semanticLabel),
+        ),
       ),
     );
   }
@@ -790,17 +848,140 @@ class IritrtfPage extends StatelessWidget {
                     // bottom: 232,
                     right: 16,
                     child: RepaintBoundary(
-                      child: FABWidget(
+                      child: FABWidgetExtended(
                         title: 'Маршрут',
-                        icon: 'explore_outlined',
+                        icon: Icons.explore_outlined,
                         backgroundColor: 0xffCBD8E4,
                         color: 0xFF074683,
                       ),
                     )),
+                const Positioned(
+                    bottom: 96,
+                    left: 16,
+                    child: RepaintBoundary(
+                      child: FABWidgetSmall(
+                        title: 'Инфо',
+                        icon: Icons.info_outline_rounded,
+                        backgroundColor: 0xffFCFCFC,
+                        color: 0xFF6D6D6D,
+                        semanticLabel: 'Информация об университете',
+                      ),
+                    )),
+                FloorsNavigation(),
               ],
             ),
           )),
     );
+  }
+}
+
+class FloorsNavigation extends StatefulWidget {
+  const FloorsNavigation({
+    super.key,
+  });
+
+  @override
+  State<FloorsNavigation> createState() => _FloorsNavigationState();
+}
+
+class _FloorsNavigationState extends State<FloorsNavigation> {
+  int _selectedIndex = 0;
+  double _floorsCount = 5;
+  double _floorsHeight = 44;
+  double _constraints = 10;
+
+  void changeDestination(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+        bottom: 160,
+        left: 16,
+        child: Container(
+          clipBehavior: Clip.antiAlias,
+          width: 44,
+          height: _floorsCount * _floorsHeight + _constraints,
+          decoration: BoxDecoration(
+            color: Color(0xFFFCFCFC),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.10),
+                spreadRadius: 0,
+                blurRadius: 3,
+                // offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: NavigationRail(
+            destinations: <NavigationRailDestination>[
+              const NavigationRailDestination(
+                  icon: FaIcon(
+                    FontAwesomeIcons.four,
+                    size: 12,
+                  ),
+                  label: Text('Four'),
+                  selectedIcon: FaIcon(
+                    size: 12,
+                    FontAwesomeIcons.four,
+                    color: Color(0xFF074683),
+                  )),
+              const NavigationRailDestination(
+                  icon: FaIcon(
+                    FontAwesomeIcons.three,
+                    size: 12,
+                  ),
+                  label: Text('Three'),
+                  selectedIcon: FaIcon(
+                    size: 12,
+                    FontAwesomeIcons.three,
+                    color: Color(0xFF074683),
+                  )),
+              const NavigationRailDestination(
+                  icon: FaIcon(
+                    FontAwesomeIcons.two,
+                    size: 12,
+                  ),
+                  label: Text('Two'),
+                  selectedIcon: FaIcon(
+                    size: 12,
+                    FontAwesomeIcons.two,
+                    color: Color(0xFF074683),
+                  )),
+              const NavigationRailDestination(
+                  icon: FaIcon(
+                    FontAwesomeIcons.one,
+                    size: 12,
+                  ),
+                  label: Text('One'),
+                  selectedIcon: FaIcon(
+                    size: 12,
+                    FontAwesomeIcons.one,
+                    color: Color(0xFF074683),
+                  )),
+              const NavigationRailDestination(
+                  icon: FaIcon(
+                    FontAwesomeIcons.zero,
+                    size: 12,
+                  ),
+                  label: Text('Zero'),
+                  selectedIcon: FaIcon(
+                    size: 12,
+                    FontAwesomeIcons.zero,
+                    color: Color(0xFF074683),
+                  )),
+            ],
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: changeDestination,
+            useIndicator: true,
+            indicatorShape: const CircleBorder(),
+            indicatorColor: const Color(0xFFCBD8E4),
+          ),
+        ));
   }
 }
 

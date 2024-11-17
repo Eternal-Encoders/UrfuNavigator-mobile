@@ -17,6 +17,7 @@ dependencies:
   flutter_svg: ^2.0.14
   flutter_animate: ^4.5.0
   svg_path_parser: ^1.1.2
+  font_awesome_flutter: ^10.8.0
 
 dev_dependencies:
   flutter_test:

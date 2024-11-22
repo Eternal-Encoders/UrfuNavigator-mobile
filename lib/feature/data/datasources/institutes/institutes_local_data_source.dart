@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, constant_identifier_names
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:urfu_navigator_mobile/core/error/exception.dart';
@@ -39,7 +40,7 @@ class InstitutesLocalDataSourceImpl implements InstitutesLocalDataSource {
 
     sharedPreferences.setString(CACHED_INSTITUTES, jsonInstitutes);
 
-    print('Insts to write Cache: $jsonInstitutes');
+    log('Insts to write Cache: $jsonInstitutes');
 
     // ignore: void_checks
     return Future.value(jsonInstitutes);
@@ -51,7 +52,7 @@ class InstitutesLocalDataSourceImpl implements InstitutesLocalDataSource {
 
     sharedPreferences.setString(CACHED_INSTITUTE, jsonInstitute);
 
-    print('Inst to write Cache: $jsonInstitute');
+    log('Inst to write Cache: $jsonInstitute');
 
     // ignore: void_checks
     return Future.value(jsonInstitute);

@@ -33,16 +33,22 @@ class FABWidgetSmall extends StatelessWidget {
         ],
       ),
       child: Center(
-        child: FloatingActionButton.small(
-          elevation: 0,
-          backgroundColor: Color(backgroundColor),
-          // foregroundColor: Colors.black,
-          onPressed: () {
-            // Respond to button press
-          },
-          heroTag: null,
-          child: Icon(icon,
-              color: Color(color), size: 24.0, semanticLabel: semanticLabel),
+        child: RepaintBoundary(
+          child: FloatingActionButton.small(
+            elevation: 0,
+            backgroundColor: Color(backgroundColor),
+            // foregroundColor: Colors.black,
+            onPressed: () {
+              // Respond to button press
+            },
+            heroTag: null,
+            child: RepaintBoundary(
+              child: Icon(icon,
+                  color: Color(color),
+                  size: 24.0,
+                  semanticLabel: semanticLabel),
+            ),
+          ),
         ),
       ),
     );

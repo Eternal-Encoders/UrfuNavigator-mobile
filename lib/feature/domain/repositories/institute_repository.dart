@@ -5,5 +5,5 @@ import 'package:urfu_navigator_mobile/feature/data/models/institutes/institutes.
 
 abstract class InstituteRepository {
   Future<Either<Failure, InstitutesList>> getInstitutes();
-  Future<Either<Failure, Institute>> getInstituteByUrl(String instUrl);
+  Future<Either<Failure, Institute>> getInstituteByUrl(String institute);
 }

@@ -13,17 +13,17 @@ class GetInstitute extends UseCase<Institute, InstituteParams> {
 
   @override
   Future<Either<Failure, Institute>> call(InstituteParams params) async {
-    return await instituteRepository.getInstituteByUrl(params.instUrl);
+    return await instituteRepository.getInstituteByUrl(params.institute);
   }
 }
 
 class InstituteParams extends Equatable {
-  final String instUrl;
+  final String institute;
 
   InstituteParams({
-    required this.instUrl,
+    required this.institute,
   });
 
   @override
-  List<Object?> get props => [instUrl];
+  List<Object?> get props => [institute];
 }

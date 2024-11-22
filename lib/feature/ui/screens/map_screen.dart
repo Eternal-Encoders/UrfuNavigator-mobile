@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/map_model.dart';
@@ -44,8 +46,8 @@ class _MapScreenState extends State<MapScreen> {
           );
         },
         mapObjects: _getPlacemarkObjects(context),
-        onMapTap: (Point point) => print('map tapped on $point'),
-        onMapLongTap: (Point point) => print('map long-tapped on $point'),
+        onMapTap: (Point point) => log('map tapped on $point'),
+        onMapLongTap: (Point point) => log('map long-tapped on $point'),
       ),
     );
   }

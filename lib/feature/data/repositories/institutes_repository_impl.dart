@@ -49,9 +49,9 @@ class InstitutesRepositoryImpl implements InstituteRepository {
   }
 
   @override
-  Future<Either<Failure, Institute>> getInstituteByUrl(String instUrl) async {
+  Future<Either<Failure, Institute>> getInstituteByUrl(String institute) async {
     return await _getInstitute(() {
-      return remoteDataSource.getInstituteByUrl(instUrl);
+      return remoteDataSource.getInstituteByUrl(institute);
     });
   }
 

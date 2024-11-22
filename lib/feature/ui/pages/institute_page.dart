@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/floor/floor_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/bloc/institute/institute_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/institute_screen.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_extended.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_small.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/floors_navigation.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart';
 
-class IritrtfPage extends StatelessWidget {
-  const IritrtfPage();
-
+class InstitutePage extends StatelessWidget {
+  final Institute institute;
+  InstitutePage({required this.institute});
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -17,18 +19,24 @@ class IritrtfPage extends StatelessWidget {
       top: false,
       child: Scaffold(
           appBar: AppBar(
-            title: Text('IRIT-RTF PAGE'),
+            title: Text('${institute.displayableName}'),
             centerTitle: true,
           ),
-          body: BlocProvider(
-            create: (context) => sl<FloorBloc>(),
+          body: MultiBlocProvider(
+            providers: [
+              BlocProvider<FloorBloc>(create: (context) => sl<FloorBloc>()),
+              BlocProvider<InstituteBloc>(
+                  create: (context) => sl<InstituteBloc>()),
+            ],
             child: Container(
               color: const Color(0xFFFCFCFC),
               height: screenSize.height,
               width: screenSize.width,
               child: Stack(
                 children: [
-                  InstituteScreen(),
+                  InstituteScreen(
+                    institute: institute,
+                  ),
                   const Positioned(
                       bottom: 96,
                       // bottom: 232,
@@ -53,7 +61,12 @@ class IritrtfPage extends StatelessWidget {
                           semanticLabel: 'Информация об университете',
                         ),
                       )),
-                  FloorsNavigation(),
+                  Positioned(
+                      bottom: 160,
+                      left: 16,
+                      child: FloorsNavigation(
+                        institute: institute,
+                      )),
                 ],
               ),
             ),

@@ -31,12 +31,16 @@ import 'package:urfu_navigator_mobile/feature/domain/usecases/get_point.dart';
 import 'package:urfu_navigator_mobile/feature/domain/usecases/get_points.dart';
 import 'package:urfu_navigator_mobile/feature/domain/usecases/get_search_points.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/floor/floor_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/bloc/institute/institute_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   // BLOC / Cubit
   sl.registerFactory(() => FloorBloc(getFloor: sl()));
+  sl.registerFactory(() => InstituteBloc(getInstitute: sl()));
+  sl.registerFactory(() => InstitutesBloc(getInstitutes: sl()));
   // UseCases
   sl.registerLazySingleton(() => GetFloor(sl()));
   sl.registerLazySingleton(() => GetInstitute(sl()));

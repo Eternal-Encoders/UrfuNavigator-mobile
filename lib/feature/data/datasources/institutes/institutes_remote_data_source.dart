@@ -9,7 +9,7 @@ import 'package:urfu_navigator_mobile/utils/const.dart';
 
 abstract class InstitutesRemoteDataSource {
   Future<InstitutesList> getInstitutes();
-  Future<Institute> getInstituteByUrl(String url);
+  Future<Institute> getInstituteByUrl(String institute);
 }
 
 class InstitutesRemoteDataSourceImpl implements InstitutesRemoteDataSource {
@@ -32,9 +32,9 @@ class InstitutesRemoteDataSourceImpl implements InstitutesRemoteDataSource {
   }
 
   @override
-  Future<Institute> getInstituteByUrl(String url) async {
+  Future<Institute> getInstituteByUrl(String institute) async {
     final queryParams = {
-      'url': url,
+      'institute': institute,
     };
     var uri = Uri.https(
         Constants.API_DOMAIN, Constants.API_PATH_INSTITUTE, queryParams);

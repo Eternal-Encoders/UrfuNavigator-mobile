@@ -70,14 +70,7 @@ class Constants {
 
 class RoutePaths {
   static const String main = '/';
-  static const String guk = '/guk';
-  static const String iritrtf = '/iritrtf';
-  static const String fti = '/fti';
-  static const String isa = '/isa';
-  static const String uralanin = '/uralanin';
-  static const String inmitxti = '/inmitxti';
-  static const String inau = '/inau';
-  static const String ugi = '/ugi';
+  static const String institute = '/institute';
 }
 
 class SvgIcons {

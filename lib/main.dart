@@ -3,10 +3,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:urfu_navigator_mobile/feature/data/models/path/path.dart'
-    as PathModel;
+import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart'
+    as InstituteDataModel;
 import 'package:urfu_navigator_mobile/feature/ui/pages/home_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/institute_page.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/map_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/map_screen.dart';
@@ -34,9 +35,13 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<MapModel>.value(value: MapModel()),
         ChangeNotifierProvider<OverlayModel>.value(value: OverlayModel()),
+        ChangeNotifierProvider<InstituteModel>.value(
+          value: InstituteModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        // showPerformanceOverlay: true,
         title: 'UrfuApp',
         // themeMode: ThemeMode.system,
         themeMode: ThemeMode.light,
@@ -64,20 +69,13 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case RoutePaths.main:
               return MaterialPageRoute(builder: (context) => HomePage());
-            case RoutePaths.guk:
-              return MaterialPageRoute(builder: (context) => BodyPage());
-            case RoutePaths.iritrtf:
-              return MaterialPageRoute(builder: (context) => IritrtfPage());
-            case RoutePaths.fti:
-              return MaterialPageRoute(builder: (context) => BodyPage());
-            case RoutePaths.isa:
-              return MaterialPageRoute(builder: (context) => BodyPage());
-            case RoutePaths.uralanin:
-              return MaterialPageRoute(builder: (context) => BodyPage());
-            case RoutePaths.inmitxti:
-              return MaterialPageRoute(builder: (context) => BodyPage());
-            case RoutePaths.inau:
-              return MaterialPageRoute(builder: (context) => BodyPage());
+            case RoutePaths.institute:
+              InstituteDataModel.Institute institute =
+                  settings.arguments as InstituteDataModel.Institute;
+              return MaterialPageRoute(
+                  builder: (context) => InstitutePage(
+                        institute: institute,
+                      ));
           }
           return null;
         },
@@ -200,60 +198,5 @@ class UncontainedLayoutCard extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class BodyPage extends StatefulWidget {
-  @override
-  State<BodyPage> createState() => _BodyPageState();
-}
-
-class _BodyPageState extends State<BodyPage> {
-  late Future<PathModel.Path> path;
-
-  @override
-  void initState() {
-    super.initState();
-    // path = InstitutesApi.getPath(from: '225:419', to: '248:547');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('IN DEVELOPING'),
-          centerTitle: true,
-        ),
-        body: FutureBuilder<PathModel.Path>(
-            future: path,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: 1000,
-                  itemBuilder: (context, index) {
-                    List<Widget> cards = [];
-                    snapshot.data!.result?.forEach((bodyName, points) {
-                      print(bodyName);
-                      points.forEach((key, point) {
-                        cards.add(Card(
-                          child: ListTile(
-                            title: Text(point[0][0].floor.toString()),
-                            subtitle: Text(point[0][0].floor.toString()),
-                          ),
-                        ));
-                      });
-                    });
-                    return Column(children: cards);
-                  },
-                );
-              } else if (snapshot.hasError) {
-                return Text(snapshot.error.toString());
-              }
-              return Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.blue[200],
-                ),
-              );
-            }));
   }
 }

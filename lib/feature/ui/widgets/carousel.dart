@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:urfu_navigator_mobile/helpers/body_helper.dart';
+import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
+import 'package:urfu_navigator_mobile/feature/data/models/institutes/institutes.dart';
+import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/state/error_message.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/state/loading_indicator.dart';
+import 'package:urfu_navigator_mobile/utils/const.dart';
 
 class CarouselExample extends StatefulWidget {
   const CarouselExample({super.key});
@@ -10,25 +16,70 @@ class CarouselExample extends StatefulWidget {
 
 class _CarouselExampleState extends State<CarouselExample> {
   @override
+  void initState() {
+    super.initState();
+
+    context.read<InstitutesBloc>().add(InstitutesEvent.fetch());
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
-    return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 132, maxWidth: screenSize - 16),
-        child: CarouselView(
-          onTap: (int index) {
-            Navigator.pushNamed(
-                context, '/${EBodyExtension.values[index].name}');
-          },
-          // backgroundColor: Color(value),
-          itemExtent: 100,
-          shrinkExtent: 100,
-          children: EBody.values
-              .map((EBody body) => cardBody(body.imgRoute, body.nameRU))
-              .toList(),
-        ),
-      ),
-    );
+    final state = context.watch<InstitutesBloc>().state;
+    return state.when(
+        error: () => DefaultErrorMessage(),
+        loading: () => DefaultLoadingIndicator(),
+        loaded: (InstitutesList institutesLoaded) {
+          return Center(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(maxHeight: 132, maxWidth: screenSize - 16),
+              child: CarouselView(
+                onTap: (int index) {
+                  Institute institute = Institute(
+                      name: institutesLoaded.institutes?[index].name,
+                      displayableName:
+                          institutesLoaded.institutes?[index].displayableName,
+                      url: institutesLoaded.institutes?[index].url,
+                      minFloor: institutesLoaded.institutes?[index].minFloor,
+                      maxFloor: institutesLoaded.institutes?[index].maxFloor);
+                  Navigator.pushNamed(context, RoutePaths.institute,
+                      arguments: institute);
+                },
+                // backgroundColor: Color(value),
+                itemExtent: 100,
+                shrinkExtent: 100,
+                children: institutesLoaded.institutes!
+                    .asMap()
+                    .values
+                    .map((Institute inst) {
+                  switch (inst.name) {
+                    case 'ГУК':
+                      return cardBody('assets/img/urfu-bodies-img/GUK.png',
+                          inst.name ?? 'unknown');
+                    case 'УРАЛЭНИН':
+                      return cardBody('assets/img/urfu-bodies-img/URALANIN.png',
+                          inst.name ?? 'unknown');
+                    case 'ИРИТ-РТФ':
+                      return cardBody('assets/img/urfu-bodies-img/IRIT-RTF.png',
+                          inst.name ?? 'unknown');
+                    case 'ИСА':
+                      return cardBody('assets/img/urfu-bodies-img/ISA.png',
+                          inst.name ?? 'unknown');
+                    case 'ИНМИТ-ХТИ':
+                      return cardBody('assets/img/urfu-bodies-img/URALANIN.png',
+                          inst.name ?? 'unknown');
+                    case 'УГИ':
+                      return cardBody('assets/img/urfu-bodies-img/UGI.png',
+                          inst.name ?? 'unknown');
+                    default:
+                      return Text('future card...');
+                  }
+                }).toList(),
+              ),
+            ),
+          );
+        });
   }
 
   Card cardBody(String imageRoute, String title) {

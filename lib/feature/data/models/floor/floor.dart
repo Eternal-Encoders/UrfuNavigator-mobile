@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -21,6 +23,7 @@ class FloorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    log('render paint');
     canvas.scale(Constants.CANVAS_SCALE);
     // Рисуем аудитории
     for (final audience in audiences) {
@@ -57,7 +60,8 @@ class FloorPainter extends CustomPainter {
 CustomPaint getFloorPaint(List<Audience> audiences, List<Service> services,
     Map<String, PictureInfo?> svgPictures, double width, double height) {
   return CustomPaint(
-    isComplex: true,
+    isComplex: false,
+    willChange: true,
     painter: FloorPainter(
       audiences: audiences,
       services: services,
@@ -245,11 +249,11 @@ class AudiencePainter extends CustomPainter {
                     canvas.restore();
                   }
                 default:
-                  print('Нет ${child.identifier} иконки');
+                  log('Нет ${child.identifier} иконки');
                   return;
               }
             default:
-              print('Нет ${child.type} типа иконок');
+              log('Нет ${child.type} типа иконок');
               return;
           }
         }

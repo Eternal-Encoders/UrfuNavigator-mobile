@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, constant_identifier_names
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:urfu_navigator_mobile/core/error/exception.dart';
@@ -25,7 +26,7 @@ class SearchLocalDataSourceImpl implements SearchLocalDataSource {
 
     sharedPreferences.setString(CACHED_SEARCH, jsonSearch);
 
-    print('Search to write Cache: $jsonSearch');
+    log('Search to write Cache: $jsonSearch');
 
     // ignore: void_checks
     return Future.value(jsonSearch);

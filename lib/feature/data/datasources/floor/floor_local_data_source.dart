@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:urfu_navigator_mobile/core/error/exception.dart';
@@ -36,7 +37,7 @@ class FloorLocalDataSourceImpl implements FloorLocalDataSource {
 
     sharedPreferences.setString(CACHED_FLOOR, jsonFloor);
 
-    print('Floor to write Cache: $jsonFloor');
+    log('Floor to write Cache: $jsonFloor');
 
     // ignore: void_checks
     return Future.value(jsonFloor);

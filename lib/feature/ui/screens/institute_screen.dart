@@ -1,34 +1,35 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/floor/floor.dart';
+import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/path/path.dart'
     // ignore: library_prefixes
     as PathModel;
 import 'package:urfu_navigator_mobile/feature/ui/bloc/floor/floor_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/state/error_message.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/state/loading_indicator.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 
 class InstituteScreen extends StatefulWidget {
+  final Institute institute;
+  const InstituteScreen({
+    super.key,
+    required this.institute,
+  });
+
   @override
   State<InstituteScreen> createState() => _InstituteScreenState();
 }
 
 class _InstituteScreenState extends State<InstituteScreen> {
+  InstituteModel? _instituteModel;
   late Future<PathModel.Path> pathData;
   late Future<Floor> floorData;
   final Map<String, PictureInfo?> svgPictures = {};
-  PictureInfo? wardrobeSvgPicture;
-  PictureInfo? vendingSvgPicture;
-  PictureInfo? toiletwSvgPicture;
-  PictureInfo? toiletmSvgPicture;
-  PictureInfo? stairsUpSvgPicture;
-  PictureInfo? stairsDownSvgPicture;
-  PictureInfo? printSvgPicture;
-  PictureInfo? elevatorSvgPicture;
-  PictureInfo? dinningSvgPicture;
-  PictureInfo? coworkingSvgPicture;
-  PictureInfo? cafeSvgPicture;
-  PictureInfo? atmSvgPicture;
   Future<void> loadSvgIcon(String svgString, String key) async {
     final pictureInfo = await vg.loadPicture(SvgStringLoader(svgString), null);
     setState(() {
@@ -38,10 +39,17 @@ class _InstituteScreenState extends State<InstituteScreen> {
 
   @override
   void initState() {
-    context
-        .read<FloorBloc>()
-        .add(const FloorEvent.fetch(floor: '1', institute: 'ИРИТ-РТФ'));
     super.initState();
+
+    // Получаем ссылку на InstituteModel
+    _instituteModel = Provider.of<InstituteModel>(context, listen: false);
+
+    // Добавляем слушатель
+    _instituteModel?.addListener(_onChange);
+
+    // Первый запрос
+    // context.read<FloorBloc>().add(FloorEvent.fetch(
+    //     floor: '${floorState.selectedFloor}', institute: 'ИРИТ-РТФ'));
 
     loadSvgIcon(SvgIcons.wardrobeSvg, 'wardrobe');
     loadSvgIcon(SvgIcons.vendingSvg, 'vending');
@@ -57,23 +65,36 @@ class _InstituteScreenState extends State<InstituteScreen> {
     loadSvgIcon(SvgIcons.toiletwSvg, 'toiletw');
   }
 
+  void _onChange() {
+    log('object changed');
+    InstituteModel instituteState =
+        Provider.of<InstituteModel>(context, listen: false);
+    log('instituteState.selectedFloor: ${instituteState.selectedFloor}, instituteState.selectedInstitute: ${widget.institute.name}');
+    context.read<FloorBloc>().add(
+          FloorEvent.fetch(
+            floor: '${instituteState.selectedFloor}',
+            institute: widget.institute.name!,
+          ),
+        );
+  }
+
+  @override
+  void dispose() {
+    log('object disposed');
+    // Убираем слушатель перед удалением виджета
+    _instituteModel?.removeListener(_onChange);
+    _instituteModel = null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final customController = CustomTransformationController();
     final transformationController = customController.controller;
     final state = context.watch<FloorBloc>().state;
     return state.when(
-        error: () =>
-            Center(child: const Text('Ошибка на сервере, попробуйте позже.')),
-        loading: () {
-          return Center(
-            child: RepaintBoundary(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.blue[200],
-              ),
-            ),
-          );
-        },
+        error: () => DefaultErrorMessage(),
+        loading: () => DefaultLoadingIndicator(),
         loaded: (Floor floorLoaded) => Center(
               child: RepaintBoundary(
                 child: InteractiveViewer(
@@ -86,12 +107,15 @@ class _InstituteScreenState extends State<InstituteScreen> {
                   // alignment: Alignment.center,
                   // minScale: 0.5,
                   // maxScale: 10,
-                  child: getFloorPaint(
-                      floorLoaded.audiences!,
-                      floorLoaded.service!,
-                      svgPictures,
-                      floorLoaded.width!,
-                      floorLoaded.height!),
+
+                  child: RepaintBoundary(
+                    child: getFloorPaint(
+                        floorLoaded.audiences!,
+                        floorLoaded.service!,
+                        svgPictures,
+                        floorLoaded.width!,
+                        floorLoaded.height!),
+                  ),
                 ),
               ),
             ));

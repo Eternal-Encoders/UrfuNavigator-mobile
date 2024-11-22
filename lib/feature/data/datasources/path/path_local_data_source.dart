@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, constant_identifier_names
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:urfu_navigator_mobile/core/error/exception.dart';
@@ -27,7 +28,7 @@ class PathLocalDataSourceImpl implements PathLocalDataSource {
 
     sharedPreferences.setString(CACHED_PATH, jsonPath);
 
-    print('Path to write Cache: $jsonPath');
+    log('Path to write Cache: $jsonPath');
 
     // ignore: void_checks
     return Future.value(jsonPath);

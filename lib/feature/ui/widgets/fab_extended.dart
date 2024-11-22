@@ -32,24 +32,30 @@ class FABWidgetExtended extends StatelessWidget {
         ],
       ),
       child: Center(
-        child: FloatingActionButton.extended(
-          elevation: 0,
-          backgroundColor: Color(backgroundColor),
-          // foregroundColor: Colors.black,
-          onPressed: () {
-            // Respond to button press
-          },
-          heroTag: null,
+        child: RepaintBoundary(
+          child: FloatingActionButton.extended(
+            elevation: 0,
+            backgroundColor: Color(backgroundColor),
+            // foregroundColor: Colors.black,
+            onPressed: () {
+              // Respond to button press
+            },
+            heroTag: null,
 
-          isExtended: state.userChangedMap,
-          icon: Icon(icon, color: Color(color), size: 24.0, semanticLabel: ''),
-          label: Text(
-            title,
-            style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 12,
-                color: Color(color),
-                fontWeight: FontWeight.w600),
+            isExtended: state.userChangedMap,
+            icon: RepaintBoundary(
+                child: Icon(icon,
+                    color: Color(color), size: 24.0, semanticLabel: '')),
+            label: RepaintBoundary(
+              child: Text(
+                title,
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 12,
+                    color: Color(color),
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
           ),
         ),
       ),

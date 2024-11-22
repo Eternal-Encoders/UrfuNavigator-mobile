@@ -1,9 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
 
 class FloorsNavigation extends StatefulWidget {
+  final Institute institute;
   const FloorsNavigation({
     super.key,
+    required this.institute,
   });
 
   @override
@@ -11,103 +17,79 @@ class FloorsNavigation extends StatefulWidget {
 }
 
 class _FloorsNavigationState extends State<FloorsNavigation> {
-  int _selectedIndex = 0;
-  double _floorsCount = 5;
+  //Logic:
+  int _selectedIndex = 3;
+  int _lastSelectedIndex = -1;
+  int selectedFloor = 1;
+
+  //Visual:
   double _floorsHeight = 44;
   double _constraints = 10;
 
   void changeDestination(int index) {
     setState(() {
+      _lastSelectedIndex = _selectedIndex;
       _selectedIndex = index;
-      print(index);
+      selectedFloor = widget.institute.maxFloor! - _selectedIndex;
+      log('selectedFloor: $selectedFloor');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-        bottom: 160,
-        left: 16,
-        child: Container(
-          clipBehavior: Clip.antiAlias,
-          width: 44,
-          height: _floorsCount * _floorsHeight + _constraints,
-          decoration: BoxDecoration(
-            color: Color(0xFFFCFCFC),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.10),
-                spreadRadius: 0,
-                blurRadius: 3,
-                // offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
+    InstituteModel instituteState =
+        Provider.of<InstituteModel>(context, listen: false);
+    final bool hasZeroFloor = widget.institute.minFloor == 0;
+    final int withZeroFloor = widget.institute.maxFloor! + 1;
+    final int withoutZeroFloor = widget.institute.maxFloor!;
+    setState(() {
+      if (_selectedIndex == _lastSelectedIndex) return;
+      WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+        instituteState.changeSelectedFloor(selectedFloor);
+      });
+    });
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      width: 44,
+      height:
+          (hasZeroFloor ? withZeroFloor : withoutZeroFloor) * _floorsHeight +
+              _constraints,
+      decoration: BoxDecoration(
+        color: Color(0xFFFCFCFC),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.10),
+            spreadRadius: 0,
+            blurRadius: 3,
+            // offset: Offset(0, 3), // changes position of shadow
           ),
+        ],
+      ),
+      child: RepaintBoundary(
           child: NavigationRail(
-            destinations: <NavigationRailDestination>[
-              const NavigationRailDestination(
-                  icon: FaIcon(
-                    FontAwesomeIcons.four,
-                    size: 12,
-                  ),
-                  label: Text('Four'),
-                  selectedIcon: FaIcon(
-                    size: 12,
-                    FontAwesomeIcons.four,
-                    color: Color(0xFF074683),
-                  )),
-              const NavigationRailDestination(
-                  icon: FaIcon(
-                    FontAwesomeIcons.three,
-                    size: 12,
-                  ),
-                  label: Text('Three'),
-                  selectedIcon: FaIcon(
-                    size: 12,
-                    FontAwesomeIcons.three,
-                    color: Color(0xFF074683),
-                  )),
-              const NavigationRailDestination(
-                  icon: FaIcon(
-                    FontAwesomeIcons.two,
-                    size: 12,
-                  ),
-                  label: Text('Two'),
-                  selectedIcon: FaIcon(
-                    size: 12,
-                    FontAwesomeIcons.two,
-                    color: Color(0xFF074683),
-                  )),
-              const NavigationRailDestination(
-                  icon: FaIcon(
-                    FontAwesomeIcons.one,
-                    size: 12,
-                  ),
-                  label: Text('One'),
-                  selectedIcon: FaIcon(
-                    size: 12,
-                    FontAwesomeIcons.one,
-                    color: Color(0xFF074683),
-                  )),
-              const NavigationRailDestination(
-                  icon: FaIcon(
-                    FontAwesomeIcons.zero,
-                    size: 12,
-                  ),
-                  label: Text('Zero'),
-                  selectedIcon: FaIcon(
-                    size: 12,
-                    FontAwesomeIcons.zero,
-                    color: Color(0xFF074683),
-                  )),
-            ],
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: changeDestination,
-            useIndicator: true,
-            indicatorShape: const CircleBorder(),
-            indicatorColor: const Color(0xFFCBD8E4),
-          ),
-        ));
+        destinations: List<int>.generate(
+                hasZeroFloor ? withZeroFloor : withoutZeroFloor,
+                (int index) => hasZeroFloor ? index : index + 1)
+            .reversed
+            .toList()
+            .map((floor) {
+          return NavigationRailDestination(
+            icon: RepaintBoundary(
+              child: Text('$floor'),
+            ),
+            label: Text('$floor'),
+            selectedIcon: RepaintBoundary(
+              child: Text('$floor'),
+            ),
+          );
+        }).toList(),
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: changeDestination,
+        useIndicator: true,
+        indicatorShape: const CircleBorder(),
+        indicatorColor: const Color(0xFFCBD8E4),
+      )),
+    );
   }
 }

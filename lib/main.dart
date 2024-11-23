@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
             error: AppColors.accentFireLight,
             onError: AppColors.secondRedBrown,
             surface: AppColors.mainWhiteLight,
-            onSurface: AppColors.accentBlue,
+            onSurface: AppColors.accentGray,
           ),
           textTheme: const TextTheme(
               bodyLarge: TextStyle(fontSize: 14, color: AppColors.accentGray)),

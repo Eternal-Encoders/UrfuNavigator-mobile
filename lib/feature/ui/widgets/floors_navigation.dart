@@ -79,9 +79,13 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
             icon: RepaintBoundary(
               child: Text('$floor'),
             ),
-            label: Text('$floor'),
+            label: Text(
+              '$floor',
+              style: TextStyle(color: AppColors.accentBlueDark),
+            ),
             selectedIcon: RepaintBoundary(
-              child: Text('$floor'),
+              child: Text('$floor',
+                  style: TextStyle(color: AppColors.accentBlueDark)),
             ),
           );
         }).toList(),

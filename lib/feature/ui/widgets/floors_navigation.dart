@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
 
@@ -55,7 +56,7 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
           (hasZeroFloor ? withZeroFloor : withoutZeroFloor) * _floorsHeight +
               _constraints,
       decoration: BoxDecoration(
-        color: Color(0xFFFCFCFC),
+        color: AppColors.mainWhiteLight,
         borderRadius: BorderRadius.all(Radius.circular(20)),
         boxShadow: [
           BoxShadow(

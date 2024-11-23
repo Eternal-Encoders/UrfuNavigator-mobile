@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
+import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/helpers/color_helper.dart';
 import 'package:urfu_navigator_mobile/helpers/text_helper.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
@@ -263,7 +264,7 @@ class AudiencePainter extends CustomPainter {
 
   void paintText(Child child, Size size, Canvas canvas) {
     const textStyle = TextStyle(
-      color: Color(0xFF3A3A3A),
+      color: AppColors.accentGrayDark,
       fontSize: 16,
     );
     var textSpan = TextSpan(

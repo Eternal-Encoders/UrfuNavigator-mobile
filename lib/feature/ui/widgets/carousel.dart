@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institutes/institutes.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
@@ -89,7 +90,7 @@ class _CarouselExampleState extends State<CarouselExample> {
       clipBehavior: Clip.antiAlias,
       shape: const RoundedRectangleBorder(
         side: BorderSide(
-            color: Color.fromARGB(255, 255, 255, 255),
+            color: AppColors.white,
             strokeAlign: BorderSide.strokeAlignCenter,
             style: BorderStyle.solid,
             width: 0),
@@ -128,7 +129,7 @@ class _CarouselExampleState extends State<CarouselExample> {
                       style: const TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 12,
-                          color: Color(0xFF6D6D6D),
+                          color: AppColors.accentGray,
                           fontWeight: FontWeight.w600),
                     ),
                   )),

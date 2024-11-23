@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/floor/floor_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institute/institute_bloc.dart';
@@ -29,7 +30,7 @@ class InstitutePage extends StatelessWidget {
                   create: (context) => sl<InstituteBloc>()),
             ],
             child: Container(
-              color: const Color(0xFFFCFCFC),
+              color: AppColors.mainWhiteLight,
               height: screenSize.height,
               width: screenSize.width,
               child: Stack(

@@ -27,7 +27,7 @@
 //                 style: TextStyle(
 //                     fontFamily: 'Ruda',
 //                     fontSize: 11,
-//                     color: Color(0xFF6D6D6D),
+//                     color: AppColors.accentGray,
 //                     fontWeight: FontWeight.w500),
 //               ),
 //             )
@@ -46,7 +46,7 @@
 //                 style: TextStyle(
 //                     fontFamily: 'Ruda',
 //                     fontSize: 11,
-//                     color: Color(0xFF6D6D6D),
+//                     color: AppColors.accentGray,
 //                     fontWeight: FontWeight.w500),
 //               ),
 //             )
@@ -65,7 +65,7 @@
 //                 style: TextStyle(
 //                     fontFamily: 'Ruda',
 //                     fontSize: 11,
-//                     color: Color(0xFF6D6D6D),
+//                     color: AppColors.accentGray,
 //                     fontWeight: FontWeight.w500),
 //               ),
 //             )
@@ -84,7 +84,7 @@
 //                 style: TextStyle(
 //                     fontFamily: 'Ruda',
 //                     fontSize: 11,
-//                     color: Color(0xFF6D6D6D),
+//                     color: AppColors.accentGray,
 //                     fontWeight: FontWeight.w500),
 //               ),
 //             )
@@ -103,7 +103,7 @@
 //                 style: TextStyle(
 //                     fontFamily: 'Ruda',
 //                     fontSize: 11,
-//                     color: Color(0xFF6D6D6D),
+//                     color: AppColors.accentGray,
 //                     fontWeight: FontWeight.w500),
 //               ),
 //             )
@@ -122,7 +122,7 @@
 //                 style: TextStyle(
 //                     fontFamily: 'Ruda',
 //                     fontSize: 11,
-//                     color: Color(0xFF6D6D6D),
+//                     color: AppColors.accentGray,
 //                     fontWeight: FontWeight.w500),
 //               ),
 //             )
@@ -141,7 +141,7 @@
 //                 style: TextStyle(
 //                     fontFamily: 'Ruda',
 //                     fontSize: 11,
-//                     color: Color(0xFF6D6D6D),
+//                     color: AppColors.accentGray,
 //                     fontWeight: FontWeight.w500),
 //               ),
 //             )

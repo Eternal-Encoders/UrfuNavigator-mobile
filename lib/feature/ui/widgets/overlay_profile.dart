@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/icon_exit.dart';
 
@@ -23,7 +24,7 @@ class OverlayProfile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
         decoration: BoxDecoration(
-          color: Color(0xFFFFFFFF),
+          color: AppColors.white,
           borderRadius: BorderRadius.all(Radius.circular(24)),
           boxShadow: [
             BoxShadow(
@@ -65,7 +66,7 @@ class OverlayProfile extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.feedback_outlined,
-                            color: Color(0xFF3A3A3A),
+                            color: AppColors.accentGrayDark,
                             size: 24,
                           ),
                           SizedBox(width: 16),
@@ -77,7 +78,7 @@ class OverlayProfile extends StatelessWidget {
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
-                                      color: Color(0xFF3A3A3A)),
+                                      color: AppColors.accentGrayDark),
                                   child: SizedBox(
                                     width: screenSize.width - 32 - 32 - 80,
                                     child: Row(
@@ -98,7 +99,7 @@ class OverlayProfile extends StatelessWidget {
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w400,
                                       fontSize: 10,
-                                      color: Color(0xFF3A3A3A)),
+                                      color: AppColors.accentGrayDark),
                                   child: SizedBox(
                                     width: screenSize.width - 32 - 32 - 40,
                                     child: Row(
@@ -138,7 +139,7 @@ class OverlayProfile extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.bug_report_outlined,
-                            color: Color(0xFF3A3A3A),
+                            color: AppColors.accentGrayDark,
                             size: 24,
                           ),
                           SizedBox(width: 16),
@@ -150,7 +151,7 @@ class OverlayProfile extends StatelessWidget {
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
-                                      color: Color(0xFF3A3A3A)),
+                                      color: AppColors.accentGrayDark),
                                   child: SizedBox(
                                     width: screenSize.width - 32 - 32 - 80,
                                     child: Row(
@@ -171,7 +172,7 @@ class OverlayProfile extends StatelessWidget {
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w400,
                                       fontSize: 10,
-                                      color: Color(0xFF3A3A3A)),
+                                      color: AppColors.accentGrayDark),
                                   child: SizedBox(
                                     width: screenSize.width - 32 - 32 - 40,
                                     child: Row(
@@ -211,7 +212,7 @@ class OverlayProfile extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.settings_outlined,
-                            color: Color(0xFF3A3A3A),
+                            color: AppColors.accentGrayDark,
                             size: 24,
                           ),
                           SizedBox(width: 16),
@@ -223,7 +224,7 @@ class OverlayProfile extends StatelessWidget {
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
-                                      color: Color(0xFF3A3A3A)),
+                                      color: AppColors.accentGrayDark),
                                   child: SizedBox(
                                     width: screenSize.width - 32 - 32 - 80,
                                     child: Row(
@@ -244,7 +245,7 @@ class OverlayProfile extends StatelessWidget {
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w400,
                                       fontSize: 10,
-                                      color: Color(0xFF3A3A3A)),
+                                      color: AppColors.accentGrayDark),
                                   child: SizedBox(
                                     width: screenSize.width - 32 - 32 - 40,
                                     child: Row(

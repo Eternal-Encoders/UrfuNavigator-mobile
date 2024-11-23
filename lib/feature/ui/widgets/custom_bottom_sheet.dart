@@ -31,9 +31,9 @@
 //                   bottom: 10, left: 10, right: 10, top: 10),
 //               height: screenSize.height,
 //               width: screenSize.width,
-//               // color: const Color(0xFFFCFCFC),
+//               // color: const AppColors.mainWhiteLight,
 //               decoration: BoxDecoration(
-//                 color: const Color(0xFFFCFCFC),
+//                 color: const AppColors.mainWhiteLight,
 //                 // borderRadius: const BorderRadius.all(Radius.circular(10)),
 //                 boxShadow: [
 //                   BoxShadow(
@@ -53,7 +53,7 @@
 //                     child: IconEntity(
 //                       Icons.maximize_rounded,
 //                       size: 70,
-//                       color: Color(0xFFCCCCCC),
+//                       color: AppColors.accentGray,
 //                     ),
 //                   ),
 //                 ],

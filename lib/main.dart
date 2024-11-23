@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart'
     as InstituteDataModel;
 import 'package:urfu_navigator_mobile/feature/ui/pages/home_page.dart';
@@ -49,17 +50,17 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: const ColorScheme(
             brightness: Brightness.light,
-            primary: Color(0xFFFCFCFC),
-            onPrimary: Color(0xFF3A3A3A),
-            secondary: Color(0xFFFFFFFF),
-            onSecondary: Color(0xFF6D6D6D),
-            error: Color(0xFFFCFCFC),
-            onError: Color.fromARGB(255, 150, 46, 46),
-            surface: Color(0xFFFCFCFC),
-            onSurface: Color(0xFF6D6D6D),
+            primary: AppColors.mainWhiteLight,
+            onPrimary: AppColors.accentOrangeLight,
+            secondary: AppColors.secondOrangeLight,
+            onSecondary: AppColors.secondRedBrown,
+            error: AppColors.accentFireLight,
+            onError: AppColors.secondRedBrown,
+            surface: AppColors.mainWhiteLight,
+            onSurface: AppColors.accentBlue,
           ),
           textTheme: const TextTheme(
-              bodyLarge: TextStyle(fontSize: 14, color: Colors.green)),
+              bodyLarge: TextStyle(fontSize: 14, color: AppColors.accentGray)),
           primarySwatch: Colors.blue,
         ),
         // darkTheme: ThemeData(),
@@ -114,15 +115,15 @@ class _TopSearchBarState extends State<TopSearchBar> {
         height: 44,
         child: SearchBar(
           hintText: 'Поиск аудиторий и мест',
-          backgroundColor: WidgetStateProperty.all(const Color(0xFFFCFCFC)),
+          backgroundColor: WidgetStateProperty.all(AppColors.mainWhiteLight),
           textStyle: WidgetStateProperty.all(const TextStyle(
               fontFamily: 'Roboto',
-              color: Color(0xFF3A3A3A),
+              color: AppColors.accentGrayDark,
               fontSize: 12,
               fontWeight: FontWeight.w500)),
           hintStyle: WidgetStateProperty.all(const TextStyle(
               fontFamily: 'Roboto',
-              color: Color(0xFF6D6D6D),
+              color: AppColors.accentGray,
               fontSize: 12,
               fontWeight: FontWeight.w500)),
           controller: controller,

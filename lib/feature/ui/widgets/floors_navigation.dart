@@ -1,10 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
+import 'package:urfu_navigator_mobile/utils/enums.dart';
 
 class FloorsNavigation extends StatefulWidget {
   final Institute institute;
@@ -32,23 +32,22 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
       _lastSelectedIndex = _selectedIndex;
       _selectedIndex = index;
       selectedFloor = widget.institute.maxFloor! - _selectedIndex;
-      log('selectedFloor: $selectedFloor');
+      if (_selectedIndex == _lastSelectedIndex) return;
+      SearchModel searchState =
+          Provider.of<SearchModel>(context, listen: false);
+      searchState.changeEvent(EEvent.floor);
+
+      InstituteModel instituteState =
+          Provider.of<InstituteModel>(context, listen: false);
+      instituteState.changeSelectedFloor(selectedFloor);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    InstituteModel instituteState =
-        Provider.of<InstituteModel>(context, listen: false);
     final bool hasZeroFloor = widget.institute.minFloor == 0;
     final int withZeroFloor = widget.institute.maxFloor! + 1;
     final int withoutZeroFloor = widget.institute.maxFloor!;
-    setState(() {
-      if (_selectedIndex == _lastSelectedIndex) return;
-      WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-        instituteState.changeSelectedFloor(selectedFloor);
-      });
-    });
     return Container(
       clipBehavior: Clip.antiAlias,
       width: 44,

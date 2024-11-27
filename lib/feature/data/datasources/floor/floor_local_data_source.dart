@@ -37,7 +37,7 @@ class FloorLocalDataSourceImpl implements FloorLocalDataSource {
 
     sharedPreferences.setString(CACHED_FLOOR, jsonFloor);
 
-    log('Floor to write Cache: $jsonFloor');
+    log('Floor to write Cache: ${jsonFloor.length}');
 
     // ignore: void_checks
     return Future.value(jsonFloor);

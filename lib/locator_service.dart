@@ -33,6 +33,8 @@ import 'package:urfu_navigator_mobile/feature/domain/usecases/get_search_points.
 import 'package:urfu_navigator_mobile/feature/ui/bloc/floor/floor_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institute/institute_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/bloc/path/path_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/bloc/search/search_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -41,6 +43,8 @@ Future<void> init() async {
   sl.registerFactory(() => FloorBloc(getFloor: sl()));
   sl.registerFactory(() => InstituteBloc(getInstitute: sl()));
   sl.registerFactory(() => InstitutesBloc(getInstitutes: sl()));
+  sl.registerFactory(() => PathBloc(getPath: sl()));
+  sl.registerFactory(() => SearchBloc(getSearchPoints: sl()));
   // UseCases
   sl.registerLazySingleton(() => GetFloor(sl()));
   sl.registerLazySingleton(() => GetInstitute(sl()));

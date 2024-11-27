@@ -60,6 +60,8 @@ class FloorPainter extends CustomPainter {
 
 CustomPaint getFloorPaint(List<Audience> audiences, List<Service> services,
     Map<String, PictureInfo?> svgPictures, double width, double height) {
+  print('width: $width, height: $height');
+  print('width2: ${width / 6.5}, height2: ${height / 6.5}');
   return CustomPaint(
     isComplex: false,
     willChange: true,

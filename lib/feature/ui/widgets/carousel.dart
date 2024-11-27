@@ -4,9 +4,13 @@ import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institutes/institutes.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/state/error_message.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/state/loading_indicator.dart';
+import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
+import 'package:urfu_navigator_mobile/utils/enums.dart';
 
 class CarouselExample extends StatefulWidget {
   const CarouselExample({super.key});
@@ -27,16 +31,22 @@ class _CarouselExampleState extends State<CarouselExample> {
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
     final state = context.watch<InstitutesBloc>().state;
+    InstitutesModel instsModelState = Provider.of(context, listen: false);
     return state.when(
         error: () => DefaultErrorMessage(),
         loading: () => DefaultLoadingIndicator(),
         loaded: (InstitutesList institutesLoaded) {
+          WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+            instsModelState.saveInstitutes(institutesLoaded);
+          });
           return Center(
             child: ConstrainedBox(
               constraints:
                   BoxConstraints(maxHeight: 132, maxWidth: screenSize - 16),
               child: CarouselView(
                 onTap: (int index) {
+                  SearchModel model = Provider.of(context, listen: false);
+                  model.changeEvent(EEvent.card);
                   Institute institute = Institute(
                       name: institutesLoaded.institutes?[index].name,
                       displayableName:
@@ -45,7 +55,8 @@ class _CarouselExampleState extends State<CarouselExample> {
                       minFloor: institutesLoaded.institutes?[index].minFloor,
                       maxFloor: institutesLoaded.institutes?[index].maxFloor);
                   Navigator.pushNamed(context, RoutePaths.institute,
-                      arguments: institute);
+                      arguments: InstituteArguments(
+                          institute: institute, coordinates: null));
                 },
                 // backgroundColor: Color(value),
                 itemExtent: 100,

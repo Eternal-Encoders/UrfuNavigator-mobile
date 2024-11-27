@@ -26,7 +26,7 @@ class SearchLocalDataSourceImpl implements SearchLocalDataSource {
 
     sharedPreferences.setString(CACHED_SEARCH, jsonSearch);
 
-    log('Search to write Cache: $jsonSearch');
+    log('Search to write Cache: ${jsonSearch.length}');
 
     // ignore: void_checks
     return Future.value(jsonSearch);

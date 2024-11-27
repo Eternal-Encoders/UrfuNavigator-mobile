@@ -18,7 +18,9 @@ class FABWidgetExtended extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MapModel state = Provider.of<MapModel>(context);
+    MapModel state = Provider.of<MapModel>(
+      context,
+    );
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(16)),

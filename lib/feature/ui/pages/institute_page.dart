@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
-import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/floor/floor_bloc.dart';
-import 'package:urfu_navigator_mobile/feature/ui/bloc/institute/institute_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/institute_screen.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_extended.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_small.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/floors_navigation.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/institute_search.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart';
+import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 
 class InstitutePage extends StatelessWidget {
-  final Institute institute;
-  InstitutePage({required this.institute});
+  final InstituteArguments data;
+  InstitutePage({required this.data});
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -20,14 +20,14 @@ class InstitutePage extends StatelessWidget {
       top: false,
       child: Scaffold(
           appBar: AppBar(
-            title: Text('${institute.displayableName}'),
-            centerTitle: true,
+            toolbarHeight: 0,
+            automaticallyImplyLeading: false,
           ),
           body: MultiBlocProvider(
             providers: [
               BlocProvider<FloorBloc>(create: (context) => sl<FloorBloc>()),
-              BlocProvider<InstituteBloc>(
-                  create: (context) => sl<InstituteBloc>()),
+              // BlocProvider<InstituteBloc>(
+              //     create: (context) => sl<InstituteBloc>()),
             ],
             child: Container(
               color: AppColors.mainWhiteLight,
@@ -36,7 +36,7 @@ class InstitutePage extends StatelessWidget {
               child: Stack(
                 children: [
                   InstituteScreen(
-                    institute: institute,
+                    data: data,
                   ),
                   const Positioned(
                       bottom: 96,
@@ -66,8 +66,14 @@ class InstitutePage extends StatelessWidget {
                       bottom: 160,
                       left: 16,
                       child: FloorsNavigation(
-                        institute: institute,
+                        institute: data.institute!,
                       )),
+                  Positioned(
+                    top: 20,
+                    left: 16,
+                    right: 16,
+                    child: InstituteSearch(screenSize: screenSize),
+                  )
                 ],
               ),
             ),

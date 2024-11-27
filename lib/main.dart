@@ -4,15 +4,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
-import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart'
-    as InstituteDataModel;
 import 'package:urfu_navigator_mobile/feature/ui/pages/home_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/institute_page.dart';
+import 'package:urfu_navigator_mobile/feature/ui/pages/search_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/map_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/map_screen.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart' as di;
+import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -38,6 +40,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<OverlayModel>.value(value: OverlayModel()),
         ChangeNotifierProvider<InstituteModel>.value(
           value: InstituteModel(),
+        ),
+        ChangeNotifierProvider<SearchModel>.value(
+          value: SearchModel(),
+        ),
+        ChangeNotifierProvider<InstitutesModel>.value(
+          value: InstitutesModel(),
         ),
       ],
       child: MaterialApp(
@@ -70,95 +78,21 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case RoutePaths.main:
               return MaterialPageRoute(builder: (context) => HomePage());
+            case RoutePaths.search:
+              return MaterialPageRoute(builder: (context) => SearchPage());
             case RoutePaths.institute:
-              InstituteDataModel.Institute institute =
-                  settings.arguments as InstituteDataModel.Institute;
+              InstituteArguments data =
+                  settings.arguments as InstituteArguments;
+
               return MaterialPageRoute(
                   builder: (context) => InstitutePage(
-                        institute: institute,
+                        data: data,
                       ));
           }
           return null;
         },
       ),
     );
-  }
-}
-
-class TopSearchBar extends StatefulWidget {
-  const TopSearchBar({
-    super.key,
-  });
-
-  @override
-  State<TopSearchBar> createState() => _TopSearchBarState();
-}
-
-class _TopSearchBarState extends State<TopSearchBar> {
-  bool isDark = false;
-
-  @override
-  Widget build(BuildContext context) {
-    OverlayModel state = Provider.of<OverlayModel>(context);
-    return SearchAnchor(suggestionsBuilder:
-        (BuildContext context, SearchController controller) {
-      return List<ListTile>.generate(3, (int index) {
-        final String item = 'item $index';
-        return ListTile(
-            title: Text(item),
-            onTap: () {
-              setState(() => controller.closeView(item));
-            });
-      });
-    }, builder: (BuildContext context, SearchController controller) {
-      return SizedBox(
-        height: 44,
-        child: SearchBar(
-          hintText: 'Поиск аудиторий и мест',
-          backgroundColor: WidgetStateProperty.all(AppColors.mainWhiteLight),
-          textStyle: WidgetStateProperty.all(const TextStyle(
-              fontFamily: 'Roboto',
-              color: AppColors.accentGrayDark,
-              fontSize: 12,
-              fontWeight: FontWeight.w500)),
-          hintStyle: WidgetStateProperty.all(const TextStyle(
-              fontFamily: 'Roboto',
-              color: AppColors.accentGray,
-              fontSize: 12,
-              fontWeight: FontWeight.w500)),
-          controller: controller,
-          padding: const WidgetStatePropertyAll<EdgeInsets>(
-              EdgeInsets.only(left: 16, right: 10)),
-          onTap: () {
-            controller.openView();
-          },
-          onChanged: (_) {
-            controller.openView();
-          },
-          leading: const Icon(Icons.search),
-          trailing: <Widget>[
-            Tooltip(
-              message: 'Profile',
-              child: IconButton(
-                isSelected: isDark,
-                onPressed: () {
-                  setState(() {
-                    isDark = !isDark;
-                    state.getVisibleOrNot();
-                  });
-                },
-                icon: const Icon(
-                  Icons.account_circle_rounded,
-                  fill: 1,
-                  color: Color(0xFF5E97F6),
-                ),
-                // selectedIcon: const Icon(Icons.brightness_2_outlined),
-              ),
-            )
-          ],
-        ),
-      );
-    });
   }
 }
 
@@ -171,32 +105,6 @@ class MainContent extends StatelessWidget {
       color: const Color(0x00000bbb),
       child: const Center(
         child: MapScreen(),
-      ),
-    );
-  }
-}
-
-class UncontainedLayoutCard extends StatelessWidget {
-  const UncontainedLayoutCard({
-    super.key,
-    required this.index,
-    required this.label,
-  });
-
-  final int index;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Colors.primaries[index % Colors.primaries.length].withOpacity(0.5),
-      child: Center(
-        child: Text(
-          label,
-          style: const TextStyle(color: Colors.white, fontSize: 20),
-          overflow: TextOverflow.clip,
-          softWrap: false,
-        ),
       ),
     );
   }

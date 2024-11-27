@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'search.g.dart';
 
-class SearchList {
-  List<Search>? searchs;
+class SearchList extends Equatable {
+  final List<Search>? searchs;
   SearchList({required this.searchs});
 
   factory SearchList.fromJson(List<dynamic> json) {
@@ -22,10 +23,13 @@ class SearchList {
       'searchs': searchs,
     };
   }
+
+  @override
+  List<Object?> get props => [searchs];
 }
 
 @JsonSerializable()
-class Search {
+class Search extends Equatable {
   @JsonKey(name: "id")
   final String? id;
   @JsonKey(name: "x")
@@ -75,6 +79,25 @@ class Search {
   factory Search.fromJson(Map<String, dynamic> json) => _$SearchFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchToJson(this);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        id,
+        x,
+        y,
+        links,
+        types,
+        names,
+        floor,
+        institute,
+        time,
+        description,
+        info,
+        menuId,
+        isPassFree,
+        stairId
+      ];
 }
 
 @JsonSerializable()

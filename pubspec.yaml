@@ -23,6 +23,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   get_it: ^8.0.2
   flutter_svg: ^2.0.15
+  flutter_launcher_icons: ^0.14.1
 
 dev_dependencies:
   flutter_test:

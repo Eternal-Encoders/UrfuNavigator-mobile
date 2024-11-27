@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/bloc/search/search_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/carousel.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_extended.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/home_search_bar.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/main.dart';
 
@@ -16,8 +18,12 @@ class HomeScreen extends StatelessWidget {
       top: false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: BlocProvider(
-          create: (context) => sl<InstitutesBloc>(),
+        body: MultiBlocProvider(
+          providers: [
+            BlocProvider<InstitutesBloc>(
+                create: (context) => sl<InstitutesBloc>()),
+            BlocProvider<SearchBloc>(create: (context) => sl<SearchBloc>()),
+          ],
           child: Container(
             color: const Color.fromARGB(255, 241, 238, 238),
             height: screenSize.height,
@@ -26,11 +32,11 @@ class HomeScreen extends StatelessWidget {
               children: [
                 MainContent(),
                 // CustomBottomSheet(key: _key4),
-                const Positioned(
+                Positioned(
                     top: 56,
                     left: 10,
                     right: 10,
-                    child: RepaintBoundary(child: TopSearchBar())),
+                    child: RepaintBoundary(child: HomeSearchBar())),
                 const Positioned(
                     bottom: 172,
                     // bottom: 232,

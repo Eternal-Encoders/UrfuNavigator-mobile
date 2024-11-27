@@ -40,7 +40,7 @@ class InstitutesLocalDataSourceImpl implements InstitutesLocalDataSource {
 
     sharedPreferences.setString(CACHED_INSTITUTES, jsonInstitutes);
 
-    log('Insts to write Cache: $jsonInstitutes');
+    log('Insts to write Cache: ${jsonInstitutes.length}');
 
     // ignore: void_checks
     return Future.value(jsonInstitutes);

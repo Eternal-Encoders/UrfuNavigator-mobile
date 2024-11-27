@@ -71,6 +71,7 @@ class Constants {
 class RoutePaths {
   static const String main = '/';
   static const String institute = '/institute';
+  static const String search = '/search';
 }
 
 class SvgIcons {
@@ -175,18 +176,105 @@ class SvgIcons {
 
 class CustomTransformationController {
   final TransformationController controller;
+  final Size? size;
+  final String university;
+  final Map<String, dynamic>? zoom;
 
   CustomTransformationController({
     double scaleX = 1.7,
     double scaleY = 1.7,
     double translateX = 17.9,
     double translateY = 0.0,
+    required this.university,
+    this.zoom,
+    this.size,
   }) : controller = TransformationController() {
-    _initializeController(scaleX, scaleY, translateX, translateY);
+    switch (university) {
+      case 'ИРИТ-РТФ':
+        {
+          zoom != null
+              ? _initializeController(
+                  scaleX: 6.5,
+                  scaleY: 6.5,
+                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+              : _initializeController(
+                  scaleX: 1.7, scaleY: 1.7, translateX: -200, translateY: 0);
+        }
+      case 'ГУК':
+        {
+          zoom != null
+              ? _initializeController(
+                  scaleX: 6.5,
+                  scaleY: 6.5,
+                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+              : _initializeController(
+                  scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
+        }
+      case 'УРАЛЭНИН':
+        {
+          zoom != null
+              ? _initializeController(
+                  scaleX: 6.5,
+                  scaleY: 6.5,
+                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+              : _initializeController(
+                  scaleX: 5, scaleY: 5, translateX: 50, translateY: 0);
+        }
+      case 'ИСА':
+        {
+          zoom != null
+              ? _initializeController(
+                  scaleX: 6.5,
+                  scaleY: 6.5,
+                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+              : _initializeController(
+                  scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
+        }
+      case 'ИНМИТ-ХТИ':
+        {
+          zoom != null
+              ? _initializeController(
+                  scaleX: 6.5,
+                  scaleY: 6.5,
+                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+              : _initializeController(
+                  scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
+        }
+      case 'УГИ':
+        {
+          zoom != null
+              ? _initializeController(
+                  scaleX: 6.5,
+                  scaleY: 6.5,
+                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+              : _initializeController(
+                  scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
+        }
+      default:
+        {
+          zoom != null
+              ? _initializeController(
+                  scaleX: 6.5,
+                  scaleY: 6.5,
+                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+              : _initializeController(
+                  scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
+        }
+    }
   }
 
   void _initializeController(
-      double scaleX, double scaleY, double translateX, double translateY) {
+      {required double scaleX,
+      required double scaleY,
+      required double translateX,
+      required double translateY}) {
     final matrix = controller.value;
     matrix.setEntry(0, 0, scaleX);
     matrix.setEntry(0, 3, translateX);

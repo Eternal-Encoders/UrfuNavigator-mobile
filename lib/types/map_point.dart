@@ -3,12 +3,16 @@ import 'package:equatable/equatable.dart';
 /// Модель точки на карте
 class MapPoint extends Equatable {
   const MapPoint({
+    required this.displayableName,
     required this.name,
     required this.latitude,
     required this.longitude,
   });
 
-  /// Название населенного пункта
+  /// Отображение
+  final String displayableName;
+
+  /// Название
   final String name;
 
   /// Широта
@@ -18,5 +22,5 @@ class MapPoint extends Equatable {
   final double longitude;
 
   @override
-  List<Object?> get props => [name, latitude, longitude];
+  List<Object?> get props => [name, latitude, longitude, displayableName];
 }

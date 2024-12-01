@@ -29,7 +29,7 @@ class _CarouselExampleState extends State<CarouselExample> {
 
   @override
   Widget build(BuildContext context) {
-    double screenSize = MediaQuery.of(context).size.width;
+    var screenSize = MediaQuery.of(context);
     final state = context.watch<InstitutesBloc>().state;
     InstitutesModel instsModelState = Provider.of(context, listen: false);
     return state.when(
@@ -39,59 +39,194 @@ class _CarouselExampleState extends State<CarouselExample> {
           WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
             instsModelState.saveInstitutes(institutesLoaded);
           });
-          return Center(
-            child: ConstrainedBox(
-              constraints:
-                  BoxConstraints(maxHeight: 132, maxWidth: screenSize - 16),
-              child: CarouselView(
-                onTap: (int index) {
-                  SearchModel model = Provider.of(context, listen: false);
-                  model.changeEvent(EEvent.card);
-                  Institute institute = Institute(
-                      name: institutesLoaded.institutes?[index].name,
-                      displayableName:
-                          institutesLoaded.institutes?[index].displayableName,
-                      url: institutesLoaded.institutes?[index].url,
-                      minFloor: institutesLoaded.institutes?[index].minFloor,
-                      maxFloor: institutesLoaded.institutes?[index].maxFloor);
-                  Navigator.pushNamed(context, RoutePaths.institute,
-                      arguments: InstituteArguments(
-                          institute: institute, coordinates: null));
-                },
-                // backgroundColor: Color(value),
-                itemExtent: 100,
-                shrinkExtent: 100,
-                children: institutesLoaded.institutes!
-                    .asMap()
-                    .values
-                    .map((Institute inst) {
-                  switch (inst.name) {
-                    case 'ГУК':
-                      return cardBody('assets/img/urfu-bodies-img/GUK.png',
-                          inst.name ?? 'unknown');
-                    case 'УРАЛЭНИН':
-                      return cardBody('assets/img/urfu-bodies-img/URALANIN.png',
-                          inst.name ?? 'unknown');
-                    case 'ИРИТ-РТФ':
-                      return cardBody('assets/img/urfu-bodies-img/IRIT-RTF.png',
-                          inst.name ?? 'unknown');
-                    case 'ИСА':
-                      return cardBody('assets/img/urfu-bodies-img/ISA.png',
-                          inst.name ?? 'unknown');
-                    case 'ИНМИТ-ХТИ':
-                      return cardBody('assets/img/urfu-bodies-img/URALANIN.png',
-                          inst.name ?? 'unknown');
-                    case 'УГИ':
-                      return cardBody('assets/img/urfu-bodies-img/UGI.png',
-                          inst.name ?? 'unknown');
-                    default:
-                      return Text('future card...');
-                  }
-                }).toList(),
-              ),
+          return Container(
+            margin: EdgeInsets.all(0),
+            height: 135,
+            width: screenSize.size.width,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.all(0),
+              itemBuilder: (context, item) {
+                return Container(
+                  decoration: BoxDecoration(
+                    // border: ,
+                    color: AppColors.mainWhiteLight,
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 0,
+                        blurRadius: 3,
+                        // offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      SearchModel model = Provider.of(context, listen: false);
+                      model.changeEvent(EEvent.card);
+                      Institute institute = Institute(
+                          name: institutesLoaded.institutes?[item].name,
+                          displayableName: institutesLoaded
+                              .institutes?[item].displayableName,
+                          url: institutesLoaded.institutes?[item].url,
+                          minFloor: institutesLoaded.institutes?[item].minFloor,
+                          maxFloor:
+                              institutesLoaded.institutes?[item].maxFloor);
+                      Navigator.pushNamed(context, RoutePaths.institute,
+                          arguments: InstituteArguments(
+                              institute: institute, coordinates: null));
+                    },
+                    child: SizedBox(
+                      height: 132,
+                      width: 100,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: false,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(16),
+                                      topRight: Radius.circular(16)),
+                                ),
+                                child: Image(
+                                  image: switch (
+                                      institutesLoaded.institutes![item].name) {
+                                    'ИРИТ-РТФ' => AssetImage(
+                                        'assets/img/urfu-bodies-img/IRIT-RTF.png'),
+                                    'ГУК' => AssetImage(
+                                        'assets/img/urfu-bodies-img/GUK.png'),
+                                    'УРАЛЭНИН' => AssetImage(
+                                        'assets/img/urfu-bodies-img/URALANIN.png'),
+                                    'ИСА' => AssetImage(
+                                        'assets/img/urfu-bodies-img/ISA.png'),
+                                    'ИНМИТ-ХТИ' => AssetImage(
+                                        'assets/img/urfu-bodies-img/INMIT_XTI.png'),
+                                    'УГИ' => AssetImage(
+                                        'assets/img/urfu-bodies-img/UGI.png'),
+                                    _ => AssetImage(
+                                        'assets/img/urfu-bodies-img/IRIT-RTF.png'),
+                                  },
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, top: 9, bottom: 9),
+                                child: Text(
+                                  maxLines: 1,
+                                  institutesLoaded.institutes![item].name!,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.accentGray),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  width: 10,
+                );
+              },
+              itemCount: 6,
             ),
           );
+          // Center(
+          //   child: ConstrainedBox(
+          //     constraints:
+          //         BoxConstraints(maxHeight: 140, maxWidth: screenSize),
+          //     child: CarouselView(
+          //       onTap: (int index) {
+          //         SearchModel model = Provider.of(context, listen: false);
+          //         model.changeEvent(EEvent.card);
+          //         Institute institute = Institute(
+          //             name: institutesLoaded.institutes?[index].name,
+          //             displayableName:
+          //                 institutesLoaded.institutes?[index].displayableName,
+          //             url: institutesLoaded.institutes?[index].url,
+          //             minFloor: institutesLoaded.institutes?[index].minFloor,
+          //             maxFloor: institutesLoaded.institutes?[index].maxFloor);
+          //         Navigator.pushNamed(context, RoutePaths.institute,
+          //             arguments: InstituteArguments(
+          //                 institute: institute, coordinates: null));
+          //       },
+          //       // backgroundColor: Color(value),
+          //       itemExtent: 120,
+          //       shrinkExtent: 120,
+          //       children: institutesLoaded.institutes!
+          //           .asMap()
+          //           .values
+          //           .map((Institute inst) {
+          //         switch (inst.name) {
+          //           case 'ГУК':
+          //             return listUniversity(
+          //                 'assets/img/urfu-bodies-img/GUK.png',
+          //                 inst.name ?? 'unknown');
+          //           case 'УРАЛЭНИН':
+          //             return listUniversity(
+          //                 'assets/img/urfu-bodies-img/URALANIN.png',
+          //                 inst.name ?? 'unknown');
+          //           case 'ИРИТ-РТФ':
+          //             return listUniversity(
+          //                 'assets/img/urfu-bodies-img/IRIT-RTF.png',
+          //                 inst.name ?? 'unknown');
+          //           case 'ИСА':
+          //             return listUniversity(
+          //                 'assets/img/urfu-bodies-img/ISA.png',
+          //                 inst.name ?? 'unknown');
+          //           case 'ИНМИТ-ХТИ':
+          //             return listUniversity(
+          //                 'assets/img/urfu-bodies-img/URALANIN.png',
+          //                 inst.name ?? 'unknown');
+          //           case 'УГИ':
+          //             return listUniversity(
+          //                 'assets/img/urfu-bodies-img/UGI.png',
+          //                 inst.name ?? 'unknown');
+          //           default:
+          //             return Text('future card...');
+          //         }
+          //       }).toList(),
+          //     ),
+          //   ),
+          // );
         });
+  }
+
+  Container listUniversity(String imageRoute, String title) {
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      margin: EdgeInsets.all(0),
+      height: 140,
+      child: ListView.separated(
+        itemBuilder: (context, item) {
+          return Flexible(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            width: 10,
+          );
+        },
+        itemCount: 6,
+      ),
+    );
   }
 
   Card cardBody(String imageRoute, String title) {
@@ -115,7 +250,7 @@ class _CarouselExampleState extends State<CarouselExample> {
       margin: const EdgeInsets.all(0),
       child: RepaintBoundary(
         child: SizedBox(
-          height: 124,
+          height: 132,
           width: 100,
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.start,
@@ -125,7 +260,7 @@ class _CarouselExampleState extends State<CarouselExample> {
             children: [
               Image(
                 image: AssetImage(imageRoute),
-                height: 92,
+                height: 100,
                 width: 100,
                 fit: BoxFit.fill,
               ),
@@ -135,6 +270,7 @@ class _CarouselExampleState extends State<CarouselExample> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 14, top: 7),
                     child: Text(
+                      maxLines: 1,
                       title,
                       textAlign: TextAlign.left,
                       style: const TextStyle(

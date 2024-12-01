@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
@@ -19,7 +21,7 @@ class FloorsNavigation extends StatefulWidget {
 
 class _FloorsNavigationState extends State<FloorsNavigation> {
   //Logic:
-  int _selectedIndex = 3;
+  int _selectedIndex = -1;
   int _lastSelectedIndex = -1;
   int selectedFloor = 1;
 
@@ -48,6 +50,9 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
     final bool hasZeroFloor = widget.institute.minFloor == 0;
     final int withZeroFloor = widget.institute.maxFloor! + 1;
     final int withoutZeroFloor = widget.institute.maxFloor!;
+    if (_selectedIndex == -1) {
+      _selectedIndex = hasZeroFloor ? withZeroFloor - 2 : withoutZeroFloor - 1;
+    }
     return Container(
       clipBehavior: Clip.antiAlias,
       width: 44,
@@ -74,6 +79,7 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
             .reversed
             .toList()
             .map((floor) {
+          log('floor: $floor, _selectedIndex: $_selectedIndex');
           return NavigationRailDestination(
             icon: RepaintBoundary(
               child: Text('$floor'),

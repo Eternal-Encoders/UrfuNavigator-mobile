@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                 const Positioned(
                     // bottom: 88,
                     bottom: 28,
-                    left: 16,
+                    // left: 16,
                     child: RepaintBoundary(child: CarouselExample())),
               ],
             ),

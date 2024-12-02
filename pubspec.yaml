@@ -9,28 +9,49 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Перестановка айтемов
   reorderables: ^0.6.0
+  # Яндекс карта
   yandex_mapkit: ^4.1.0
+  # Для автоматизации сравнения объектов
   equatable: ^2.0.0
+  # State-manager для функциональности
   provider: ^6.1.2
+  # API
   http: ^1.2.2
+  # Анимация
   flutter_animate: ^4.5.0
+  # SVG path parser
   svg_path_parser: ^1.1.2
-  dartz: ^0.10.1
-  shared_preferences: ^2.3.3
-  internet_connection_checker: ^1.0.0+1
-  freezed_annotation: ^2.4.4
-  flutter_bloc: ^8.1.6
-  get_it: ^8.0.2
+  # SVG 
   flutter_svg: ^2.0.15
+  # Для выбора между двумя типами (Either)
+  dartz: ^0.10.1
+  # Аля local storage
+  shared_preferences: ^2.3.3
+  # Internet connection checker
+  internet_connection_checker: ^1.0.0+1
+  # Freezed Annotation
+  freezed_annotation: ^2.4.4
+  # State-manager для бизнес логики
+  flutter_bloc: ^8.1.6
+  # Dependency Injection
+  get_it: ^8.0.2
+  # Icon for application
   flutter_launcher_icons: ^0.14.1
+  # Json annotation
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  #Flutter lints
   flutter_lints: ^4.0.0
+  #Json serializable
   json_serializable: ^6.8.0
+  #Build run
   build_runner: ^2.4.13
+  # Freezed (сериализация / десериализация) + доп. ф.
   freezed: ^2.5.7
 
 flutter:

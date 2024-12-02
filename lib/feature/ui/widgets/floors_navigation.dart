@@ -46,7 +46,6 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
     final bool hasZeroFloor = widget.data.institute!.minFloor == 0;
     final int withZeroFloor = widget.data.institute!.maxFloor! + 1;
     final int withoutZeroFloor = widget.data.institute!.maxFloor!;
-    log('floor: ${widget.data.coordinates![ECords.floor]}');
     if (context.read<SearchModel>().calledByEvent == EEvent.search) {
       _selectedIndex = widget.data.institute!.maxFloor! -
           widget.data.coordinates![ECords.floor] as int;

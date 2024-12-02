@@ -10,6 +10,8 @@ enum EEvent {
   floor,
 }
 
+enum ECords { x, y, floor }
+
 enum Languages { english, russian }
 
 enum PointSearchTyping { start, end, homePageText, none }

@@ -66,7 +66,7 @@ class InstitutePage extends StatelessWidget {
                       bottom: 160,
                       left: 16,
                       child: FloorsNavigation(
-                        institute: data.institute!,
+                        data: data,
                       )),
                   Positioned(
                     top: 20,

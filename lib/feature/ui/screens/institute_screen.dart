@@ -26,7 +26,6 @@ class InstituteScreen extends StatefulWidget {
 
 class _InstituteScreenState extends State<InstituteScreen> {
   InstituteModel? _instituteModel;
-  SearchModel? _searchModel;
   final Map<String, PictureInfo?> svgPictures = {};
   Future<void> loadSvgIcon(String svgString, String key) async {
     final pictureInfo = await vg.loadPicture(SvgStringLoader(svgString), null);
@@ -46,14 +45,13 @@ class _InstituteScreenState extends State<InstituteScreen> {
     _instituteModel?.addListener(_onChange);
 
     // Первый запрос
-    _searchModel = Provider.of<SearchModel>(context, listen: false);
-    if (_searchModel!.calledByEvent != EEvent.search) {
+    if (context.read<SearchModel>().calledByEvent != EEvent.search) {
       context.read<FloorBloc>().add(FloorEvent.fetch(
           floor: '${_instituteModel!.selectedFloor}',
           institute: widget.data.institute!.name!));
     } else {
       context.read<FloorBloc>().add(FloorEvent.fetch(
-          floor: '${widget.data.coordinates!['floor']}',
+          floor: '${widget.data.coordinates![ECords.floor]}',
           institute: widget.data.institute!.name!));
     }
 
@@ -73,14 +71,14 @@ class _InstituteScreenState extends State<InstituteScreen> {
 
   void _onChange() {
     log('object changed');
-    if (_searchModel!.calledByEvent == EEvent.search) {
+    if (context.read<SearchModel>().calledByEvent == EEvent.search) {
       context.read<FloorBloc>().add(
             FloorEvent.fetch(
-              floor: '${widget.data.coordinates!['floor']}',
+              floor: '${widget.data.coordinates![ECords.floor]}',
               institute: widget.data.institute!.name!,
             ),
           );
-      log('widget.coordinates!.floor: ${widget.data.coordinates!['floor']}, widget.institute.name!: ${widget.data.institute!.name!}');
+      log('widget.coordinates!.floor: ${widget.data.coordinates![ECords.floor]}, widget.institute.name!: ${widget.data.institute!.name!}');
     } else {
       context.read<FloorBloc>().add(
             FloorEvent.fetch(
@@ -105,7 +103,7 @@ class _InstituteScreenState extends State<InstituteScreen> {
   @override
   Widget build(BuildContext context) {
     late TransformationController transformationController;
-    if (_searchModel!.calledByEvent != EEvent.search) {
+    if (context.read<SearchModel>().calledByEvent != EEvent.search) {
       log('call1');
       final customController = CustomTransformationController(
           university: widget.data.institute!.name!, zoom: null);

@@ -27,12 +27,13 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MapModel state = Provider.of<MapModel>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: YandexMap(
         onCameraPositionChanged: (position, reason, isChanged) {
-          state.onCameraPositionChanged(position, reason, isChanged);
+          context
+              .read<MapModel>()
+              .onCameraPositionChanged(position, reason, isChanged);
         },
         onMapCreated: (controller) async {
           _mapController = controller;
@@ -123,16 +124,16 @@ List<PlacemarkMapObject> _getPlacemarkObjects(BuildContext context) {
                 color: Color.fromARGB(255, 0, 0, 0),
               )),
           onTap: (_, __) {
-            SearchModel searchModelState = Provider.of(context, listen: false);
-            InstitutesModel instModelState =
-                Provider.of(context, listen: false);
-            searchModelState.changeEvent(EEvent.card);
+            context.read<SearchModel>().changeEvent(EEvent.card);
 
             Navigator.pushNamed(
               context,
               RoutePaths.institute,
               arguments: InstituteArguments(
-                institute: instModelState.institutes.institutes!
+                institute: context
+                    .read<InstitutesModel>()
+                    .institutes
+                    .institutes!
                     .where((inst) => inst.name == point.name)
                     .first,
                 coordinates: null,

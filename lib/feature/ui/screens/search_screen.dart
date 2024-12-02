@@ -46,9 +46,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SearchModel searchState = Provider.of<SearchModel>(context, listen: false);
-    InstitutesModel instModelState =
-        Provider.of<InstitutesModel>(context, listen: false);
     Size screenSize = MediaQuery.of(context).size;
     var state = context.watch<SearchBloc>().state;
     return Column(
@@ -141,7 +138,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 loaded: (SearchList searchLoaded) {
                   WidgetsBinding.instance
                       .addPostFrameCallback((Duration timeStamp) {
-                    searchState.changeSearch(searchLoaded);
+                    context.read<SearchModel>().changeSearch(searchLoaded);
                   });
 
                   return Expanded(
@@ -223,14 +220,17 @@ class _SearchScreenState extends State<SearchScreen> {
                                         title: Text(searchLoaded
                                             .searchs![index].names![0]),
                                         onTap: () {
-                                          searchState
+                                          context
+                                              .read<SearchModel>()
                                               .changeEvent(EEvent.search);
                                           Navigator.pushReplacementNamed(
                                             context,
                                             RoutePaths.institute,
                                             arguments: InstituteArguments(
-                                                institute: instModelState
-                                                    .institutes.institutes!
+                                                institute: context
+                                                    .read<InstitutesModel>()
+                                                    .institutes
+                                                    .institutes!
                                                     .where((inst) =>
                                                         inst.name ==
                                                         searchLoaded
@@ -238,17 +238,18 @@ class _SearchScreenState extends State<SearchScreen> {
                                                             .institute)
                                                     .first,
                                                 coordinates: {
-                                                  'x': searchLoaded
+                                                  ECords.x: searchLoaded
                                                       .searchs![index].x,
-                                                  'y': searchLoaded
+                                                  ECords.y: searchLoaded
                                                       .searchs![index].y,
-                                                  'floor': searchLoaded
+                                                  ECords.floor: searchLoaded
                                                       .searchs![index].floor,
                                                 }),
                                           );
                                           log('Selected: ${searchLoaded.searchs![index].names![0]}');
-                                          searchState.changeSelectedQuery(
-                                              searchLoaded
+                                          context
+                                              .read<SearchModel>()
+                                              .changeSelectedQuery(searchLoaded
                                                   .searchs![index].names![0]);
                                           _searchController.text = searchLoaded
                                               .searchs![index].names![0];

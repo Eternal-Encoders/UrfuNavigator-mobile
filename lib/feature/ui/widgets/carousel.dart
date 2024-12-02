@@ -31,13 +31,12 @@ class _CarouselExampleState extends State<CarouselExample> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context);
     final state = context.watch<InstitutesBloc>().state;
-    InstitutesModel instsModelState = Provider.of(context, listen: false);
     return state.when(
         error: () => DefaultErrorMessage(),
         loading: () => DefaultLoadingIndicator(),
         loaded: (InstitutesList institutesLoaded) {
           WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-            instsModelState.saveInstitutes(institutesLoaded);
+            context.read<InstitutesModel>().saveInstitutes(institutesLoaded);
           });
           return Container(
             margin: EdgeInsets.all(0),
@@ -63,8 +62,7 @@ class _CarouselExampleState extends State<CarouselExample> {
                   ),
                   child: InkWell(
                     onTap: () {
-                      SearchModel model = Provider.of(context, listen: false);
-                      model.changeEvent(EEvent.card);
+                      context.read<SearchModel>().changeEvent(EEvent.card);
                       Institute institute = Institute(
                           name: institutesLoaded.institutes?[item].name,
                           displayableName: institutesLoaded
@@ -144,64 +142,6 @@ class _CarouselExampleState extends State<CarouselExample> {
               itemCount: 6,
             ),
           );
-          // Center(
-          //   child: ConstrainedBox(
-          //     constraints:
-          //         BoxConstraints(maxHeight: 140, maxWidth: screenSize),
-          //     child: CarouselView(
-          //       onTap: (int index) {
-          //         SearchModel model = Provider.of(context, listen: false);
-          //         model.changeEvent(EEvent.card);
-          //         Institute institute = Institute(
-          //             name: institutesLoaded.institutes?[index].name,
-          //             displayableName:
-          //                 institutesLoaded.institutes?[index].displayableName,
-          //             url: institutesLoaded.institutes?[index].url,
-          //             minFloor: institutesLoaded.institutes?[index].minFloor,
-          //             maxFloor: institutesLoaded.institutes?[index].maxFloor);
-          //         Navigator.pushNamed(context, RoutePaths.institute,
-          //             arguments: InstituteArguments(
-          //                 institute: institute, coordinates: null));
-          //       },
-          //       // backgroundColor: Color(value),
-          //       itemExtent: 120,
-          //       shrinkExtent: 120,
-          //       children: institutesLoaded.institutes!
-          //           .asMap()
-          //           .values
-          //           .map((Institute inst) {
-          //         switch (inst.name) {
-          //           case 'ГУК':
-          //             return listUniversity(
-          //                 'assets/img/urfu-bodies-img/GUK.png',
-          //                 inst.name ?? 'unknown');
-          //           case 'УРАЛЭНИН':
-          //             return listUniversity(
-          //                 'assets/img/urfu-bodies-img/URALANIN.png',
-          //                 inst.name ?? 'unknown');
-          //           case 'ИРИТ-РТФ':
-          //             return listUniversity(
-          //                 'assets/img/urfu-bodies-img/IRIT-RTF.png',
-          //                 inst.name ?? 'unknown');
-          //           case 'ИСА':
-          //             return listUniversity(
-          //                 'assets/img/urfu-bodies-img/ISA.png',
-          //                 inst.name ?? 'unknown');
-          //           case 'ИНМИТ-ХТИ':
-          //             return listUniversity(
-          //                 'assets/img/urfu-bodies-img/URALANIN.png',
-          //                 inst.name ?? 'unknown');
-          //           case 'УГИ':
-          //             return listUniversity(
-          //                 'assets/img/urfu-bodies-img/UGI.png',
-          //                 inst.name ?? 'unknown');
-          //           default:
-          //             return Text('future card...');
-          //         }
-          //       }).toList(),
-          //     ),
-          //   ),
-          // );
         });
   }
 

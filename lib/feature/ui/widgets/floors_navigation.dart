@@ -3,16 +3,16 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
-import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
+import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/enums.dart';
 
 class FloorsNavigation extends StatefulWidget {
-  final Institute institute;
+  final InstituteArguments data;
   const FloorsNavigation({
     super.key,
-    required this.institute,
+    required this.data,
   });
 
   @override
@@ -33,23 +33,24 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
     setState(() {
       _lastSelectedIndex = _selectedIndex;
       _selectedIndex = index;
-      selectedFloor = widget.institute.maxFloor! - _selectedIndex;
+      selectedFloor = widget.data.institute!.maxFloor! - _selectedIndex;
       if (_selectedIndex == _lastSelectedIndex) return;
-      SearchModel searchState =
-          Provider.of<SearchModel>(context, listen: false);
-      searchState.changeEvent(EEvent.floor);
+      context.read<SearchModel>().changeEvent(EEvent.floor);
 
-      InstituteModel instituteState =
-          Provider.of<InstituteModel>(context, listen: false);
-      instituteState.changeSelectedFloor(selectedFloor);
+      context.read<InstituteModel>().changeSelectedFloor(selectedFloor);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool hasZeroFloor = widget.institute.minFloor == 0;
-    final int withZeroFloor = widget.institute.maxFloor! + 1;
-    final int withoutZeroFloor = widget.institute.maxFloor!;
+    final bool hasZeroFloor = widget.data.institute!.minFloor == 0;
+    final int withZeroFloor = widget.data.institute!.maxFloor! + 1;
+    final int withoutZeroFloor = widget.data.institute!.maxFloor!;
+    log('floor: ${widget.data.coordinates![ECords.floor]}');
+    if (context.read<SearchModel>().calledByEvent == EEvent.search) {
+      _selectedIndex = widget.data.institute!.maxFloor! -
+          widget.data.coordinates![ECords.floor] as int;
+    }
     if (_selectedIndex == -1) {
       _selectedIndex = hasZeroFloor ? withZeroFloor - 2 : withoutZeroFloor - 1;
     }

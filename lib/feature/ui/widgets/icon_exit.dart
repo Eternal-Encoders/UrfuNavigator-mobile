@@ -7,13 +7,12 @@ class IconExitWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OverlayModel state = Provider.of<OverlayModel>(context, listen: false);
     return IconButton(
       iconSize: 24,
       padding: EdgeInsets.all(0),
       icon: Icon(Icons.close),
       onPressed: () {
-        state.getVisibleOrNot();
+        context.read<OverlayModel>().getVisibleOrNot();
       },
     );
   }

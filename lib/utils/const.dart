@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:urfu_navigator_mobile/utils/enums.dart';
 
 enum EPointTypes {
   corridor,
@@ -178,7 +179,7 @@ class CustomTransformationController {
   final TransformationController controller;
   final Size? size;
   final String university;
-  final Map<String, dynamic>? zoom;
+  final Map<ECords, dynamic>? zoom;
 
   CustomTransformationController({
     double scaleX = 1.7,
@@ -196,8 +197,8 @@ class CustomTransformationController {
               ? _initializeController(
                   scaleX: 6.5,
                   scaleY: 6.5,
-                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
-                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+                  translateX: -zoom![ECords.x]! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom![ECords.y]! / 6.5 * 6.5 + size!.height / 2)
               : _initializeController(
                   scaleX: 1.7, scaleY: 1.7, translateX: -200, translateY: 0);
         }
@@ -207,8 +208,8 @@ class CustomTransformationController {
               ? _initializeController(
                   scaleX: 6.5,
                   scaleY: 6.5,
-                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
-                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+                  translateX: -zoom![ECords.x]! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom![ECords.y]! / 6.5 * 6.5 + size!.height / 2)
               : _initializeController(
                   scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
         }
@@ -218,8 +219,8 @@ class CustomTransformationController {
               ? _initializeController(
                   scaleX: 6.5,
                   scaleY: 6.5,
-                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
-                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+                  translateX: -zoom![ECords.x]! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom![ECords.y]! / 6.5 * 6.5 + size!.height / 2)
               : _initializeController(
                   scaleX: 5, scaleY: 5, translateX: 50, translateY: 0);
         }
@@ -229,8 +230,8 @@ class CustomTransformationController {
               ? _initializeController(
                   scaleX: 6.5,
                   scaleY: 6.5,
-                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
-                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+                  translateX: -zoom![ECords.x]! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom![ECords.y]! / 6.5 * 6.5 + size!.height / 2)
               : _initializeController(
                   scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
         }
@@ -240,8 +241,8 @@ class CustomTransformationController {
               ? _initializeController(
                   scaleX: 6.5,
                   scaleY: 6.5,
-                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
-                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+                  translateX: -zoom![ECords.x]! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom![ECords.y]! / 6.5 * 6.5 + size!.height / 2)
               : _initializeController(
                   scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
         }
@@ -251,8 +252,8 @@ class CustomTransformationController {
               ? _initializeController(
                   scaleX: 6.5,
                   scaleY: 6.5,
-                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
-                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+                  translateX: -zoom![ECords.x]! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom![ECords.y]! / 6.5 * 6.5 + size!.height / 2)
               : _initializeController(
                   scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
         }
@@ -262,8 +263,8 @@ class CustomTransformationController {
               ? _initializeController(
                   scaleX: 6.5,
                   scaleY: 6.5,
-                  translateX: -zoom!['x']! / 6.5 * 6.5 + size!.width / 2,
-                  translateY: -zoom!['y']! / 6.5 * 6.5 + size!.height / 2)
+                  translateX: -zoom![ECords.x]! / 6.5 * 6.5 + size!.width / 2,
+                  translateY: -zoom![ECords.y]! / 6.5 * 6.5 + size!.height / 2)
               : _initializeController(
                   scaleX: 1.7, scaleY: 1.7, translateX: 17.9, translateY: 0);
         }

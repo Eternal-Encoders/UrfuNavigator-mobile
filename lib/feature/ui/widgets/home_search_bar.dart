@@ -16,8 +16,6 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    OverlayModel overlayState =
-        Provider.of<OverlayModel>(context, listen: false);
     return Column(
       children: [
         Container(
@@ -56,7 +54,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
                   onPressed: () {
                     setState(() {
                       isProfileTapped = !isProfileTapped;
-                      overlayState.getVisibleOrNot();
+                      context.read<OverlayModel>().getVisibleOrNot();
                     });
                   },
                   icon: const Icon(

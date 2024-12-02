@@ -9,8 +9,9 @@ class OverlayVisibility extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OverlayModel state = Provider.of<OverlayModel>(context);
-    return Visibility(visible: state.isVisibleValue, child: OverlayProfile());
+    return Visibility(
+        visible: context.watch<OverlayModel>().isVisibleValue,
+        child: OverlayProfile());
   }
 }
 

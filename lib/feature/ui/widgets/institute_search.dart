@@ -67,8 +67,9 @@ class InstituteSearch extends StatelessWidget {
                 ],
               ),
               child: TextField(
-                onTap: () =>
-                    Navigator.pushReplacementNamed(context, RoutePaths.search),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, RoutePaths.search);
+                },
                 readOnly: true,
                 textAlignVertical: TextAlignVertical.center,
                 cursorColor: AppColors.accentGray,

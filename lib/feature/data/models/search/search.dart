@@ -24,6 +24,14 @@ class SearchList extends Equatable {
     };
   }
 
+  SearchList copyWith({
+    List<Search>? searchs,
+  }) {
+    return SearchList(
+      searchs: searchs ?? List.from(this.searchs ?? []),
+    );
+  }
+
   @override
   List<Object?> get props => [searchs];
 }

@@ -7,6 +7,7 @@ import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_extended.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/home_search_bar.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/main.dart';
+import 'package:urfu_navigator_mobile/utils/const.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -43,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                     right: 16,
                     child: RepaintBoundary(
                       child: FABWidgetExtended(
-                        title: 'Маршрут',
+                        title: Constants.FAB_ROUTE_TITLE,
                         icon: Icons.explore_outlined,
                         backgroundColor: 0xffFAE2CF,
                         color: 0xFFE77011,
@@ -55,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                     right: 16,
                     child: RepaintBoundary(
                       child: FABWidgetExtended(
-                        title: 'Кампус',
+                        title: Constants.FAB_CAMPUS_TITLE,
                         icon: Icons.sync_outlined,
                         backgroundColor: 0xffFCFCFC,
                         color: 0xFF6D6D6D,

@@ -4,8 +4,14 @@ import 'package:urfu_navigator_mobile/utils/enums.dart';
 
 class SearchModel extends ChangeNotifier {
   String _selectedQuery = '';
+  int _fromFloor = 0;
+  int _toFloor = 1;
 
   String get selectedQuery => _selectedQuery;
+
+  int get fromFloor => _fromFloor;
+
+  int get toFloor => _toFloor;
 
   SearchList _searchList = SearchList(searchs: List.empty());
 
@@ -14,6 +20,16 @@ class SearchModel extends ChangeNotifier {
   EEvent _selectedEvent = EEvent.none;
 
   EEvent get calledByEvent => _selectedEvent;
+
+  void setFromFloor(int floor) {
+    _fromFloor = floor;
+    notifyListeners();
+  }
+
+  void setToFloor(int floor) {
+    _toFloor = floor;
+    notifyListeners();
+  }
 
   void changeEvent(EEvent event) {
     print('_selectedEvent: $_selectedEvent');

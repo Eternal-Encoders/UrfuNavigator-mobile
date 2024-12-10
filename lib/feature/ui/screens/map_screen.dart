@@ -136,7 +136,7 @@ List<PlacemarkMapObject> _getPlacemarkObjects(BuildContext context) {
                     .institutes!
                     .where((inst) => inst.name == point.name)
                     .first,
-                coordinates: null,
+                search: null,
               ),
             );
           },

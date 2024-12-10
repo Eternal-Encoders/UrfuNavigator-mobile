@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
@@ -47,8 +45,11 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
     final int withZeroFloor = widget.data.institute!.maxFloor! + 1;
     final int withoutZeroFloor = widget.data.institute!.maxFloor!;
     if (context.read<SearchModel>().calledByEvent == EEvent.search) {
+      _selectedIndex =
+          widget.data.institute!.maxFloor! - (widget.data.search!.floor as int);
+    } else if (context.read<SearchModel>().calledByEvent == EEvent.route) {
       _selectedIndex = widget.data.institute!.maxFloor! -
-          widget.data.coordinates![ECords.floor] as int;
+          context.read<SearchModel>().fromFloor;
     }
     if (_selectedIndex == -1) {
       _selectedIndex = hasZeroFloor ? withZeroFloor - 2 : withoutZeroFloor - 1;
@@ -79,7 +80,6 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
             .reversed
             .toList()
             .map((floor) {
-          log('floor: $floor, _selectedIndex: $_selectedIndex');
           return NavigationRailDestination(
             icon: RepaintBoundary(
               child: Text('$floor'),

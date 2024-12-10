@@ -45,28 +45,34 @@ class _InstituteScreenState extends State<InstituteScreen> {
     _instituteModel?.addListener(_onChange);
 
     // Первый запрос
-    if (context.read<SearchModel>().calledByEvent != EEvent.search) {
+    if (context.read<SearchModel>().calledByEvent == EEvent.route) {
+      log('floor from route: ${context.read<SearchModel>().fromFloor.toString()}');
+      context.read<FloorBloc>().add(FloorEvent.fetch(
+          floor: '${context.read<SearchModel>().fromFloor}',
+          institute: widget.data.institute!.name!));
+    } else if (context.read<SearchModel>().calledByEvent != EEvent.search) {
       context.read<FloorBloc>().add(FloorEvent.fetch(
           floor: '${_instituteModel!.selectedFloor}',
           institute: widget.data.institute!.name!));
     } else {
       context.read<FloorBloc>().add(FloorEvent.fetch(
-          floor: '${widget.data.coordinates![ECords.floor]}',
+          floor: '${widget.data.search!.floor}',
           institute: widget.data.institute!.name!));
     }
 
-    loadSvgIcon(SvgIcons.wardrobeSvg, 'wardrobe');
-    loadSvgIcon(SvgIcons.vendingSvg, 'vending');
-    loadSvgIcon(SvgIcons.atmSvg, 'atm');
-    loadSvgIcon(SvgIcons.cafeSvg, 'cafe');
-    loadSvgIcon(SvgIcons.coworkingSvg, 'coworking');
-    loadSvgIcon(SvgIcons.dinningSvg, 'dinning');
-    loadSvgIcon(SvgIcons.elevatorSvg, 'elevator');
-    loadSvgIcon(SvgIcons.printSvg, 'print');
-    loadSvgIcon(SvgIcons.stairsDownSvg, 'stairsDown');
-    loadSvgIcon(SvgIcons.stairsUpSvg, 'stairsUp');
-    loadSvgIcon(SvgIcons.toiletmSvg, 'toiletm');
-    loadSvgIcon(SvgIcons.toiletwSvg, 'toiletw');
+    loadSvgIcon(SvgIcons.wardrobeRawSvg, 'wardrobe');
+    loadSvgIcon(SvgIcons.vendingRawSvg, 'vending');
+    loadSvgIcon(SvgIcons.atmRawSvg, 'atm');
+    loadSvgIcon(SvgIcons.cafeRawSvg, 'cafe');
+    loadSvgIcon(SvgIcons.coworkingRawSvg, 'coworking');
+    loadSvgIcon(SvgIcons.dinningRawSvg, 'dinning');
+    loadSvgIcon(SvgIcons.elevatorRawSvg, 'elevator');
+    loadSvgIcon(SvgIcons.printRawSvg, 'print');
+    loadSvgIcon(SvgIcons.stairsDownRawSvg, 'stairsDown');
+    loadSvgIcon(SvgIcons.stairsUpRawSvg, 'stairsUp');
+    loadSvgIcon(SvgIcons.toiletmRawSvg, 'toiletm');
+    loadSvgIcon(SvgIcons.toiletwRawSvg, 'toiletw');
+    loadSvgIcon(SvgIcons.routePointRawSvg, 'routePoint');
   }
 
   void _onChange() {
@@ -74,11 +80,11 @@ class _InstituteScreenState extends State<InstituteScreen> {
     if (context.read<SearchModel>().calledByEvent == EEvent.search) {
       context.read<FloorBloc>().add(
             FloorEvent.fetch(
-              floor: '${widget.data.coordinates![ECords.floor]}',
+              floor: '${widget.data.search!.floor}',
               institute: widget.data.institute!.name!,
             ),
           );
-      log('widget.coordinates!.floor: ${widget.data.coordinates![ECords.floor]}, widget.institute.name!: ${widget.data.institute!.name!}');
+      log('widget.coordinates!.floor: ${widget.data.search!.floor}, widget.institute.name!: ${widget.data.institute!.name!}');
     } else {
       context.read<FloorBloc>().add(
             FloorEvent.fetch(
@@ -104,21 +110,19 @@ class _InstituteScreenState extends State<InstituteScreen> {
   Widget build(BuildContext context) {
     late TransformationController transformationController;
     if (context.read<SearchModel>().calledByEvent != EEvent.search) {
-      log('call1');
       final customController = CustomTransformationController(
           university: widget.data.institute!.name!, zoom: null);
       transformationController = customController.controller;
     } else {
-      log('call2');
       Size screenSize = MediaQuery.of(context).size;
       final customController = CustomTransformationController(
           university: widget.data.institute!.name!,
-          zoom: widget.data.coordinates,
+          zoom: widget.data.search,
           size: screenSize);
       transformationController = customController.controller;
     }
-    final state = context.watch<FloorBloc>().state;
-    return state.when(
+    final floorState = context.watch<FloorBloc>().state;
+    return floorState.when(
         error: () => DefaultErrorMessage(),
         loading: () => DefaultLoadingIndicator(),
         loaded: (Floor floorLoaded) => Center(
@@ -134,13 +138,31 @@ class _InstituteScreenState extends State<InstituteScreen> {
                   minScale: 0.5,
                   maxScale: 5,
 
-                  child: RepaintBoundary(
-                    child: getFloorPaint(
+                  child: Stack(
+                    children: [
+                      getFloorPaint(
                         floorLoaded.audiences!,
                         floorLoaded.service!,
                         svgPictures,
                         floorLoaded.width!,
-                        floorLoaded.height!),
+                        floorLoaded.height!,
+                      ),
+                      ((context.read<SearchModel>().calledByEvent ==
+                                      EEvent.route ||
+                                  context.read<SearchModel>().calledByEvent ==
+                                      EEvent.floor) &&
+                              widget.data.search != null &&
+                              widget.data.path != null)
+                          ? getPath(
+                              widget.data.path!.result![widget.data.institute!
+                                  .name!]!['${floorLoaded.floor}'],
+                              svgPictures['routePoint'],
+                              floorLoaded.width!,
+                              floorLoaded.height!,
+                              floorLoaded.floor!,
+                            )
+                          : Container(),
+                    ],
                   ),
                 ),
               ),

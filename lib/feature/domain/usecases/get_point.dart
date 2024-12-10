@@ -6,20 +6,20 @@ import 'package:urfu_navigator_mobile/core/usecases/usecase.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/point/point.dart';
 import 'package:urfu_navigator_mobile/feature/domain/repositories/point_repository.dart';
 
-class GetPoint extends UseCase<Point, PointsParams> {
+class GetPoint extends UseCase<Point, PointParams> {
   final PointRepository pointRepository;
 
   GetPoint(this.pointRepository);
 
   @override
-  Future<Either<Failure, Point>> call(PointsParams params) async {
+  Future<Either<Failure, Point>> call(PointParams params) async {
     return await pointRepository.getPointById(params.id);
   }
 }
 
-class PointsParams extends Equatable {
+class PointParams extends Equatable {
   final String id;
-  PointsParams({
+  PointParams({
     required this.id,
   });
 

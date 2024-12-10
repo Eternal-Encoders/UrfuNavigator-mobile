@@ -73,7 +73,7 @@ class _CarouselExampleState extends State<CarouselExample> {
                               institutesLoaded.institutes?[item].maxFloor);
                       Navigator.pushNamed(context, RoutePaths.institute,
                           arguments: InstituteArguments(
-                              institute: institute, coordinates: null));
+                              institute: institute, search: null));
                     },
                     child: SizedBox(
                       height: 132,

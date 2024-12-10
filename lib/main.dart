@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/home_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/institute_page.dart';
+import 'package:urfu_navigator_mobile/feature/ui/pages/route_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/search_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
@@ -14,6 +15,7 @@ import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/map_screen.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart' as di;
+import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -79,7 +81,24 @@ class MyApp extends StatelessWidget {
             case RoutePaths.main:
               return MaterialPageRoute(builder: (context) => HomePage());
             case RoutePaths.search:
-              return MaterialPageRoute(builder: (context) => SearchPage());
+              String? text = settings.arguments as String?;
+              if (text != null) {
+                return MaterialPageRoute(
+                    builder: (context) => SearchPage(
+                          textFromRoute: text,
+                          sharedPreferences: sl<SearchPage>().sharedPreferences,
+                        ));
+              } else {
+                return MaterialPageRoute(
+                    builder: (context) => SearchPage(
+                          sharedPreferences: sl<SearchPage>().sharedPreferences,
+                        ));
+              }
+
+            case RoutePaths.route:
+              return MaterialPageRoute(
+                  builder: (context) => RoutePage(
+                      sharedPreferences: sl<SearchPage>().sharedPreferences));
             case RoutePaths.institute:
               InstituteArguments data =
                   settings.arguments as InstituteArguments;

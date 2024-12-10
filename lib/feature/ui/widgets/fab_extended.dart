@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/map_model.dart';
+import 'package:urfu_navigator_mobile/utils/const.dart';
 
 class FABWidgetExtended extends StatelessWidget {
   final int backgroundColor;
@@ -37,7 +38,9 @@ class FABWidgetExtended extends StatelessWidget {
             backgroundColor: Color(backgroundColor),
             // foregroundColor: Colors.black,
             onPressed: () {
-              // Respond to button press
+              title == Constants.FAB_ROUTE_TITLE
+                  ? Navigator.pushNamed(context, RoutePaths.route)
+                  : null;
             },
             heroTag: null,
 

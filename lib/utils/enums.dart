@@ -1,4 +1,4 @@
-enum WeekDay { mon, tue, wed, thu, fri, sat, sun }
+enum EWeekDay { mon, tue, wed, thu, fri, sat, sun }
 
 enum ECoordinates { x, y, floor }
 
@@ -8,10 +8,13 @@ enum EEvent {
   card,
   point,
   floor,
+  route,
+  fromRoute,
+  toRoute,
 }
 
-enum ECords { x, y, floor }
+// enum ECords { id, x, y, floor, name }
 
-enum Languages { english, russian }
+enum ELanguages { english, russian }
 
-enum PointSearchTyping { start, end, homePageText, none }
+enum EPointSearchTyping { start, end, homePageText, none }

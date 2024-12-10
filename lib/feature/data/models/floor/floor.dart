@@ -1,10 +1,12 @@
-import 'dart:developer';
+import 'dart:developer' as developer;
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
+import 'package:urfu_navigator_mobile/feature/data/models/point/point.dart';
 import 'package:urfu_navigator_mobile/helpers/color_helper.dart';
 import 'package:urfu_navigator_mobile/helpers/text_helper.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
@@ -24,7 +26,6 @@ class FloorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    log('render paint');
     canvas.scale(Constants.CANVAS_SCALE);
     // Рисуем аудитории
     for (final audience in audiences) {
@@ -54,12 +55,112 @@ class FloorPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+    return false;
   }
 }
 
-CustomPaint getFloorPaint(List<Audience> audiences, List<Service> services,
-    Map<String, PictureInfo?> svgPictures, double width, double height) {
+class PathPointer extends CustomPainter {
+  final List<List<Point>>? listListOfPoints;
+  final PictureInfo? svgPicture;
+  int floor;
+
+  PathPointer({
+    required this.listListOfPoints,
+    required this.svgPicture,
+    required this.floor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.scale(Constants.CANVAS_SCALE);
+    // Рисуем аудитории
+    paintRoute(canvas, size);
+  }
+
+  void paintRoute(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+
+    for (var pathPoints in listListOfPoints!) {
+      if (pathPoints.isNotEmpty) {
+        final path = Path();
+        path.moveTo(pathPoints[0].x!, pathPoints[0].y!); // Начальная точка
+
+        for (var point in pathPoints.skip(1)) {
+          path.lineTo(point.x!, point.y!); // Провести линии к следующим точкам
+        }
+        canvas.drawPath(path, paint);
+        // Нарисовать путь
+        drawRoutePointWithRotation(canvas, pathPoints, pathPoints[0].x!,
+            pathPoints[0].y!, pathPoints[1].x!, pathPoints[1].y!, true);
+
+        drawRoutePointWithRotation(
+            canvas,
+            pathPoints,
+            pathPoints[pathPoints.length - 1].x!,
+            pathPoints[pathPoints.length - 1].y!,
+            pathPoints[pathPoints.length - 2].x!,
+            pathPoints[pathPoints.length - 2].y!,
+            false);
+      }
+    }
+  }
+
+  void drawRoutePointWithRotation(
+      Canvas canvas,
+      List<Point> pathPoints,
+      double firstPointX,
+      double firstPointY,
+      double secondPointX,
+      double secondPointY,
+      bool isEnd) {
+    canvas.save();
+
+    // Перемещаем канвас к первой точке
+    canvas.translate(
+      firstPointX,
+      firstPointY,
+    );
+
+    // Вычисляем угол между двумя точками
+    double angle = atan2(
+      secondPointY - firstPointY,
+      secondPointX - firstPointX,
+    );
+
+    // Поворачиваем канвас на вычисленный угол
+    canvas.rotate(isEnd
+        ? (angle == 0 ? -pi : (angle.toInt() == -3 ? 0 : -angle))
+        : angle);
+
+    // Сдвигаем канвас обратно на половину ширины и высоты указателя,
+    // чтобы центрировать изображение указателя.
+    canvas.translate(
+      -svgPicture!.size.width / 2,
+      -svgPicture!.size.height / 2,
+    );
+
+    // Рисуем указатель
+    canvas.drawPicture(svgPicture!.picture);
+
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+CustomPaint getFloorPaint(
+  List<Audience> audiences,
+  List<Service> services,
+  Map<String, PictureInfo?> svgPictures,
+  double width,
+  double height,
+) {
   print('width: $width, height: $height');
   print('width2: ${width / 6.5}, height2: ${height / 6.5}');
   return CustomPaint(
@@ -69,6 +170,27 @@ CustomPaint getFloorPaint(List<Audience> audiences, List<Service> services,
       audiences: audiences,
       services: services,
       svgPictures: svgPictures,
+    ),
+    size: Size(width / 6.5, height / 6.5),
+  );
+}
+
+CustomPaint getPath(
+  List<List<Point>>? listListOfPoints,
+  PictureInfo? svgPicture,
+  double width,
+  double height,
+  int floor,
+) {
+  print('path-width: $width, path-height: $height');
+  print('path-width2: ${width / 6.5}, path-height2: ${height / 6.5}');
+  return CustomPaint(
+    isComplex: false,
+    willChange: true,
+    painter: PathPointer(
+      listListOfPoints: listListOfPoints,
+      svgPicture: svgPicture,
+      floor: floor,
     ),
     size: Size(width / 6.5, height / 6.5),
   );
@@ -251,12 +373,19 @@ class AudiencePainter extends CustomPainter {
                     canvas.drawPicture(svgPictures['printer']!.picture);
                     canvas.restore();
                   }
+                case 'Указатель Ф':
+                  if (svgPictures['routePoint'] != null) {
+                    canvas.save();
+                    canvas.translate(x! + child.x!, y! + child.y!);
+                    canvas.drawPicture(svgPictures['routePoint']!.picture);
+                    canvas.restore();
+                  }
                 default:
-                  log('Нет ${child.identifier} иконки');
+                  developer.log('Нет ${child.identifier} иконки');
                   return;
               }
             default:
-              log('Нет ${child.type} типа иконок');
+              developer.log('Нет ${child.type} типа иконок');
               return;
           }
         }

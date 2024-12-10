@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/floor/floor_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/bloc/path/path_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/institute_screen.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_extended.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_small.dart';
@@ -9,6 +10,7 @@ import 'package:urfu_navigator_mobile/feature/ui/widgets/floors_navigation.dart'
 import 'package:urfu_navigator_mobile/feature/ui/widgets/institute_search.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
+import 'package:urfu_navigator_mobile/utils/const.dart';
 
 class InstitutePage extends StatelessWidget {
   final InstituteArguments data;
@@ -26,8 +28,7 @@ class InstitutePage extends StatelessWidget {
           body: MultiBlocProvider(
             providers: [
               BlocProvider<FloorBloc>(create: (context) => sl<FloorBloc>()),
-              // BlocProvider<InstituteBloc>(
-              //     create: (context) => sl<InstituteBloc>()),
+              BlocProvider<PathBloc>(create: (context) => sl<PathBloc>()),
             ],
             child: Container(
               color: AppColors.mainWhiteLight,
@@ -44,7 +45,7 @@ class InstitutePage extends StatelessWidget {
                       right: 16,
                       child: RepaintBoundary(
                         child: FABWidgetExtended(
-                          title: 'Маршрут',
+                          title: Constants.FAB_ROUTE_TITLE,
                           icon: Icons.explore_outlined,
                           backgroundColor: 0xffCBD8E4,
                           color: 0xFF074683,

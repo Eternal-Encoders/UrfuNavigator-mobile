@@ -121,7 +121,7 @@ Win32Window::~Win32Window() {
 }
 
 bool Win32Window::Create(const std::wstring& title,
-                         const Point& origin,
+                         const PointEntity& origin,
                          const Size& size) {
   Destroy();
 

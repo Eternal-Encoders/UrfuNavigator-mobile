@@ -8,6 +8,7 @@ import 'package:urfu_navigator_mobile/feature/ui/pages/home_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/institute_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/route_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/search_page.dart';
+import 'package:urfu_navigator_mobile/feature/ui/pages/settings_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/map_model.dart';
@@ -111,6 +112,8 @@ class MyApp extends StatelessWidget {
                   builder: (context) => InstitutePage(
                         data: data,
                       ));
+            case RoutePaths.settings:
+              return MaterialPageRoute(builder: (context) => SettingsPage());
           }
           return null;
         },

@@ -113,6 +113,16 @@ class Constants {
   static const String ROUTE_CATEGORY_DEANERY_INITIAL_VALUE = 'Деканат';
 
   static const String CACHED_SEARCH_LIST = 'CACHED_SEARCH_LIST';
+
+  static const String OVERLAY_FEEDBACK_TITLE = 'Обратная связь';
+  static const String OVERLAY_FEEDBACK_SUBTITLE =
+      'Расскажите о своем опыте использования приложения';
+  static const String OVERLAY_REPORT_TITLE = 'Сообщить об ошибке';
+  static const String OVERLAY_REPORT_SUBTITLE =
+      '"Сообщите об ошибках в работе приложения или неточностях в картах';
+  static const String OVERLAY_SETTINGS_TITLE = 'Настройки';
+  static const String OVERLAY_SETTINGS_SUBTITLE =
+      'Смена языка, персонализация, уведомления';
 }
 
 class RoutePaths {
@@ -120,6 +130,7 @@ class RoutePaths {
   static const String institute = '/institute';
   static const String search = '/search';
   static const String route = '/route';
+  static const String settings = '/settings';
 }
 
 class SvgIcons {

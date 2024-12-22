@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/icon_exit.dart';
+import 'package:urfu_navigator_mobile/utils/const.dart';
 
 class OverlayVisibility extends StatelessWidget {
   OverlayVisibility({super.key});
@@ -86,7 +89,7 @@ class OverlayProfile extends StatelessWidget {
                                       children: [
                                         Flexible(
                                           child: Text(
-                                            "Обратная связь",
+                                            Constants.OVERLAY_FEEDBACK_TITLE,
                                           ),
                                         ),
                                       ],
@@ -107,7 +110,7 @@ class OverlayProfile extends StatelessWidget {
                                       children: [
                                         Flexible(
                                           child: Text(
-                                            "Расскажите о своем опыте использования приложения",
+                                            Constants.OVERLAY_FEEDBACK_SUBTITLE,
                                           ),
                                         ),
                                       ],
@@ -159,7 +162,7 @@ class OverlayProfile extends StatelessWidget {
                                       children: [
                                         Flexible(
                                           child: Text(
-                                            "Сообщить об ошибке",
+                                            Constants.OVERLAY_REPORT_TITLE,
                                           ),
                                         ),
                                       ],
@@ -180,7 +183,7 @@ class OverlayProfile extends StatelessWidget {
                                       children: [
                                         Flexible(
                                           child: Text(
-                                            "Сообщите об ошибках в работе приложения или неточностях в картах",
+                                            Constants.OVERLAY_REPORT_SUBTITLE,
                                           ),
                                         ),
                                       ],
@@ -206,62 +209,78 @@ class OverlayProfile extends StatelessWidget {
                 height: 64,
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 8),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.settings_outlined,
-                            color: AppColors.accentGrayDark,
-                            size: 24,
-                          ),
-                          SizedBox(width: 16),
-                          Column(
+                    Material(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            RoutePaths.settings,
+                          ).then((_) {
+                            if (context.mounted) {
+                              log('settings screen closed');
+                            }
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 8),
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              DefaultTextStyle(
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                      color: AppColors.accentGrayDark),
-                                  child: SizedBox(
-                                    width: screenSize.width - 32 - 32 - 80,
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            "Настройки",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: 4,
+                              Icon(
+                                Icons.settings_outlined,
+                                color: AppColors.accentGrayDark,
+                                size: 24,
                               ),
-                              DefaultTextStyle(
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 10,
-                                      color: AppColors.accentGrayDark),
-                                  child: SizedBox(
-                                    width: screenSize.width - 32 - 32 - 40,
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            "Смена языка, персонализация, уведомления",
-                                          ),
+                              SizedBox(width: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  DefaultTextStyle(
+                                      style: TextStyle(
+                                          fontFamily: 'Roboto',
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                          color: AppColors.accentGrayDark),
+                                      child: SizedBox(
+                                        width: screenSize.width - 32 - 32 - 80,
+                                        child: Row(
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                Constants
+                                                    .OVERLAY_SETTINGS_TITLE,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  )),
+                                      )),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  DefaultTextStyle(
+                                      style: TextStyle(
+                                          fontFamily: 'Roboto',
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 10,
+                                          color: AppColors.accentGrayDark),
+                                      child: SizedBox(
+                                        width: screenSize.width - 32 - 32 - 40,
+                                        child: Row(
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                Constants
+                                                    .OVERLAY_SETTINGS_SUBTITLE,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     SizedBox(

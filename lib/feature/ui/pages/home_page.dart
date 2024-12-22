@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/home_screen.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/overlay_profile.dart';
 
@@ -11,7 +13,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const HomeScreen(),
+        IgnorePointer(
+            ignoring: context.watch<OverlayModel>().isVisibleValue,
+            child: const HomeScreen()),
         Positioned(
           top: 56,
           left: 10,

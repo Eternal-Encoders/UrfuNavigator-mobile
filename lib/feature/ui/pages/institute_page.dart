@@ -18,6 +18,9 @@ class InstitutePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
+    final newTextTheme = Theme.of(context)
+        .colorScheme
+        .copyWith(onPrimary: AppColors.accentBlueDark);
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -39,28 +42,42 @@ class InstitutePage extends StatelessWidget {
                   InstituteScreen(
                     data: data,
                   ),
-                  const Positioned(
+                  Positioned(
                       bottom: 96,
                       // bottom: 232,
                       right: 16,
                       child: RepaintBoundary(
-                        child: FABWidgetExtended(
-                          title: Constants.FAB_ROUTE_TITLE,
-                          icon: Icons.explore_outlined,
-                          backgroundColor: 0xffCBD8E4,
-                          color: 0xFF074683,
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: ColorScheme.fromSeed(
+                                seedColor: AppColors.accentBlue,
+                                onPrimary: AppColors.accentBlueDark),
+                          ),
+                          child: const FABWidgetExtended(
+                            title: Constants.FAB_ROUTE_TITLE,
+                            icon: Icons.explore_outlined,
+                            backgroundColor: 0xffCBD8E4,
+                            color: 0xFF074683,
+                          ),
                         ),
                       )),
-                  const Positioned(
+                  Positioned(
                       bottom: 96,
                       left: 16,
                       child: RepaintBoundary(
-                        child: FABWidgetSmall(
-                          title: 'Инфо',
-                          icon: Icons.info_outline_rounded,
-                          backgroundColor: 0xffFCFCFC,
-                          color: 0xFF6D6D6D,
-                          semanticLabel: 'Информация об университете',
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: ColorScheme.fromSeed(
+                                seedColor: AppColors.accentBlue,
+                                onPrimary: AppColors.accentBlueDark),
+                          ),
+                          child: const FABWidgetSmall(
+                            title: 'Инфо',
+                            icon: Icons.info_outline_rounded,
+                            backgroundColor: 0xffFCFCFC,
+                            color: 0xFF6D6D6D,
+                            semanticLabel: 'Информация об университете',
+                          ),
                         ),
                       )),
                   Positioned(

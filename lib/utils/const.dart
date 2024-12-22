@@ -67,6 +67,7 @@ class Constants {
   static const double CANVAS_TEXT_OFFSET_RATIO = 0.8;
 
   static const double PAINT_AUDIENCE_STROKE_WIDTH = 5;
+  static const double PAINT_ROUTE_STROKE_WIDTH = 10;
   static const double PAINT_DOOR_STROKE_WIDTH = 5;
   static const double PAINT_SERVICE_STROKE_WIDTH = 5;
 
@@ -77,7 +78,7 @@ class Constants {
   static const String SLIDER_CATEGORY_TITLE = 'Категория';
 
   static const String ROUTE_FOOD_TITLE = 'Еда и напитки';
-  static const String ROUTE_SOUL_TITLE = 'Категория для души';
+  static const String ROUTE_SOCIETY_PLACES_TITLE = 'Общественные места';
   static const String ROUTE_SERVICES_TITLE = 'Услуги';
   static const String ROUTE_ADMINISTRATION_TITLE = 'Администрация';
 
@@ -246,9 +247,9 @@ class SvgIcons {
     semanticsLabel: 'Cup Logo',
     color: AppColors.accentBlue,
   );
-  static final Widget foodOrangeSvg = SvgPicture.asset(
+  static final Widget dinningOrangeSvg = SvgPicture.asset(
     'assets/svg/dinning.svg',
-    semanticsLabel: 'Food Logo',
+    semanticsLabel: 'Dinning Logo',
   );
   static final Widget chargerBlueSvg = SvgPicture.asset(
     'assets/svg/charger.svg',

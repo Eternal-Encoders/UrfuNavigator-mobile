@@ -73,7 +73,7 @@ class InstitutePage extends StatelessWidget {
                     top: 20,
                     left: 16,
                     right: 16,
-                    child: InstituteSearch(screenSize: screenSize),
+                    child: InstituteSearchWithArrowBack(screenSize: screenSize),
                   )
                 ],
               ),

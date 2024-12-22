@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/map_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
@@ -138,7 +139,11 @@ List<PlacemarkMapObject> _getPlacemarkObjects(BuildContext context) {
                     .first,
                 search: null,
               ),
-            );
+            ).then((_) {
+              if (context.mounted) {
+                context.read<InstituteModel>().changeSelectedFloor(1);
+              }
+            });
           },
         ),
       )

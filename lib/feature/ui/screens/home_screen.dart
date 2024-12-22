@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
@@ -15,6 +17,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
+    //TODO: оптимизировать
+    log('home init');
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -66,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                     // bottom: 88,
                     bottom: 28,
                     // left: 16,
-                    child: RepaintBoundary(child: CarouselExample())),
+                    child: RepaintBoundary(child: CarouselInstitutes())),
               ],
             ),
           ),

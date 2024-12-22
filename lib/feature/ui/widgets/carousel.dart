@@ -4,6 +4,7 @@ import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institute/institute.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/institutes/institutes.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
+import 'package:urfu_navigator_mobile/feature/ui/provider/institute_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/state/error_message.dart';
@@ -12,14 +13,14 @@ import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 import 'package:urfu_navigator_mobile/utils/enums.dart';
 
-class CarouselExample extends StatefulWidget {
-  const CarouselExample({super.key});
+class CarouselInstitutes extends StatefulWidget {
+  const CarouselInstitutes({super.key});
 
   @override
-  State<CarouselExample> createState() => _CarouselExampleState();
+  State<CarouselInstitutes> createState() => _CarouselInstitutesState();
 }
 
-class _CarouselExampleState extends State<CarouselExample> {
+class _CarouselInstitutesState extends State<CarouselInstitutes> {
   @override
   void initState() {
     super.initState();
@@ -46,9 +47,10 @@ class _CarouselExampleState extends State<CarouselExample> {
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.all(0),
               itemBuilder: (context, item) {
+                if (item == 0) {}
                 return Container(
+                  margin: item == 0 ? EdgeInsets.only(left: 16) : null,
                   decoration: BoxDecoration(
-                    // border: ,
                     color: AppColors.mainWhiteLight,
                     borderRadius: BorderRadius.all(Radius.circular(16)),
                     boxShadow: [
@@ -72,8 +74,13 @@ class _CarouselExampleState extends State<CarouselExample> {
                           maxFloor:
                               institutesLoaded.institutes?[item].maxFloor);
                       Navigator.pushNamed(context, RoutePaths.institute,
-                          arguments: InstituteArguments(
-                              institute: institute, search: null));
+                              arguments: InstituteArguments(
+                                  institute: institute, search: null))
+                          .then((_) {
+                        if (context.mounted) {
+                          context.read<InstituteModel>().changeSelectedFloor(1);
+                        }
+                      });
                     },
                     child: SizedBox(
                       height: 132,

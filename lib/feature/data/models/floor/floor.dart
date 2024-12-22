@@ -81,7 +81,7 @@ class PathPointer extends CustomPainter {
     final paint = Paint()
       ..color = Colors.blue
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0;
+      ..strokeWidth = Constants.PAINT_ROUTE_STROKE_WIDTH;
 
     for (var pathPoints in listListOfPoints!) {
       if (pathPoints.isNotEmpty) {

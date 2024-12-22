@@ -55,6 +55,7 @@ class _SearchScreenState extends State<SearchScreen> {
       cachedSearchList = SearchList.fromJson(decodedData);
     }
 
+    log('widget.textFromRoute: ${widget.textFromRoute}');
     if (widget.textFromRoute != null) {
       _searchController.text = widget.textFromRoute!;
     }
@@ -284,7 +285,21 @@ class _SearchScreenState extends State<SearchScreen> {
                                       width: 16,
                                     ),
                                     SizedBox(
-                                      width: screenSize.width - 72,
+                                      width: screenSize.width -
+                                          72 -
+                                          (cachedAndRemoteSearchList
+                                                      .searchs![index]
+                                                      .names!
+                                                      .length >
+                                                  1
+                                              ? cachedAndRemoteSearchList
+                                                          .searchs![index]
+                                                          .names![1]
+                                                          .length >
+                                                      15
+                                                  ? 100
+                                                  : 50
+                                              : 50),
                                       child: ListTile(
                                         title: Text(cachedAndRemoteSearchList
                                             .searchs![index].names![0]),
@@ -400,6 +415,27 @@ class _SearchScreenState extends State<SearchScreen> {
                                               cachedAndRemoteSearchList
                                                   .searchs![index].names![0];
                                         },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(cachedAndRemoteSearchList
+                                              .searchs![index].institute!),
+                                          Text(cachedAndRemoteSearchList
+                                                      .searchs![index]
+                                                      .names!
+                                                      .length >
+                                                  1
+                                              ? cachedAndRemoteSearchList
+                                                  .searchs![index].names![1]
+                                              : ''),
+                                        ],
                                       ),
                                     ),
                                   ],

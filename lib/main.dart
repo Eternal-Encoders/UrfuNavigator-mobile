@@ -58,6 +58,10 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         theme: ThemeData(
           useMaterial3: true,
+          textSelectionTheme: TextSelectionThemeData(
+              selectionColor: AppColors.secondOrangeLight,
+              cursorColor: AppColors.secondOrangeLight,
+              selectionHandleColor: AppColors.secondOrangeLight),
           colorScheme: const ColorScheme(
             brightness: Brightness.light,
             primary: AppColors.mainWhiteLight,

@@ -43,10 +43,10 @@ class _InstituteScreenState extends State<InstituteScreen> {
 
     // Добавляем слушатель
     _instituteModel?.addListener(_onChange);
-
+    log('context.read<SearchModel>().calledByEvent: ${context.read<SearchModel>().calledByEvent}');
     // Первый запрос
+    log('floor from route: ${context.read<SearchModel>().fromFloor.toString()}');
     if (context.read<SearchModel>().calledByEvent == EEvent.route) {
-      log('floor from route: ${context.read<SearchModel>().fromFloor.toString()}');
       context.read<FloorBloc>().add(FloorEvent.fetch(
           floor: '${context.read<SearchModel>().fromFloor}',
           institute: widget.data.institute!.name!));

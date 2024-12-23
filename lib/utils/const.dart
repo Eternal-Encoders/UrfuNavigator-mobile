@@ -117,12 +117,27 @@ class Constants {
   static const String OVERLAY_FEEDBACK_TITLE = 'Обратная связь';
   static const String OVERLAY_FEEDBACK_SUBTITLE =
       'Расскажите о своем опыте использования приложения';
-  static const String OVERLAY_REPORT_TITLE = 'Сообщить об ошибке';
   static const String OVERLAY_REPORT_SUBTITLE =
       'Сообщите об ошибках в работе приложения или неточностях в картах';
   static const String OVERLAY_SETTINGS_TITLE = 'Настройки';
   static const String OVERLAY_SETTINGS_SUBTITLE =
       'Смена языка, персонализация, уведомления';
+
+  static const String SETTINGS_LANGUAGE_TITLE = 'Язык';
+  static const String SETTINGS_LANGUAGE_SUBTITLE = 'Выбор языка интерфейса';
+
+  static const String SETTINGS_PERSONALIZATION_TITLE = 'Персонализация';
+  static const String SETTINGS_PERSONALIZATION_SUBTITLE =
+      'Порядок институтов на главном экране, кампус по умолчанию';
+
+  static const String SETTINGS_NOTIFICATION_TITLE = 'Уведомления';
+  static const String SETTINGS_NOTIFICATION_SUBTITLE =
+      'Напоминания о начале пары, уведомления о новостях';
+
+  static const String SETTINGS_NEWS_TITLE = 'Новости';
+  static const String SETTINGS_NEWS_SUBTITLE = 'Выбор источников новостей';
+
+  static const String REPORT_TITLE = 'Сообщить об ошибке';
 }
 
 class RoutePaths {
@@ -131,6 +146,7 @@ class RoutePaths {
   static const String search = '/search';
   static const String route = '/route';
   static const String settings = '/settings';
+  static const String language = '/language';
 }
 
 class SvgIcons {

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/home_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/institute_page.dart';
+import 'package:urfu_navigator_mobile/feature/ui/pages/language_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/route_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/search_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/settings_page.dart';
@@ -114,6 +115,8 @@ class MyApp extends StatelessWidget {
                       ));
             case RoutePaths.settings:
               return MaterialPageRoute(builder: (context) => SettingsPage());
+            case RoutePaths.language:
+              return MaterialPageRoute(builder: (context) => LanguagePage());
           }
           return null;
         },

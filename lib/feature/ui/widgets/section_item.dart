@@ -5,12 +5,14 @@ class SectionItemWidget extends StatelessWidget {
   final String title;
   final String subTitle;
   final IconData icon;
+  final bool hasDivider;
   final Function()? handler;
   const SectionItemWidget({
     super.key,
     required this.title,
     required this.subTitle,
     required this.icon,
+    required this.hasDivider,
     required this.handler,
   });
 
@@ -89,13 +91,15 @@ class SectionItemWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            width: screenSize.width - 32 - 32,
-            child: Divider(
-              height: 1,
-              color: Color.fromARGB(40, 204, 204, 204),
-            ),
-          ),
+          hasDivider
+              ? SizedBox(
+                  width: screenSize.width - 32 - 32,
+                  child: Divider(
+                    height: 1,
+                    color: Color.fromARGB(40, 204, 204, 204),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

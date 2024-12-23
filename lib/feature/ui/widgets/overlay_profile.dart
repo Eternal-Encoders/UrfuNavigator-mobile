@@ -64,17 +64,20 @@ class OverlayProfile extends StatelessWidget {
                 subTitle: Constants.OVERLAY_FEEDBACK_SUBTITLE,
                 icon: Icons.feedback_outlined,
                 handler: null,
+                hasDivider: true,
               ),
               SectionItemWidget(
-                title: Constants.OVERLAY_REPORT_TITLE,
+                title: Constants.REPORT_TITLE,
                 subTitle: Constants.OVERLAY_REPORT_SUBTITLE,
                 icon: Icons.bug_report_outlined,
                 handler: null,
+                hasDivider: true,
               ),
               SectionItemWidget(
                 title: Constants.OVERLAY_SETTINGS_TITLE,
                 subTitle: Constants.OVERLAY_SETTINGS_SUBTITLE,
                 icon: Icons.settings_outlined,
+                hasDivider: true,
                 handler: () => Navigator.pushNamed(
                   context,
                   RoutePaths.settings,

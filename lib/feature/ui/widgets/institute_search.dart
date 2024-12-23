@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/arrow_back.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 
 class InstituteSearchWithArrowBack extends StatelessWidget {
@@ -107,16 +108,7 @@ class ArrowBack extends StatelessWidget {
             ),
           ],
         ),
-        child: Center(
-            child: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            size: 24,
-            Icons.arrow_back,
-          ),
-        )),
+        child: Center(child: ArrowBackWidget()),
       ),
     );
   }

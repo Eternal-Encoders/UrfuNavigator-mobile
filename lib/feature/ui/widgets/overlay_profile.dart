@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/icon_exit.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/section_item.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 
 class OverlayVisibility extends StatelessWidget {
@@ -58,240 +57,20 @@ class OverlayProfile extends StatelessWidget {
               SizedBox(
                 height: 8,
               ),
-              SizedBox(
-                width: screenSize.width - 32 - 32,
-                height: 64,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 8),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.feedback_outlined,
-                            color: AppColors.accentGrayDark,
-                            size: 24,
-                          ),
-                          SizedBox(width: 16),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              DefaultTextStyle(
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                      color: AppColors.accentGrayDark),
-                                  child: SizedBox(
-                                    width: screenSize.width - 32 - 32 - 80,
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            Constants.OVERLAY_FEEDBACK_TITLE,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              DefaultTextStyle(
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 10,
-                                      color: AppColors.accentGrayDark),
-                                  child: SizedBox(
-                                    width: screenSize.width - 32 - 32 - 40,
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            Constants.OVERLAY_FEEDBACK_SUBTITLE,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: screenSize.width - 32 - 32,
-                      child: Divider(
-                        height: 1,
-                        color: Color.fromARGB(40, 204, 204, 204),
-                      ),
-                    ),
-                  ],
-                ),
+              SectionItemWidget(
+                title: Constants.OVERLAY_FEEDBACK_TITLE,
+                subTitle: Constants.OVERLAY_FEEDBACK_SUBTITLE,
+                icon: Icons.feedback_outlined,
               ),
-              SizedBox(
-                width: screenSize.width - 32 - 32,
-                height: 64,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 8),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.bug_report_outlined,
-                            color: AppColors.accentGrayDark,
-                            size: 24,
-                          ),
-                          SizedBox(width: 16),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              DefaultTextStyle(
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                      color: AppColors.accentGrayDark),
-                                  child: SizedBox(
-                                    width: screenSize.width - 32 - 32 - 80,
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            Constants.OVERLAY_REPORT_TITLE,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              DefaultTextStyle(
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 10,
-                                      color: AppColors.accentGrayDark),
-                                  child: SizedBox(
-                                    width: screenSize.width - 32 - 32 - 40,
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            Constants.OVERLAY_REPORT_SUBTITLE,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: screenSize.width - 32 - 32,
-                      child: Divider(
-                        height: 1,
-                        color: Color.fromARGB(40, 204, 204, 204),
-                      ),
-                    ),
-                  ],
-                ),
+              SectionItemWidget(
+                title: Constants.OVERLAY_REPORT_TITLE,
+                subTitle: Constants.OVERLAY_REPORT_SUBTITLE,
+                icon: Icons.bug_report_outlined,
               ),
-              SizedBox(
-                width: screenSize.width - 32 - 32,
-                height: 64,
-                child: Column(
-                  children: [
-                    Material(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            RoutePaths.settings,
-                          ).then((_) {
-                            if (context.mounted) {
-                              log('settings screen closed');
-                            }
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 8),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.settings_outlined,
-                                color: AppColors.accentGrayDark,
-                                size: 24,
-                              ),
-                              SizedBox(width: 16),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  DefaultTextStyle(
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                          color: AppColors.accentGrayDark),
-                                      child: SizedBox(
-                                        width: screenSize.width - 32 - 32 - 80,
-                                        child: Row(
-                                          children: [
-                                            Flexible(
-                                              child: Text(
-                                                Constants
-                                                    .OVERLAY_SETTINGS_TITLE,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  DefaultTextStyle(
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 10,
-                                          color: AppColors.accentGrayDark),
-                                      child: SizedBox(
-                                        width: screenSize.width - 32 - 32 - 40,
-                                        child: Row(
-                                          children: [
-                                            Flexible(
-                                              child: Text(
-                                                Constants
-                                                    .OVERLAY_SETTINGS_SUBTITLE,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: screenSize.width - 32 - 32,
-                      child: Divider(
-                        height: 1,
-                        color: Color.fromARGB(40, 204, 204, 204),
-                      ),
-                    ),
-                  ],
-                ),
+              SectionItemWidget(
+                title: Constants.OVERLAY_SETTINGS_TITLE,
+                subTitle: Constants.OVERLAY_SETTINGS_SUBTITLE,
+                icon: Icons.settings_outlined,
               ),
               SizedBox(
                 height: 8,

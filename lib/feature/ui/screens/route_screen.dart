@@ -232,7 +232,6 @@ class _RouteScreenState extends State<RouteScreen> {
                     width: 24,
                     child: IconButton(
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
                         onPressed: () {
                           String temp = _fromController.text;
                           _fromController.text = _toController.text;

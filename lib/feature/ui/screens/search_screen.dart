@@ -11,6 +11,7 @@ import 'package:urfu_navigator_mobile/feature/data/models/search/search.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/search/search_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/arrow_back.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/audiences_cached_list.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/state/error_message.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/state/loading_indicator.dart';
@@ -130,15 +131,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               prefixIcon: Tooltip(
                 message: 'Search',
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(
-                    size: 24,
-                    Icons.arrow_back,
-                  ),
-                ),
+                child: ArrowBackWidget(),
               ),
             ),
           ),

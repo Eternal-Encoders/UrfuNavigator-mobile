@@ -5,11 +5,13 @@ class SectionItemWidget extends StatelessWidget {
   final String title;
   final String subTitle;
   final IconData icon;
+  final Function()? handler;
   const SectionItemWidget({
     super.key,
     required this.title,
     required this.subTitle,
     required this.icon,
+    required this.handler,
   });
 
   @override
@@ -20,62 +22,71 @@ class SectionItemWidget extends StatelessWidget {
       height: 64,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  icon,
-                  color: AppColors.accentGrayDark,
-                  size: 24,
-                ),
-                SizedBox(width: 16),
-                Column(
+          Material(
+            child: InkWell(
+              onTap: () {
+                if (handler != null) {
+                  handler!();
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 8),
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DefaultTextStyle(
-                        style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: AppColors.accentGrayDark),
-                        child: SizedBox(
-                          width: screenSize.width - 32 - 32 - 80,
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  title,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )),
-                    SizedBox(
-                      height: 4,
+                    Icon(
+                      icon,
+                      color: AppColors.accentGrayDark,
+                      size: 24,
                     ),
-                    DefaultTextStyle(
-                        style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 10,
-                            color: AppColors.accentGrayDark),
-                        child: SizedBox(
-                          width: screenSize.width - 32 - 32 - 40,
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  subTitle,
-                                ),
+                    SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DefaultTextStyle(
+                            style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: AppColors.accentGrayDark),
+                            child: SizedBox(
+                              width: screenSize.width - 32 - 32 - 80,
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      title,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        )),
+                            )),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        DefaultTextStyle(
+                            style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 10,
+                                color: AppColors.accentGrayDark),
+                            child: SizedBox(
+                              width: screenSize.width - 32 - 32 - 40,
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      subTitle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
           SizedBox(

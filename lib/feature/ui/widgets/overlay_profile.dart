@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
@@ -61,16 +63,26 @@ class OverlayProfile extends StatelessWidget {
                 title: Constants.OVERLAY_FEEDBACK_TITLE,
                 subTitle: Constants.OVERLAY_FEEDBACK_SUBTITLE,
                 icon: Icons.feedback_outlined,
+                handler: null,
               ),
               SectionItemWidget(
                 title: Constants.OVERLAY_REPORT_TITLE,
                 subTitle: Constants.OVERLAY_REPORT_SUBTITLE,
                 icon: Icons.bug_report_outlined,
+                handler: null,
               ),
               SectionItemWidget(
                 title: Constants.OVERLAY_SETTINGS_TITLE,
                 subTitle: Constants.OVERLAY_SETTINGS_SUBTITLE,
                 icon: Icons.settings_outlined,
+                handler: () => Navigator.pushNamed(
+                  context,
+                  RoutePaths.settings,
+                ).then((_) {
+                  if (context.mounted) {
+                    log('settings screen closed');
+                  }
+                }),
               ),
               SizedBox(
                 height: 8,

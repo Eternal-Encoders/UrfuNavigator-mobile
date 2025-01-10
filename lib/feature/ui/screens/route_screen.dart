@@ -14,7 +14,6 @@ import 'package:urfu_navigator_mobile/feature/data/models/search/search.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/path/path_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
-import 'package:urfu_navigator_mobile/feature/ui/widgets/route_category_card.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/slider_text.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
@@ -60,6 +59,40 @@ class _RouteScreenState extends State<RouteScreen> {
     }
 
     print('init 1');
+  }
+
+  void setField(String title) async {
+    if (_fromController.text.isEmpty) {
+      context.read<SearchModel>().changeEvent(EEvent.fromRoute);
+
+      var data = await Navigator.pushNamed(context, RoutePaths.search,
+          arguments: title);
+
+      if (data == null) return;
+
+      setState(() {
+        fromInst = data as InstituteArguments;
+        WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+          _fromController.text = data.search!.names![0];
+          context.read<SearchModel>().setFromFloor(fromInst!.search!.floor!);
+        });
+      });
+    } else {
+      context.read<SearchModel>().changeEvent(EEvent.toRoute);
+
+      var data = await Navigator.pushNamed(context, RoutePaths.search,
+          arguments: title);
+
+      if (data == null) return;
+
+      setState(() {
+        toInst = data as InstituteArguments;
+        WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+          _toController.text = data.search!.names![0];
+          context.read<SearchModel>().setToFloor(toInst!.search!.floor!);
+        });
+      });
+    }
   }
 
   @override
@@ -332,296 +365,95 @@ class _RouteScreenState extends State<RouteScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                width: screenSize.width * 0.45,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_COFFEE_TITLE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_COFFEE_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_COFFEE_TITLE,
-                                        textStyle: TextStyles.h3MedOrange,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.coffeeOrangeSvg),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_VENDING_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_VENDING_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_VENDING_TITLE,
-                                        textStyle: TextStyles.h3MedOrange,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.vendingOrangeSvg),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_DINNING_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_DINNING_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_DINNING_TITLE,
-                                        textStyle: TextStyles.h3MedOrange,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.dinningOrangeSvg),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 34,
+                                    child: ActionChip(
+                                        onPressed: () async {
+                                          setField(Constants
+                                              .ROUTE_CATEGORY_COFFEE_TITLE);
+                                        },
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 5),
+                                        labelStyle: TextStyles.h3MedOrange,
+                                        clipBehavior: Clip.antiAlias,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                            color:
+                                                AppColors.secondPaleGrayLight,
+                                            width: 1,
+                                            style: BorderStyle.solid,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                        avatar: SvgIcons.coffeeOrangeSvg,
+                                        label: Text(Constants
+                                            .ROUTE_CATEGORY_COFFEE_TITLE)),
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  SizedBox(
+                                    height: 34,
+                                    child: ActionChip(
+                                        onPressed: () async {
+                                          setField(Constants
+                                              .ROUTE_CATEGORY_VENDING_TITLE);
+                                        },
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 5),
+                                        labelStyle: TextStyles.h3MedOrange,
+                                        clipBehavior: Clip.antiAlias,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                            color:
+                                                AppColors.secondPaleGrayLight,
+                                            width: 1,
+                                            style: BorderStyle.solid,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                        avatar: SvgIcons.vendingOrangeSvg,
+                                        label: Text(Constants
+                                            .ROUTE_CATEGORY_VENDING_TITLE)),
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  SizedBox(
+                                    height: 34,
+                                    child: ActionChip(
+                                        onPressed: () async {
+                                          setField(Constants
+                                              .ROUTE_CATEGORY_DINNING_INITIAL_VALUE);
+                                        },
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 5),
+                                        labelStyle: TextStyles.h3MedOrange,
+                                        clipBehavior: Clip.antiAlias,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                            color:
+                                                AppColors.secondPaleGrayLight,
+                                            width: 1,
+                                            style: BorderStyle.solid,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                        avatar: SvgIcons.dinningOrangeSvg,
+                                        label: Text(Constants
+                                            .ROUTE_CATEGORY_DINNING_TITLE)),
+                                  ),
+                                ],
                               ),
-                              // SizedBox(
-                              //   width: screenSize.width * 0.45,
-                              //   child: Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: [
-                              //       InkWell(
-                              //         onTap: () async {
-                              //           if (_fromController.text.isEmpty) {
-                              //             context
-                              //                 .read<SearchModel>()
-                              //                 .changeEvent(EEvent.fromRoute);
-
-                              //             var data = await Navigator.pushNamed(
-                              //                 context, RoutePaths.search,
-                              //                 arguments: Constants
-                              //                     .ROUTE_CATEGORY_COFFEMACHINE_INITIAL_VALUE);
-
-                              //             if (data == null) return;
-
-                              //             setState(() {
-                              //               fromInst =
-                              //                   data as InstituteArguments;
-                              //               WidgetsBinding.instance
-                              //                   .addPostFrameCallback(
-                              //                       (Duration timeStamp) {
-                              //                 _fromController.text =
-                              //                     data.search!.names![0];
-                              //                 context
-                              //                     .read<SearchModel>()
-                              //                     .setFromFloor(
-                              //                         fromInst!.search!.floor!);
-                              //               });
-                              //             });
-                              //           } else {
-                              //             context
-                              //                 .read<SearchModel>()
-                              //                 .changeEvent(EEvent.toRoute);
-
-                              //             var data = await Navigator.pushNamed(
-                              //                 context, RoutePaths.search,
-                              //                 arguments: Constants
-                              //                     .ROUTE_CATEGORY_COFFEMACHINE_INITIAL_VALUE);
-
-                              //             if (data == null) return;
-
-                              //             setState(() {
-                              //               toInst = data as InstituteArguments;
-                              //               WidgetsBinding.instance
-                              //                   .addPostFrameCallback(
-                              //                       (Duration timeStamp) {
-                              //                 _toController.text =
-                              //                     data.search!.names![0];
-                              //                 context
-                              //                     .read<SearchModel>()
-                              //                     .setToFloor(
-                              //                         toInst!.search!.floor!);
-                              //               });
-                              //             });
-                              //           }
-                              //         },
-                              //         borderRadius:
-                              //             BorderRadius.all(Radius.circular(20)),
-                              //         child: RouteCategoryCard(
-                              //           title: Constants
-                              //               .ROUTE_CATEGORY_COFFEMACHINE_TITLE,
-                              //           textStyle: TextStyles.h3MedOrange,
-                              //           icon: SvgIcons.coffeeOrangeSvg,
-                              //         ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                         ],
@@ -653,215 +485,89 @@ class _RouteScreenState extends State<RouteScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_TOILETM_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_TOILETM_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_TOILETM_TITLE,
-                                        textStyle: TextStyles.h3MedGreen,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.manGreenSvg),
-                                      ),
+                                    SizedBox(
+                                      height: 34,
+                                      child: ActionChip(
+                                          onPressed: () async {
+                                            setField(Constants
+                                                .ROUTE_CATEGORY_TOILETM_INITIAL_VALUE);
+                                          },
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 5),
+                                          labelStyle: TextStyles.h3MedGreen,
+                                          clipBehavior: Clip.antiAlias,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color:
+                                                  AppColors.secondPaleGrayLight,
+                                              width: 1,
+                                              style: BorderStyle.solid,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                          avatar: SvgIcons.manGreenSvg,
+                                          label: Text(Constants
+                                              .ROUTE_CATEGORY_TOILETM_TITLE)),
                                     ),
                                     SizedBox(
                                       height: 8,
                                     ),
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_TOILETW_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_TOILETW_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_TOILETW_TITLE,
-                                        textStyle: TextStyles.h3MedGreen,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.womanGreenSvg),
-                                      ),
+                                    SizedBox(
+                                      height: 34,
+                                      child: ActionChip(
+                                          onPressed: () async {
+                                            setField(Constants
+                                                .ROUTE_CATEGORY_TOILETW_INITIAL_VALUE);
+                                          },
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 5),
+                                          labelStyle: TextStyles.h3MedGreen,
+                                          clipBehavior: Clip.antiAlias,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color:
+                                                  AppColors.secondPaleGrayLight,
+                                              width: 1,
+                                              style: BorderStyle.solid,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                          avatar: SvgIcons.womanGreenSvg,
+                                          label: Text(Constants
+                                              .ROUTE_CATEGORY_TOILETW_TITLE)),
                                     ),
                                     SizedBox(
                                       height: 8,
                                     ),
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_WARDEROB_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_WARDEROB_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_WARDEROB_TITLE,
-                                        textStyle: TextStyles.h3MedGreen,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.wardrobeGreenSvg),
-                                      ),
+                                    SizedBox(
+                                      height: 34,
+                                      child: ActionChip(
+                                          onPressed: () async {
+                                            setField(Constants
+                                                .ROUTE_CATEGORY_WARDEROB_TITLE);
+                                          },
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 5),
+                                          labelStyle: TextStyles.h3MedGreen,
+                                          clipBehavior: Clip.antiAlias,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color:
+                                                  AppColors.secondPaleGrayLight,
+                                              width: 1,
+                                              style: BorderStyle.solid,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                          avatar: SvgIcons.wardrobeGreenSvg,
+                                          label: Text(Constants
+                                              .ROUTE_CATEGORY_WARDEROB_TITLE)),
                                     ),
                                   ],
                                 ),
@@ -872,71 +578,34 @@ class _RouteScreenState extends State<RouteScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_COWORKING_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_COWORKING_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
+                                      onTap: () async {},
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_COWORKING_TITLE,
-                                        textStyle: TextStyles.h3MedGreen,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.notebookGreenSvg),
+                                      child: SizedBox(
+                                        height: 34,
+                                        child: ActionChip(
+                                            onPressed: () async {
+                                              setField(Constants
+                                                  .ROUTE_CATEGORY_COWORKING_TITLE);
+                                            },
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 5),
+                                            labelStyle: TextStyles.h3MedGreen,
+                                            clipBehavior: Clip.antiAlias,
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                color: AppColors
+                                                    .secondPaleGrayLight,
+                                                width: 1,
+                                                style: BorderStyle.solid,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                            ),
+                                            backgroundColor: Colors.transparent,
+                                            avatar: SvgIcons.notebookGreenSvg,
+                                            label: Text(Constants
+                                                .ROUTE_CATEGORY_COWORKING_TITLE)),
                                       ),
                                     ),
                                   ],
@@ -973,73 +642,31 @@ class _RouteScreenState extends State<RouteScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_PRINT_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_PRINT_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_PRINT_TITLE,
-                                        textStyle: TextStyles.h3MedBlue,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.printerBlueSvg),
-                                      ),
+                                    SizedBox(
+                                      height: 34,
+                                      child: ActionChip(
+                                          onPressed: () async {
+                                            setField(Constants
+                                                .ROUTE_CATEGORY_PRINT_TITLE);
+                                          },
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 5),
+                                          labelStyle: TextStyles.h3MedBlue,
+                                          clipBehavior: Clip.antiAlias,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color:
+                                                  AppColors.secondPaleGrayLight,
+                                              width: 1,
+                                              style: BorderStyle.solid,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                          avatar: SvgIcons.printerBlueSvg,
+                                          label: Text(Constants
+                                              .ROUTE_CATEGORY_PRINT_TITLE)),
                                     ),
                                     // SizedBox(
                                     //   height: 8,
@@ -1111,149 +738,35 @@ class _RouteScreenState extends State<RouteScreen> {
                                     SizedBox(
                                       height: 8,
                                     ),
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_ATM_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_ATM_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title:
-                                            Constants.ROUTE_CATEGORY_ATM_TITLE,
-                                        textStyle: TextStyles.h3MedBlue,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.atmBlueSvg),
-                                      ),
+                                    SizedBox(
+                                      height: 34,
+                                      child: ActionChip(
+                                          onPressed: () async {
+                                            setField(Constants
+                                                .ROUTE_CATEGORY_ATM_TITLE);
+                                          },
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 5),
+                                          labelStyle: TextStyles.h3MedBlue,
+                                          clipBehavior: Clip.antiAlias,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color:
+                                                  AppColors.secondPaleGrayLight,
+                                              width: 1,
+                                              style: BorderStyle.solid,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                          avatar: SvgIcons.atmBlueSvg,
+                                          label: Text(Constants
+                                              .ROUTE_CATEGORY_ATM_TITLE)),
                                     ),
                                   ],
                                 ),
                               ),
-                              // SizedBox(
-                              //   width: screenSize.width * 0.45,
-                              //   child: Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: [
-                              //       InkWell(
-                              //         onTap: () async {
-                              //           if (_fromController.text.isEmpty) {
-                              //             context
-                              //                 .read<SearchModel>()
-                              //                 .changeEvent(EEvent.fromRoute);
-
-                              //             var data = await Navigator.pushNamed(
-                              //                 context, RoutePaths.search,
-                              //                 arguments: Constants
-                              //                     .ROUTE_CATEGORY_WATERPUMP_INITIAL_VALUE);
-
-                              //             if (data == null) return;
-
-                              //             setState(() {
-                              //               fromInst =
-                              //                   data as InstituteArguments;
-                              //               WidgetsBinding.instance
-                              //                   .addPostFrameCallback(
-                              //                       (Duration timeStamp) {
-                              //                 _fromController.text =
-                              //                     data.search!.names![0];
-                              //                 context
-                              //                     .read<SearchModel>()
-                              //                     .setFromFloor(
-                              //                         fromInst!.search!.floor!);
-                              //               });
-                              //             });
-                              //           } else {
-                              //             context
-                              //                 .read<SearchModel>()
-                              //                 .changeEvent(EEvent.toRoute);
-
-                              //             var data = await Navigator.pushNamed(
-                              //                 context, RoutePaths.search,
-                              //                 arguments: Constants
-                              //                     .ROUTE_CATEGORY_WATERPUMP_INITIAL_VALUE);
-
-                              //             if (data == null) return;
-
-                              //             setState(() {
-                              //               toInst = data as InstituteArguments;
-                              //               WidgetsBinding.instance
-                              //                   .addPostFrameCallback(
-                              //                       (Duration timeStamp) {
-                              //                 _toController.text =
-                              //                     data.search!.names![0];
-                              //                 context
-                              //                     .read<SearchModel>()
-                              //                     .setToFloor(
-                              //                         toInst!.search!.floor!);
-                              //               });
-                              //             });
-                              //           }
-                              //         },
-                              //         borderRadius:
-                              //             BorderRadius.all(Radius.circular(20)),
-                              //         child: RouteCategoryCard(
-                              //           title: Constants
-                              //               .ROUTE_CATEGORY_WATERPUMP_TITLE,
-                              //           textStyle: TextStyles.h3MedBlue,
-                              //           icon: SvgIcons.coffeeBlueSvg,
-                              //         ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                         ],
@@ -1285,73 +798,31 @@ class _RouteScreenState extends State<RouteScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_STUDENTS_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_STUDENTS_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_STUDENTS_TITLE,
-                                        textStyle: TextStyles.h3MedFireLight,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.flagRedSvg),
-                                      ),
+                                    SizedBox(
+                                      height: 34,
+                                      child: ActionChip(
+                                          onPressed: () async {
+                                            setField(Constants
+                                                .ROUTE_CATEGORY_STUDENTS_TITLE);
+                                          },
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 5),
+                                          labelStyle: TextStyles.h3MedFireLight,
+                                          clipBehavior: Clip.antiAlias,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color:
+                                                  AppColors.secondPaleGrayLight,
+                                              width: 1,
+                                              style: BorderStyle.solid,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                          avatar: SvgIcons.flagRedSvg,
+                                          label: Text(Constants
+                                              .ROUTE_CATEGORY_STUDENTS_TITLE)),
                                     ),
                                   ],
                                 ),
@@ -1361,73 +832,31 @@ class _RouteScreenState extends State<RouteScreen> {
                                 child: Column(
                                   // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        if (_fromController.text.isEmpty) {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.fromRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_DEANERY_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            fromInst =
-                                                data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _fromController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setFromFloor(
-                                                      fromInst!.search!.floor!);
-                                            });
-                                          });
-                                        } else {
-                                          context
-                                              .read<SearchModel>()
-                                              .changeEvent(EEvent.toRoute);
-
-                                          var data = await Navigator.pushNamed(
-                                              context, RoutePaths.search,
-                                              arguments: Constants
-                                                  .ROUTE_CATEGORY_DEANERY_INITIAL_VALUE);
-
-                                          if (data == null) return;
-
-                                          setState(() {
-                                            toInst = data as InstituteArguments;
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback(
-                                                    (Duration timeStamp) {
-                                              _toController.text =
-                                                  data.search!.names![0];
-                                              context
-                                                  .read<SearchModel>()
-                                                  .setToFloor(
-                                                      toInst!.search!.floor!);
-                                            });
-                                          });
-                                        }
-                                      },
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: RouteCategoryCard(
-                                        title: Constants
-                                            .ROUTE_CATEGORY_DEANERY_TITLE,
-                                        textStyle: TextStyles.h3MedFireLight,
-                                        icon: Container(
-                                            alignment: Alignment.center,
-                                            height: 24,
-                                            width: 24,
-                                            child: SvgIcons.toolsRedSvg),
-                                      ),
+                                    SizedBox(
+                                      height: 34,
+                                      child: ActionChip(
+                                          onPressed: () async {
+                                            setField(Constants
+                                                .ROUTE_CATEGORY_DEANERY_TITLE);
+                                          },
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 5),
+                                          labelStyle: TextStyles.h3MedFireLight,
+                                          clipBehavior: Clip.antiAlias,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color:
+                                                  AppColors.secondPaleGrayLight,
+                                              width: 1,
+                                              style: BorderStyle.solid,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                          avatar: SvgIcons.toolsRedSvg,
+                                          label: Text(Constants
+                                              .ROUTE_CATEGORY_DEANERY_TITLE)),
                                     ),
                                   ],
                                 ),

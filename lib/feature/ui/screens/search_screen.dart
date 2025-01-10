@@ -15,6 +15,7 @@ import 'package:urfu_navigator_mobile/feature/ui/widgets/arrow_back.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/audiences_cached_list.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/state/error_message.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/state/loading_indicator.dart';
+import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 import 'package:urfu_navigator_mobile/utils/enums.dart';
@@ -22,12 +23,10 @@ import 'package:urfu_navigator_mobile/utils/enums.dart';
 class SearchScreen extends StatefulWidget {
   final bool autofocus;
   final String? textFromRoute;
-  final SharedPreferences sharedPreferences;
   SearchScreen(
     Key? key, {
     required this.autofocus,
     required this.textFromRoute,
-    required this.sharedPreferences,
   }) : super(key: key);
 
   @override
@@ -48,7 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
     isActive = true;
 
     cachedListData =
-        widget.sharedPreferences.getStringList(Constants.CACHED_SEARCH_LIST);
+        sl<SharedPreferences>().getStringList(Constants.CACHED_SEARCH_LIST);
 
     if (cachedListData != null) {
       var decodedData =
@@ -315,7 +314,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   (json.encode(
                                                       cachedAndRemoteSearchList
                                                           .searchs![index])));
-                                              widget.sharedPreferences
+                                              sl<SharedPreferences>()
                                                   .setStringList(
                                                       Constants
                                                           .CACHED_SEARCH_LIST,
@@ -324,7 +323,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                             if (cachedListData!.length > 10) {
                                               cachedListData!.removeAt(
                                                   cachedListData!.length - 1);
-                                              widget.sharedPreferences
+                                              sl<SharedPreferences>()
                                                   .setStringList(
                                                       Constants
                                                           .CACHED_SEARCH_LIST,
@@ -362,7 +361,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   (json.encode(
                                                       cachedAndRemoteSearchList
                                                           .searchs![index])));
-                                              widget.sharedPreferences
+                                              sl<SharedPreferences>()
                                                   .setStringList(
                                                       Constants
                                                           .CACHED_SEARCH_LIST,
@@ -371,7 +370,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                             if (cachedListData!.length > 10) {
                                               cachedListData!.removeAt(
                                                   cachedListData!.length - 1);
-                                              widget.sharedPreferences
+                                              sl<SharedPreferences>()
                                                   .setStringList(
                                                       Constants
                                                           .CACHED_SEARCH_LIST,

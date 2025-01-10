@@ -35,7 +35,6 @@ import 'package:urfu_navigator_mobile/feature/ui/bloc/institute/institute_bloc.d
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/path/path_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/search/search_bloc.dart';
-import 'package:urfu_navigator_mobile/feature/ui/pages/search_page.dart';
 
 final sl = GetIt.instance;
 
@@ -61,8 +60,6 @@ Future<void> init() async {
       () => FloorRemoteDataSourceImpl(client: http.Client()));
   sl.registerLazySingleton<FloorLocalDataSource>(
       () => FloorLocalDataSourceImpl(sharedPreferences: sl()));
-  sl.registerLazySingleton<SearchPage>(
-      () => SearchPage(sharedPreferences: sl()));
 
   sl.registerLazySingleton<InstituteRepository>(() => InstitutesRepositoryImpl(
       remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()));
@@ -95,7 +92,8 @@ Future<void> init() async {
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   // External
   final sharedPreferences = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => sharedPreferences);
-  sl.registerLazySingleton(() => http.Client());
-  sl.registerLazySingleton(() => InternetConnectionChecker());
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+  sl.registerLazySingleton<http.Client>(() => http.Client());
+  sl.registerLazySingleton<InternetConnectionChecker>(
+      () => InternetConnectionChecker());
 }

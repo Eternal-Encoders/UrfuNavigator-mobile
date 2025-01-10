@@ -16,17 +16,16 @@ import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart'
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/route_category_card.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/slider_text.dart';
+import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 import 'package:urfu_navigator_mobile/utils/enums.dart';
 
 class RouteScreen extends StatefulWidget {
   final bool autofocus;
-  final SharedPreferences sharedPreferences;
   RouteScreen(
     Key? key, {
     required this.autofocus,
-    required this.sharedPreferences,
   }) : super(key: key);
 
   @override
@@ -52,7 +51,7 @@ class _RouteScreenState extends State<RouteScreen> {
     isLoading = false;
 
     cachedListData =
-        widget.sharedPreferences.getStringList(Constants.CACHED_SEARCH_LIST);
+        sl<SharedPreferences>().getStringList(Constants.CACHED_SEARCH_LIST);
 
     if (cachedListData != null) {
       var decodedData =

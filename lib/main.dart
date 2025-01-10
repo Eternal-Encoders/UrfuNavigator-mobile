@@ -17,7 +17,6 @@ import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/map_screen.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart' as di;
-import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -90,21 +89,13 @@ class MyApp extends StatelessWidget {
               String? text = settings.arguments as String?;
               if (text != null) {
                 return MaterialPageRoute(
-                    builder: (context) => SearchPage(
-                          textFromRoute: text,
-                          sharedPreferences: sl<SearchPage>().sharedPreferences,
-                        ));
+                    builder: (context) => SearchPage(textFromRoute: text));
               } else {
-                return MaterialPageRoute(
-                    builder: (context) => SearchPage(
-                          sharedPreferences: sl<SearchPage>().sharedPreferences,
-                        ));
+                return MaterialPageRoute(builder: (context) => SearchPage());
               }
 
             case RoutePaths.route:
-              return MaterialPageRoute(
-                  builder: (context) => RoutePage(
-                      sharedPreferences: sl<SearchPage>().sharedPreferences));
+              return MaterialPageRoute(builder: (context) => RoutePage());
             case RoutePaths.institute:
               InstituteArguments data =
                   settings.arguments as InstituteArguments;

@@ -25,6 +25,7 @@ class SectionItemWidget extends StatelessWidget {
       child: Column(
         children: [
           Material(
+            color: Colors.transparent,
             child: InkWell(
               onTap: () {
                 if (handler != null) {

@@ -55,7 +55,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                       width: screenSize.width - 32 - 32,
                       height: 64,
                       child: ListTile(
-                        trailing: Icon(Icons.flag_circle),
+                        // trailing: Icon(Icons.flag_circle),
                         title: const Text(
                           'Русский',
                           style: TextStyle(

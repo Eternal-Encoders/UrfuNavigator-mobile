@@ -59,12 +59,16 @@ class OverlayProfile extends StatelessWidget {
               SizedBox(
                 height: 8,
               ),
-              SectionItemWidget(
-                title: Constants.OVERLAY_FEEDBACK_TITLE,
-                subTitle: Constants.OVERLAY_FEEDBACK_SUBTITLE,
-                icon: Icons.feedback_outlined,
-                handler: null,
-                hasDivider: true,
+              Localizations.override(
+                context: context,
+                locale: const Locale('en'),
+                child: SectionItemWidget(
+                  title: Constants.OVERLAY_FEEDBACK_TITLE,
+                  subTitle: Constants.OVERLAY_FEEDBACK_SUBTITLE,
+                  icon: Icons.feedback_outlined,
+                  handler: null,
+                  hasDivider: true,
+                ),
               ),
               SectionItemWidget(
                 title: Constants.REPORT_TITLE,

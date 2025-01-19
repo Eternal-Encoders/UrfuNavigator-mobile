@@ -1,0 +1,68 @@
+{
+    "Wait": "Wait...",
+    "To": "To",
+    "From": "From",
+    "SearchForAudiencesAndPlaces": "Search for audiences and places",
+    "Language": "Language",
+    "Settings": "Settings",
+    "AreYouHavingAnyProblemsWithOurSite": "Are you having any problems with our site? Want to leave a comment or ask a question? Fill out this form!",
+    "Feedback": "Feedback",
+    "PersonalDataProcessingPolicyAndPrivacyPolicy": "Personal Data Processing Policy and Privacy Policy",
+    "Contacts": "Contacts",
+    "WC": {
+        "W": "WC (W)",
+        "M": "WC (M)"
+    },
+    "Cafe": "Cafe",
+    "VendingMachine": "Vending Machine",
+    "Coworking": "Coworking",
+    "ATM": "ATM",
+    "Cloakroom": "Cloakroom",
+    "PublicPrinter": "Public Printer",
+    "HeadOffice": "Head Office",
+    "StudentUnion": "Student Union",
+    "Canteen": "Canteen",
+    "QuickSearch": "Quick search",
+    "Fab": {
+        "CampusTitle": "Campus",
+        "RouteTitle": "Route"
+    },
+    "Slider": {
+        "HistoryTitle": "History",
+        "CategoryTitle": "Category"
+    },
+    "FoodTitle": "Food and Drinks",
+    "SocietyPlacesTitle": "Public Places",
+    "ServicesTitle": "Services",
+    "AdministrationTitle": "Administration",
+    "Category": {
+      "CoffeeTitle": "Coffee Shop",
+      "CoffeemachineTitle": "Coffee Machine",
+      "VendingTitle": "Vending",
+      "DinningTitle": "Canteen",
+      "ToiletmTitle": "Restroom (M)",
+      "ToiletwTitle": "Restroom (F)",
+      "WardrobeTitle": "Wardrobe",
+      "CoworkingTitle": "Coworking",
+      "PrintTitle": "Print",
+      "WaterpumpTitle": "Water Dispenser",
+      "ChargerTitle": "Charger",
+      "AtmTitle": "ATM",
+      "StudentsTitle": "Student Union",
+      "DeaneryTitle": "Dean's Office"
+    },
+    "FeedbackTitle": "Feedback",
+    "FeedbackSubtitle": "Share your experience using the app",
+    "ReportSubtitle": "Report issues in the app or inaccuracies on the maps",
+    "SettingsSubtitle": "Change language, personalization, notifications",
+    "LanguageTitle": "Language",
+    "LanguageSubtitle": "Interface language selection",
+    "PersonalizationTitle": "Personalization",
+    "PersonalizationSubtitle": "Order of institutes on the main screen, default campus",
+    "NotificationTitle": "Notifications",
+    "NotificationSubtitle": "Class start reminders, news notifications",
+    "NewsTitle": "News",
+    "NewsSubtitle": "Select news sources",
+    "ReportTitle": "Report an Issue"
+  }
+  

@@ -1,0 +1,68 @@
+{
+    "Wait": "Подождите...",
+    "To": "Куда",
+    "From": "От",
+    "SearchForAudiencesAndPlaces": "Поиск аудиторий и мест",
+    "Language": "Язык",
+    "Settings": "Настройки",
+    "AreYouHavingAnyProblemsWithOurSite": "У вас возникли проблемы? Хотите оставить комментарий или задать вопрос? Заполните форму.",
+    "Feedback": "Обратная связь",
+    "PersonalDataProcessingPolicyAndPrivacyPolicy": "Политика обработки персональных данных и Политика конфиденциальности",
+    "Contacts": "Контакты",
+    "WC": {
+        "W": "Санузел (Ж)",
+        "M": "Санузел (М)"
+    },
+    "Cafe": "Кафе",
+    "VendingMachine": "Вендинг",
+    "Coworking": "Коворкинг",
+    "ATM": "Банкомат",
+    "Cloakroom": "Гардероб",
+    "PublicPrinter": "Печать",
+    "HeadOffice": "Деканат",
+    "StudentUnion": "Союз студентов",
+    "Canteen": "Столовая",
+    "QuickSearch": "Быстрый поиск",
+    "Fab": {
+        "CampusTitle": "Кампус",
+        "RouteTitle": "Маршрут"
+    },
+    "Slider": {
+        "HistoryTitle": "История",
+        "CategoryTitle": "Категория"
+    },
+    "FoodTitle": "Еда и напитки",
+    "SocietyPlacesTitle": "Общественные места",
+    "ServicesTitle": "Услуги",
+    "AdministrationTitle": "Администрация",
+    "Category": {
+        "CoffeeTitle": "Кофейня",
+        "CoffeemachineTitle": "Кофемашина",
+        "VendingTitle": "Вендинг",
+        "DinningTitle": "Столовая",
+        "ToiletmTitle": "Санузел (М)",
+        "ToiletwTitle": "Санузел (Ж)",
+        "WardrobeTitle": "Гардероб",
+        "CoworkingTitle": "Коворкинг",
+        "PrintTitle": "Печать",
+        "WaterpumpTitle": "Водомат",
+        "ChargerTitle": "Зарядка",
+        "AtmTitle": "Банкомат",
+        "StudentsTitle": "Союз студентов",
+        "DeaneryTitle": "Деканат"
+    },
+    "FeedbackTitle": "Обратная связь",
+    "FeedbackSubtitle": "Расскажите о своем опыте использования приложения",
+    "ReportSubtitle": "Сообщите об ошибках в работе приложения или неточностях в картах",
+    "SettingsSubtitle": "Смена языка, персонализация, уведомления",
+    "LanguageTitle": "Язык",
+    "LanguageSubtitle": "Выбор языка интерфейса",
+    "PersonalizationTitle": "Персонализация",
+    "PersonalizationSubtitle": "Порядок институтов на главном экране, кампус по умолчанию",
+    "NotificationTitle": "Уведомления",
+    "NotificationSubtitle": "Напоминания о начале пары, уведомления о новостях",
+    "NewsTitle": "Новости",
+    "NewsSubtitle": "Выбор источников новостей",
+    "ReportTitle": "Сообщить об ошибке"
+}
+  

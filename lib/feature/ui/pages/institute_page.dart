@@ -53,8 +53,8 @@ class InstitutePage extends StatelessWidget {
                                 seedColor: AppColors.accentBlue,
                                 onPrimary: AppColors.accentBlueDark),
                           ),
-                          child: const FABWidgetExtended(
-                            title: Constants.FAB_ROUTE_TITLE,
+                          child: FABWidgetExtended(
+                            title: I18N.fabRouteTitle,
                             icon: Icons.explore_outlined,
                             backgroundColor: 0xffCBD8E4,
                             color: 0xFF074683,

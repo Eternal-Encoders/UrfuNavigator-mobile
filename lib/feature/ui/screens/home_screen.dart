@@ -42,25 +42,25 @@ class HomeScreen extends StatelessWidget {
                     left: 10,
                     right: 10,
                     child: RepaintBoundary(child: HomeSearchBar())),
-                const Positioned(
+                Positioned(
                     bottom: 172,
                     // bottom: 232,
                     right: 16,
                     child: RepaintBoundary(
                       child: FABWidgetExtended(
-                        title: Constants.FAB_ROUTE_TITLE,
+                        title: I18N.fabRouteTitle,
                         icon: Icons.explore_outlined,
                         backgroundColor: 0xffFAE2CF,
                         color: 0xFFE77011,
                       ),
                     )),
-                const Positioned(
+                Positioned(
                     bottom: 240,
                     // bottom: 300,
                     right: 16,
                     child: RepaintBoundary(
                       child: FABWidgetExtended(
-                        title: Constants.FAB_CAMPUS_TITLE,
+                        title: I18N.fabCampusTitle,
                         icon: Icons.sync_outlined,
                         backgroundColor: 0xffFCFCFC,
                         color: 0xFF6D6D6D,

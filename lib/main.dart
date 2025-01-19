@@ -2,6 +2,7 @@
 // ignore_for_file: library_prefixes
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/home_page.dart';
@@ -16,6 +17,7 @@ import 'package:urfu_navigator_mobile/feature/ui/provider/map_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/map_screen.dart';
+import 'package:urfu_navigator_mobile/i18n/strings.g.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart' as di;
 import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
@@ -23,12 +25,13 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LocaleSettings.useDeviceLocale();
   await di.init();
   AndroidYandexMap.useAndroidViewSurface = false;
   //TODO: for debug uncomment:
   // debugRepaintRainbowEnabled = true;
   // debugRepaintTextRainbowEnabled = true;
-  runApp(const MyApp());
+  runApp(TranslationProvider(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -52,6 +55,9 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        locale: TranslationProvider.of(context).flutterLocale,
+        supportedLocales: AppLocaleUtils.supportedLocales,
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
         debugShowCheckedModeBanner: false,
         // showPerformanceOverlay: true,
         title: 'UrfuApp',

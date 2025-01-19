@@ -171,8 +171,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                                           child: Row(
                                             children: [
                                               Flexible(
-                                                child: Text(
-                                                    Constants.REPORT_TITLE),
+                                                child: Text(I18N.reportTitle),
                                               ),
                                             ],
                                           ),

@@ -38,7 +38,7 @@ class FABWidgetExtended extends StatelessWidget {
             backgroundColor: Color(backgroundColor),
             // foregroundColor: Colors.black,
             onPressed: () {
-              title == Constants.FAB_ROUTE_TITLE
+              title == I18N.fabRouteTitle
                   ? Navigator.pushNamed(context, RoutePaths.route)
                   : null;
             },

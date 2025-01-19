@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/search/search.dart';
+import 'package:urfu_navigator_mobile/i18n/strings.g.dart';
 
 enum EPointTypes {
   corridor,
@@ -71,31 +72,7 @@ class Constants {
   static const double PAINT_DOOR_STROKE_WIDTH = 5;
   static const double PAINT_SERVICE_STROKE_WIDTH = 5;
 
-  static const String FAB_CAMPUS_TITLE = 'Кампус';
-  static const String FAB_ROUTE_TITLE = 'Маршрут';
-
-  static const String SLIDER_HISTORY_TITLE = 'История';
-  static const String SLIDER_CATEGORY_TITLE = 'Категория';
-
-  static const String ROUTE_FOOD_TITLE = 'Еда и напитки';
-  static const String ROUTE_SOCIETY_PLACES_TITLE = 'Общественные места';
-  static const String ROUTE_SERVICES_TITLE = 'Услуги';
-  static const String ROUTE_ADMINISTRATION_TITLE = 'Администрация';
-
-  static const String ROUTE_CATEGORY_COFFEE_TITLE = 'Кофейня';
-  static const String ROUTE_CATEGORY_COFFEMACHINE_TITLE = 'Кофемашина';
-  static const String ROUTE_CATEGORY_VENDING_TITLE = 'Вендинг';
-  static const String ROUTE_CATEGORY_DINNING_TITLE = 'Столовая';
-  static const String ROUTE_CATEGORY_TOILETM_TITLE = 'Санузел (М)';
-  static const String ROUTE_CATEGORY_TOILETW_TITLE = 'Санузел (Ж)';
-  static const String ROUTE_CATEGORY_WARDEROB_TITLE = 'Гардероб';
-  static const String ROUTE_CATEGORY_COWORKING_TITLE = 'Коворкинг';
-  static const String ROUTE_CATEGORY_PRINT_TITLE = 'Печать';
-  static const String ROUTE_CATEGORY_WATERPUMP_TITLE = 'Водомат';
-  static const String ROUTE_CATEGORY_CHARGER_TITLE = 'Зарядка';
-  static const String ROUTE_CATEGORY_ATM_TITLE = 'Банкомат';
-  static const String ROUTE_CATEGORY_STUDENTS_TITLE = 'Союз студентов';
-  static const String ROUTE_CATEGORY_DEANERY_TITLE = 'Деканат';
+  static const String CACHED_SEARCH_LIST = "CACHED_SEARCH_LIST";
 
   static const String ROUTE_CATEGORY_COFFEE_INITIAL_VALUE = 'Кафе';
   static const String ROUTE_CATEGORY_COFFEMACHINE_INITIAL_VALUE = 'Кафе';
@@ -111,33 +88,55 @@ class Constants {
   static const String ROUTE_CATEGORY_ATM_INITIAL_VALUE = 'Банкомат';
   static const String ROUTE_CATEGORY_STUDENTS_INITIAL_VALUE = 'Союз студентов';
   static const String ROUTE_CATEGORY_DEANERY_INITIAL_VALUE = 'Деканат';
+}
 
-  static const String CACHED_SEARCH_LIST = 'CACHED_SEARCH_LIST';
+class I18N {
+  static String searchHint = t.SearchForAudiencesAndPlaces;
 
-  static const String OVERLAY_FEEDBACK_TITLE = 'Обратная связь';
-  static const String OVERLAY_FEEDBACK_SUBTITLE =
-      'Расскажите о своем опыте использования приложения';
-  static const String OVERLAY_REPORT_SUBTITLE =
-      'Сообщите об ошибках в работе приложения или неточностях в картах';
-  static const String OVERLAY_SETTINGS_TITLE = 'Настройки';
-  static const String OVERLAY_SETTINGS_SUBTITLE =
-      'Смена языка, персонализация, уведомления';
+  static String fabCampusTitle = t.Fab.CampusTitle;
+  static String fabRouteTitle = t.Fab.RouteTitle;
 
-  static const String SETTINGS_LANGUAGE_TITLE = 'Язык';
-  static const String SETTINGS_LANGUAGE_SUBTITLE = 'Выбор языка интерфейса';
+  static String sliderHistoryTitle = t.Slider.HistoryTitle;
+  static String sliderCategoryTitle = t.Slider.CategoryTitle;
 
-  static const String SETTINGS_PERSONALIZATION_TITLE = 'Персонализация';
-  static const String SETTINGS_PERSONALIZATION_SUBTITLE =
-      'Порядок институтов на главном экране, кампус по умолчанию';
+  static String routeFoodTitle = t.FoodTitle;
+  static String routeSocietyPlacesTitle = t.SocietyPlacesTitle;
+  static String routeServicesTitle = t.ServicesTitle;
+  static String routeAdministrationTitle = t.AdministrationTitle;
 
-  static const String SETTINGS_NOTIFICATION_TITLE = 'Уведомления';
-  static const String SETTINGS_NOTIFICATION_SUBTITLE =
-      'Напоминания о начале пары, уведомления о новостях';
+  static String routeCategoryCoffeeTitle = t.Category.CoffeeTitle;
+  static String routeCategoryCoffeemachineTitle = t.Category.CoffeemachineTitle;
+  static String routeCategoryVendingTitle = t.Category.VendingTitle;
+  static String routeCategoryDinningTitle = t.Category.DinningTitle;
+  static String routeCategoryToiletmTitle = t.Category.ToiletmTitle;
+  static String routeCategoryToiletwTitle = t.Category.ToiletwTitle;
+  static String routeCategoryWardrobeTitle = t.Category.WardrobeTitle;
+  static String routeCategoryCoworkingTitle = t.Category.CoworkingTitle;
+  static String routeCategoryPrintTitle = t.Category.PrintTitle;
+  static String routeCategoryWaterpumpTitle = t.Category.WaterpumpTitle;
+  static String routeCategoryChargerTitle = t.Category.ChargerTitle;
+  static String routeCategoryAtmTitle = t.Category.AtmTitle;
+  static String routeCategoryStudentsTitle = t.Category.StudentsTitle;
+  static String routeCategoryDeaneryTitle = t.Category.DeaneryTitle;
 
-  static const String SETTINGS_NEWS_TITLE = 'Новости';
-  static const String SETTINGS_NEWS_SUBTITLE = 'Выбор источников новостей';
+  static String overlayFeedbackTitle = t.FeedbackTitle;
+  static String overlayFeedbackSubtitle = t.FeedbackSubtitle;
+  static String overlayReportSubtitle = t.ReportSubtitle;
+  static String overlaySettingsSubtitle = t.SettingsSubtitle;
 
-  static const String REPORT_TITLE = 'Сообщить об ошибке';
+  static String settingsLanguageTitle = t.Settings;
+  static String settingsLanguageSubtitle = t.SettingsSubtitle;
+
+  static String settingsPersonalizationTitle = t.PersonalizationTitle;
+  static String settingsPersonalizationSubtitle = t.PersonalizationTitle;
+
+  static String settingsNotificationTitle = t.NotificationTitle;
+  static String settingsNotificationSubtitle = t.NotificationSubtitle;
+
+  static String settingsNewsTitle = t.NewsTitle;
+  static String settingsNewsSubtitle = t.NewsSubtitle;
+
+  static String reportTitle = t.ReportTitle;
 }
 
 class RoutePaths {

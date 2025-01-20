@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
@@ -73,6 +74,7 @@ class Constants {
   static const double PAINT_SERVICE_STROKE_WIDTH = 5;
 
   static const String CACHED_SEARCH_LIST = "CACHED_SEARCH_LIST";
+  static const String CACHED_LANGUAGE = "CACHED_LANGUAGE";
 
   static const String ROUTE_CATEGORY_COFFEE_INITIAL_VALUE = 'Кафе';
   static const String ROUTE_CATEGORY_COFFEMACHINE_INITIAL_VALUE = 'Кафе';
@@ -91,52 +93,82 @@ class Constants {
 }
 
 class I18N {
-  static String searchHint = t.SearchForAudiencesAndPlaces;
+  final BuildContext context;
+  I18N(this.context);
 
-  static String fabCampusTitle = t.Fab.CampusTitle;
-  static String fabRouteTitle = t.Fab.RouteTitle;
+  String get searchHint => Translations.of(context).SearchForAudiencesAndPlaces;
 
-  static String sliderHistoryTitle = t.Slider.HistoryTitle;
-  static String sliderCategoryTitle = t.Slider.CategoryTitle;
+  String get fabCampusTitle => Translations.of(context).Fab.CampusTitle;
+  String get fabRouteTitle => Translations.of(context).Fab.RouteTitle;
 
-  static String routeFoodTitle = t.FoodTitle;
-  static String routeSocietyPlacesTitle = t.SocietyPlacesTitle;
-  static String routeServicesTitle = t.ServicesTitle;
-  static String routeAdministrationTitle = t.AdministrationTitle;
+  String get sliderHistoryTitle => Translations.of(context).Slider.HistoryTitle;
+  String get sliderCategoryTitle =>
+      Translations.of(context).Slider.CategoryTitle;
 
-  static String routeCategoryCoffeeTitle = t.Category.CoffeeTitle;
-  static String routeCategoryCoffeemachineTitle = t.Category.CoffeemachineTitle;
-  static String routeCategoryVendingTitle = t.Category.VendingTitle;
-  static String routeCategoryDinningTitle = t.Category.DinningTitle;
-  static String routeCategoryToiletmTitle = t.Category.ToiletmTitle;
-  static String routeCategoryToiletwTitle = t.Category.ToiletwTitle;
-  static String routeCategoryWardrobeTitle = t.Category.WardrobeTitle;
-  static String routeCategoryCoworkingTitle = t.Category.CoworkingTitle;
-  static String routeCategoryPrintTitle = t.Category.PrintTitle;
-  static String routeCategoryWaterpumpTitle = t.Category.WaterpumpTitle;
-  static String routeCategoryChargerTitle = t.Category.ChargerTitle;
-  static String routeCategoryAtmTitle = t.Category.AtmTitle;
-  static String routeCategoryStudentsTitle = t.Category.StudentsTitle;
-  static String routeCategoryDeaneryTitle = t.Category.DeaneryTitle;
+  String get routeFromHint => Translations.of(context).From;
+  String get routeToHint => Translations.of(context).To;
+  String get routeFoodTitle => Translations.of(context).FoodTitle;
+  String get routeSocietyPlacesTitle =>
+      Translations.of(context).SocietyPlacesTitle;
+  String get routeServicesTitle => Translations.of(context).ServicesTitle;
+  String get routeAdministrationTitle =>
+      Translations.of(context).AdministrationTitle;
 
-  static String overlayFeedbackTitle = t.FeedbackTitle;
-  static String overlayFeedbackSubtitle = t.FeedbackSubtitle;
-  static String overlayReportSubtitle = t.ReportSubtitle;
-  static String overlaySettingsSubtitle = t.SettingsSubtitle;
+  String get routeCategoryCoffeeTitle =>
+      Translations.of(context).Category.CoffeeTitle;
+  String get routeCategoryCoffeemachineTitle =>
+      Translations.of(context).Category.CoffeemachineTitle;
+  String get routeCategoryVendingTitle =>
+      Translations.of(context).Category.VendingTitle;
+  String get routeCategoryDinningTitle =>
+      Translations.of(context).Category.DinningTitle;
+  String get routeCategoryToiletmTitle =>
+      Translations.of(context).Category.ToiletmTitle;
+  String get routeCategoryToiletwTitle =>
+      Translations.of(context).Category.ToiletwTitle;
+  String get routeCategoryWardrobeTitle =>
+      Translations.of(context).Category.WardrobeTitle;
+  String get routeCategoryCoworkingTitle =>
+      Translations.of(context).Category.CoworkingTitle;
+  String get routeCategoryPrintTitle =>
+      Translations.of(context).Category.PrintTitle;
+  String get routeCategoryWaterpumpTitle =>
+      Translations.of(context).Category.WaterpumpTitle;
+  String get routeCategoryChargerTitle =>
+      Translations.of(context).Category.ChargerTitle;
+  String get routeCategoryAtmTitle =>
+      Translations.of(context).Category.AtmTitle;
+  String get routeCategoryStudentsTitle =>
+      Translations.of(context).Category.StudentsTitle;
+  String get routeCategoryDeaneryTitle =>
+      Translations.of(context).Category.DeaneryTitle;
 
-  static String settingsLanguageTitle = t.Settings;
-  static String settingsLanguageSubtitle = t.SettingsSubtitle;
+  String get overlayFeedbackTitle => Translations.of(context).FeedbackTitle;
+  String get overlayFeedbackSubtitle =>
+      Translations.of(context).FeedbackSubtitle;
+  String get overlayReportSubtitle => Translations.of(context).ReportSubtitle;
+  String get overlaySettingsSubtitle =>
+      Translations.of(context).SettingsSubtitle;
 
-  static String settingsPersonalizationTitle = t.PersonalizationTitle;
-  static String settingsPersonalizationSubtitle = t.PersonalizationTitle;
+  String get settingsTitle => Translations.of(context).Settings;
+  String get settingsLanguageTitle => Translations.of(context).Language;
+  String get settingsLanguageSubtitle =>
+      Translations.of(context).SettingsSubtitle;
 
-  static String settingsNotificationTitle = t.NotificationTitle;
-  static String settingsNotificationSubtitle = t.NotificationSubtitle;
+  String get settingsPersonalizationTitle =>
+      Translations.of(context).PersonalizationTitle;
+  String get settingsPersonalizationSubtitle =>
+      Translations.of(context).PersonalizationTitle;
 
-  static String settingsNewsTitle = t.NewsTitle;
-  static String settingsNewsSubtitle = t.NewsSubtitle;
+  String get settingsNotificationTitle =>
+      Translations.of(context).NotificationTitle;
+  String get settingsNotificationSubtitle =>
+      Translations.of(context).NotificationSubtitle;
 
-  static String reportTitle = t.ReportTitle;
+  String get settingsNewsTitle => Translations.of(context).NewsTitle;
+  String get settingsNewsSubtitle => Translations.of(context).NewsSubtitle;
+
+  String get reportTitle => Translations.of(context).ReportTitle;
 }
 
 class RoutePaths {

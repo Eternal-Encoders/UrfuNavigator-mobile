@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                     right: 16,
                     child: RepaintBoundary(
                       child: FABWidgetExtended(
-                        title: I18N.fabRouteTitle,
+                        title: I18N(context).fabRouteTitle,
                         icon: Icons.explore_outlined,
                         backgroundColor: 0xffFAE2CF,
                         color: 0xFFE77011,
@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                     right: 16,
                     child: RepaintBoundary(
                       child: FABWidgetExtended(
-                        title: I18N.fabCampusTitle,
+                        title: I18N(context).fabCampusTitle,
                         icon: Icons.sync_outlined,
                         backgroundColor: 0xffFCFCFC,
                         color: 0xFF6D6D6D,

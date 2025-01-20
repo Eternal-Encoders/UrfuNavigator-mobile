@@ -65,7 +65,7 @@ class SearchField extends StatelessWidget {
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
-          hintText: I18N.searchHint,
+          hintText: I18N(context).searchHint,
           hintStyle: TextStyle(fontSize: 12, color: AppColors.accentGray),
           prefixIcon: Tooltip(
             message: 'Search',

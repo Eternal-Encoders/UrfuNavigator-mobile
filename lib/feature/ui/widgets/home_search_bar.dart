@@ -45,7 +45,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
-              hintText: I18N.searchHint,
+              hintText: I18N(context).searchHint,
               hintStyle: TextStyle(fontSize: 12, color: AppColors.accentGray),
               suffixIcon: Tooltip(
                 message: 'Profile',

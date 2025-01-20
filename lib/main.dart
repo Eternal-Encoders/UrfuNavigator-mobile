@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/home_page.dart';
 import 'package:urfu_navigator_mobile/feature/ui/pages/institute_page.dart';
@@ -19,19 +20,34 @@ import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/map_screen.dart';
 import 'package:urfu_navigator_mobile/i18n/strings.g.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart' as di;
+import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+late String? cachedLanguage;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocaleSettings.useDeviceLocale();
   await di.init();
+  await setUserLanguage();
   AndroidYandexMap.useAndroidViewSurface = false;
   //TODO: for debug uncomment:
   // debugRepaintRainbowEnabled = true;
   // debugRepaintTextRainbowEnabled = true;
   runApp(TranslationProvider(child: const MyApp()));
+}
+
+Future<void> setUserLanguage() async {
+  cachedLanguage = sl<SharedPreferences>().getString(Constants.CACHED_LANGUAGE);
+  if (cachedLanguage != null) {
+    cachedLanguage == AppLocale.en.toString()
+        ? await LocaleSettings.setLocale(AppLocale.en)
+        : await LocaleSettings.setLocale(AppLocale.ru);
+  } else {
+    // await LocaleSettings.setLocale(AppLocale.ru);
+    await sl<LocaleSettings>().useDeviceLocale();
+  }
 }
 
 class MyApp extends StatelessWidget {

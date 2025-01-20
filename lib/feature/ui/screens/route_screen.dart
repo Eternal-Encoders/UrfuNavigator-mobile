@@ -36,8 +36,8 @@ class _RouteScreenState extends State<RouteScreen> {
   final TextEditingController _toController = TextEditingController();
   late bool isActive;
   late bool isLoading;
-  final String hintFrom = 'Откуда';
-  final String hintTo = 'Куда';
+  late String hintFrom;
+  late String hintTo;
   InstituteArguments? fromInst = InstituteArguments(institute: null);
   InstituteArguments? toInst = InstituteArguments(institute: null);
   SearchList cachedSearchList = SearchList(searchs: List.empty(growable: true));
@@ -101,6 +101,8 @@ class _RouteScreenState extends State<RouteScreen> {
     var pathState = context.watch<PathBloc>().state;
     var areValuesFilled =
         _fromController.text.isNotEmpty && _toController.text.isNotEmpty;
+    hintFrom = I18N(context).routeFromHint;
+    hintTo = I18N(context).routeToHint;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,7 +321,7 @@ class _RouteScreenState extends State<RouteScreen> {
                       ),
                       child: SliderText(
                         screenSize: screenSize,
-                        title: I18N.sliderHistoryTitle,
+                        title: I18N(context).sliderHistoryTitle,
                         isActive: !isActive,
                       ),
                     ),
@@ -332,7 +334,7 @@ class _RouteScreenState extends State<RouteScreen> {
                       ),
                       child: SliderText(
                         screenSize: screenSize,
-                        title: I18N.sliderCategoryTitle,
+                        title: I18N(context).sliderCategoryTitle,
                         isActive: isActive,
                       ),
                     ),
@@ -353,7 +355,7 @@ class _RouteScreenState extends State<RouteScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            I18N.routeFoodTitle,
+                            I18N(context).routeFoodTitle,
                             style: TextStyle(
                                 color: AppColors.accentGray,
                                 fontSize: 14,
@@ -391,8 +393,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                         ),
                                         backgroundColor: Colors.transparent,
                                         avatar: SvgIcons.coffeeOrangeSvg,
-                                        label: Text(
-                                            I18N.routeCategoryCoffeeTitle)),
+                                        label: Text(I18N(context)
+                                            .routeCategoryCoffeeTitle)),
                                   ),
                                   SizedBox(
                                     height: 8,
@@ -420,8 +422,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                         ),
                                         backgroundColor: Colors.transparent,
                                         avatar: SvgIcons.vendingOrangeSvg,
-                                        label: Text(
-                                            I18N.routeCategoryVendingTitle)),
+                                        label: Text(I18N(context)
+                                            .routeCategoryVendingTitle)),
                                   ),
                                   SizedBox(
                                     height: 8,
@@ -449,8 +451,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                         ),
                                         backgroundColor: Colors.transparent,
                                         avatar: SvgIcons.dinningOrangeSvg,
-                                        label: Text(
-                                            I18N.routeCategoryDinningTitle)),
+                                        label: Text(I18N(context)
+                                            .routeCategoryDinningTitle)),
                                   ),
                                 ],
                               ),
@@ -468,7 +470,7 @@ class _RouteScreenState extends State<RouteScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            I18N.routeSocietyPlacesTitle,
+                            I18N(context).routeSocietyPlacesTitle,
                             style: TextStyle(
                                 color: AppColors.accentGray,
                                 fontSize: 14,
@@ -508,8 +510,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                           ),
                                           backgroundColor: Colors.transparent,
                                           avatar: SvgIcons.manGreenSvg,
-                                          label: Text(
-                                              I18N.routeCategoryToiletmTitle)),
+                                          label: Text(I18N(context)
+                                              .routeCategoryToiletmTitle)),
                                     ),
                                     SizedBox(
                                       height: 8,
@@ -537,8 +539,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                           ),
                                           backgroundColor: Colors.transparent,
                                           avatar: SvgIcons.womanGreenSvg,
-                                          label: Text(
-                                              I18N.routeCategoryToiletwTitle)),
+                                          label: Text(I18N(context)
+                                              .routeCategoryToiletwTitle)),
                                     ),
                                     SizedBox(
                                       height: 8,
@@ -566,8 +568,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                           ),
                                           backgroundColor: Colors.transparent,
                                           avatar: SvgIcons.wardrobeGreenSvg,
-                                          label: Text(
-                                              I18N.routeCategoryWardrobeTitle)),
+                                          label: Text(I18N(context)
+                                              .routeCategoryWardrobeTitle)),
                                     ),
                                   ],
                                 ),
@@ -604,7 +606,7 @@ class _RouteScreenState extends State<RouteScreen> {
                                             ),
                                             backgroundColor: Colors.transparent,
                                             avatar: SvgIcons.notebookGreenSvg,
-                                            label: Text(I18N
+                                            label: Text(I18N(context)
                                                 .routeCategoryCoworkingTitle)),
                                       ),
                                     ),
@@ -625,7 +627,7 @@ class _RouteScreenState extends State<RouteScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            I18N.routeServicesTitle,
+                            I18N(context).routeServicesTitle,
                             style: TextStyle(
                                 color: AppColors.accentGray,
                                 fontSize: 14,
@@ -665,8 +667,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                           ),
                                           backgroundColor: Colors.transparent,
                                           avatar: SvgIcons.printerBlueSvg,
-                                          label: Text(
-                                              I18N.routeCategoryPrintTitle)),
+                                          label: Text(I18N(context)
+                                              .routeCategoryPrintTitle)),
                                     ),
                                     // SizedBox(
                                     //   height: 8,
@@ -761,8 +763,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                           ),
                                           backgroundColor: Colors.transparent,
                                           avatar: SvgIcons.atmBlueSvg,
-                                          label:
-                                              Text(I18N.routeCategoryAtmTitle)),
+                                          label: Text(I18N(context)
+                                              .routeCategoryAtmTitle)),
                                     ),
                                   ],
                                 ),
@@ -781,7 +783,7 @@ class _RouteScreenState extends State<RouteScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            I18N.routeAdministrationTitle,
+                            I18N(context).routeAdministrationTitle,
                             style: TextStyle(
                                 color: AppColors.accentGray,
                                 fontSize: 14,
@@ -821,8 +823,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                           ),
                                           backgroundColor: Colors.transparent,
                                           avatar: SvgIcons.flagRedSvg,
-                                          label: Text(
-                                              I18N.routeCategoryStudentsTitle)),
+                                          label: Text(I18N(context)
+                                              .routeCategoryStudentsTitle)),
                                     ),
                                   ],
                                 ),
@@ -855,8 +857,8 @@ class _RouteScreenState extends State<RouteScreen> {
                                           ),
                                           backgroundColor: Colors.transparent,
                                           avatar: SvgIcons.toolsRedSvg,
-                                          label: Text(
-                                              I18N.routeCategoryDeaneryTitle)),
+                                          label: Text(I18N(context)
+                                              .routeCategoryDeaneryTitle)),
                                     ),
                                   ],
                                 ),

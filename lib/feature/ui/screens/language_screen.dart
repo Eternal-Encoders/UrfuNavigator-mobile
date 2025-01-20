@@ -1,9 +1,12 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/arrow_back.dart';
+import 'package:urfu_navigator_mobile/i18n/strings.g.dart';
+import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
-
-enum Language { russian, english }
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({super.key});
@@ -13,12 +16,21 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
-  Language? _language = Language.russian;
+  AppLocale? _language = sl<LocaleSettings>().currentLocale;
 
-  void setLanguage(Language? value) {
+  Future<void> setLanguage(AppLocale? value) async {
+    developer.log('selected language: $value');
+    sl<SharedPreferences>()
+        .setString(Constants.CACHED_LANGUAGE, value.toString());
+    value == AppLocale.ru
+        ? await sl<LocaleSettings>()
+            .setLocale(AppLocale.ru, listenToDeviceLocale: true)
+        : await sl<LocaleSettings>()
+            .setLocale(AppLocale.en, listenToDeviceLocale: true);
     setState(() {
       _language = value;
     });
+    developer.log('current language: ${sl<LocaleSettings>().currentLocale}');
   }
 
   @override
@@ -37,7 +49,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   height: 16,
                 ),
                 Text(
-                  'Язык',
+                  I18N(context).settingsLanguageTitle,
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 20,
@@ -77,14 +89,14 @@ class _LanguageScreenState extends State<LanguageScreen> {
                           padding: const EdgeInsets.all(0.0),
                           height: 24,
                           width: 24,
-                          child: Radio<Language>(
+                          child: Radio<AppLocale>(
                             activeColor: AppColors.accentGrayDark,
                             focusColor: AppColors.accentGrayDark,
                             fillColor: WidgetStateProperty.resolveWith<Color>(
                                 (Set<WidgetState> states) {
                               return AppColors.accentGrayDark;
                             }),
-                            value: Language.russian,
+                            value: AppLocale.ru,
                             groupValue: _language,
                             onChanged: setLanguage,
                           ),
@@ -116,14 +128,14 @@ class _LanguageScreenState extends State<LanguageScreen> {
                           padding: const EdgeInsets.all(0.0),
                           height: 24,
                           width: 24,
-                          child: Radio<Language>(
+                          child: Radio<AppLocale>(
                             activeColor: AppColors.accentGrayDark,
                             focusColor: AppColors.accentGrayDark,
                             fillColor: WidgetStateProperty.resolveWith<Color>(
                                 (Set<WidgetState> states) {
                               return AppColors.accentGrayDark;
                             }),
-                            value: Language.english,
+                            value: AppLocale.en,
                             groupValue: _language,
                             onChanged: setLanguage,
                           ),
@@ -171,7 +183,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
                                           child: Row(
                                             children: [
                                               Flexible(
-                                                child: Text(I18N.reportTitle),
+                                                child: Text(
+                                                    I18N(context).reportTitle),
                                               ),
                                             ],
                                           ),

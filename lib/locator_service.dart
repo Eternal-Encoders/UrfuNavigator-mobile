@@ -35,6 +35,7 @@ import 'package:urfu_navigator_mobile/feature/ui/bloc/institute/institute_bloc.d
 import 'package:urfu_navigator_mobile/feature/ui/bloc/institutes/institutes_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/path/path_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/search/search_bloc.dart';
+import 'package:urfu_navigator_mobile/i18n/strings.g.dart';
 
 final sl = GetIt.instance;
 
@@ -96,4 +97,5 @@ Future<void> init() async {
   sl.registerLazySingleton<http.Client>(() => http.Client());
   sl.registerLazySingleton<InternetConnectionChecker>(
       () => InternetConnectionChecker());
+  sl.registerLazySingleton<LocaleSettings>(() => LocaleSettings.instance);
 }

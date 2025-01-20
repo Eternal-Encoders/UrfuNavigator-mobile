@@ -29,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
                         height: 16,
                       ),
                       Text(
-                        'Настройки',
+                        I18N(context).settingsTitle,
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 20,
@@ -42,15 +42,15 @@ class SettingsScreen extends StatelessWidget {
                       ),
 
                       // SectionItemWidget(
-                      //   title: I18N.SETTINGS_NOTIFICATION_TITLE,
-                      //   subTitle: I18N.SETTINGS_NOTIFICATION_SUBTITLE,
+                      //   title: I18N(context).SETTINGS_NOTIFICATION_TITLE,
+                      //   subTitle: I18N(context).SETTINGS_NOTIFICATION_SUBTITLE,
                       //   icon: Icons.notifications_none_outlined,
                       //   handler: null,
                       //   hasDivider: false,
                       // ),
                       // SectionItemWidget(
-                      //   title: I18N.SETTINGS_NEWS_TITLE,
-                      //   subTitle: I18N.SETTINGS_NEWS_SUBTITLE,
+                      //   title: I18N(context).SETTINGS_NEWS_TITLE,
+                      //   subTitle: I18N(context).SETTINGS_NEWS_SUBTITLE,
                       //   icon: Icons.newspaper_outlined,
                       //   handler: null,
                       //   hasDivider: false,
@@ -119,8 +119,8 @@ class SettingsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SectionItemWidget(
-                        title: I18N.settingsLanguageTitle,
-                        subTitle: I18N.settingsLanguageSubtitle,
+                        title: I18N(context).settingsLanguageTitle,
+                        subTitle: I18N(context).settingsLanguageSubtitle,
                         icon: Icons.language_outlined,
                         handler: () => Navigator.pushNamed(
                           context,
@@ -133,8 +133,8 @@ class SettingsScreen extends StatelessWidget {
                         hasDivider: false,
                       ),
                       SectionItemWidget(
-                        title: I18N.settingsPersonalizationTitle,
-                        subTitle: I18N.settingsPersonalizationSubtitle,
+                        title: I18N(context).settingsPersonalizationTitle,
+                        subTitle: I18N(context).settingsPersonalizationSubtitle,
                         icon: Icons.auto_awesome_outlined,
                         handler: null,
                         hasDivider: false,

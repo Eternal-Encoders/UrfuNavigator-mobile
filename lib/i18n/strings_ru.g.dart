@@ -35,7 +35,7 @@ class TranslationsRu implements Translations {
 	// Translations
 	@override String get Wait => 'Подождите...';
 	@override String get To => 'Куда';
-	@override String get From => 'От';
+	@override String get From => 'Откуда';
 	@override String get SearchForAudiencesAndPlaces => 'Поиск аудиторий и мест';
 	@override String get Language => 'Язык';
 	@override String get Settings => 'Настройки';
@@ -139,7 +139,7 @@ extension on TranslationsRu {
 		switch (path) {
 			case 'Wait': return 'Подождите...';
 			case 'To': return 'Куда';
-			case 'From': return 'От';
+			case 'From': return 'Откуда';
 			case 'SearchForAudiencesAndPlaces': return 'Поиск аудиторий и мест';
 			case 'Language': return 'Язык';
 			case 'Settings': return 'Настройки';

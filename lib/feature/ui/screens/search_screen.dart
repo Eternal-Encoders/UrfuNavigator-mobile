@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
 import 'package:urfu_navigator_mobile/common/institute_colors.dart';
+import 'package:urfu_navigator_mobile/common/text_styles.dart';
 import 'package:urfu_navigator_mobile/feature/data/models/search/search.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/search/search_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
@@ -36,6 +37,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool isActive = false;
+  bool isHideRecent = false;
   SearchList cachedSearchList = SearchList(searchs: List.empty(growable: true));
   SearchList cachedAndRemoteSearchList =
       SearchList(searchs: List.empty(growable: true));
@@ -58,13 +60,17 @@ class _SearchScreenState extends State<SearchScreen> {
     log('widget.textFromRoute: ${widget.textFromRoute}');
     if (widget.textFromRoute != null) {
       _searchController.text = widget.textFromRoute!;
+      isHideRecent = true;
+    } else {
+      isHideRecent = false;
     }
 
     context.read<SearchBloc>().add(
           SearchEvent.fetch(
-            length: '20',
-            name:
-                _searchController.text.isEmpty ? 'Р-' : _searchController.text,
+            length: Constants.FETCH_SEARCH_LENGTH,
+            name: _searchController.text.isEmpty
+                ? Constants.FETCH_SEARCH_INITIAL_NAME
+                : _searchController.text,
           ),
         );
   }
@@ -74,6 +80,222 @@ class _SearchScreenState extends State<SearchScreen> {
     Size screenSize = MediaQuery.of(context).size;
     var state = context.watch<SearchBloc>().state;
 
+    var searchListItems = state.when(
+        loading: () => LoadingSearchListItemsWidget(
+              cachedSearchList: cachedSearchList,
+              screenSize: screenSize,
+              searchController: _searchController,
+              isHideRecent: isHideRecent,
+            ),
+        error: () => ErrorSearchListItemsWidget(
+            cachedSearchList: cachedSearchList,
+            screenSize: screenSize,
+            searchController: _searchController),
+        loaded: (SearchList searchLoaded) {
+          if (isHideRecent) {
+            cachedAndRemoteSearchList = searchLoaded;
+          } else {
+            cachedAndRemoteSearchList = cachedSearchList.copyWith();
+          }
+          if (cachedAndRemoteSearchList.searchs!.length >
+              Constants.CACHED_COUNT_OF_AUDIENCES) {
+            cachedAndRemoteSearchList.searchs!.removeRange(
+                Constants.CACHED_COUNT_OF_AUDIENCES,
+                cachedAndRemoteSearchList.searchs!.length);
+          }
+          WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+            context.read<SearchModel>().changeSearch(searchLoaded);
+          });
+          for (var element in searchLoaded.searchs!) {
+            if (!cachedAndRemoteSearchList.searchs!.contains((element))) {
+              cachedAndRemoteSearchList.searchs!.add(element);
+            }
+          }
+
+          return Expanded(
+            child: ListView.separated(
+              padding: EdgeInsets.zero,
+              itemCount: cachedAndRemoteSearchList.searchs!.length,
+              itemBuilder: (context, index) {
+                return SizedBox(
+                  height: 55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: switch (cachedAndRemoteSearchList
+                                    .searchs![index].institute) {
+                                  'ИРИТ-РТФ' => InstituteColors.iritrtfOutside,
+                                  'ГУК' => InstituteColors.gukOutside,
+                                  'УРАЛЭНИН' => InstituteColors.uraleninOutside,
+                                  'ИСА' => InstituteColors.isaOutside,
+                                  'ИНМИТ-ХТИ' => InstituteColors.inmitOutside,
+                                  'УГИ' => InstituteColors.ugiOutside,
+                                  _ => InstituteColors.defaultOutside,
+                                },
+                              ),
+                            ),
+                            Center(
+                              child: Container(
+                                width: 12,
+                                height: 12,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: switch (cachedAndRemoteSearchList
+                                      .searchs![index].institute) {
+                                    'ИРИТ-РТФ' => InstituteColors.iritrtfInside,
+                                    'ГУК' => InstituteColors.gukInside,
+                                    'УРАЛЭНИН' =>
+                                      InstituteColors.uraleninInside,
+                                    'ИСА' => InstituteColors.isaInside,
+                                    'ИНМИТ-ХТИ' => InstituteColors.inmitInside,
+                                    'УГИ' => InstituteColors.ugiInside,
+                                    _ => InstituteColors.defaultInside,
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      SizedBox(
+                        width: screenSize.width - 72 - 150,
+                        child: ListTile(
+                          title: Text(cachedAndRemoteSearchList
+                              .searchs![index].names![0]),
+                          onTap: () {
+                            if (context.read<SearchModel>().calledByEvent ==
+                                    EEvent.fromRoute ||
+                                context.read<SearchModel>().calledByEvent ==
+                                    EEvent.toRoute) {
+                              cachedListData ??= [];
+                              //if there is no same item
+                              if (!cachedListData!.contains(json.encode(
+                                  cachedAndRemoteSearchList.searchs![index]))) {
+                                //add to cache data
+                                cachedListData!.insert(
+                                    0,
+                                    (json.encode(cachedAndRemoteSearchList
+                                        .searchs![index])));
+                                sl<SharedPreferences>().setStringList(
+                                    Constants.CACHED_SEARCH_LIST,
+                                    cachedListData!);
+                              }
+                              deleteOldCachedData();
+                              Navigator.pop(
+                                context,
+                                InstituteArguments(
+                                  institute: context
+                                      .read<InstitutesModel>()
+                                      .institutes
+                                      .institutes!
+                                      .where((inst) =>
+                                          inst.name ==
+                                          cachedAndRemoteSearchList
+                                              .searchs![index].institute)
+                                      .first,
+                                  search:
+                                      cachedAndRemoteSearchList.searchs![index],
+                                ),
+                              );
+                            } else {
+                              context
+                                  .read<SearchModel>()
+                                  .changeEvent(EEvent.search);
+                              cachedListData ??= [];
+                              if (!cachedListData!.contains(json.encode(
+                                  cachedAndRemoteSearchList.searchs![index]))) {
+                                cachedListData!.insert(
+                                    0,
+                                    (json.encode(cachedAndRemoteSearchList
+                                        .searchs![index])));
+                                sl<SharedPreferences>().setStringList(
+                                    Constants.CACHED_SEARCH_LIST,
+                                    cachedListData!);
+                              }
+                              if (cachedListData!.length > 10) {
+                                cachedListData!
+                                    .removeAt(cachedListData!.length - 1);
+                                sl<SharedPreferences>().setStringList(
+                                    Constants.CACHED_SEARCH_LIST,
+                                    cachedListData!);
+                              }
+
+                              Navigator.pushReplacementNamed(
+                                context,
+                                RoutePaths.institute,
+                                arguments: InstituteArguments(
+                                    institute: context
+                                        .read<InstitutesModel>()
+                                        .institutes
+                                        .institutes!
+                                        .where((inst) =>
+                                            inst.name ==
+                                            cachedAndRemoteSearchList
+                                                .searchs![index].institute)
+                                        .first,
+                                    search: cachedAndRemoteSearchList
+                                        .searchs![index]),
+                              );
+                            }
+                            log('Selected: ${cachedAndRemoteSearchList.searchs![index].names![0]}');
+                            context.read<SearchModel>().changeSelectedQuery(
+                                cachedAndRemoteSearchList
+                                    .searchs![index].names![0]);
+                            _searchController.text = cachedAndRemoteSearchList
+                                .searchs![index].names![0];
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              cachedAndRemoteSearchList
+                                  .searchs![index].institute!,
+                              style: TextStyles.h5MedAccGray,
+                            ),
+                            Text(
+                                cachedAndRemoteSearchList
+                                            .searchs![index].names!.length >
+                                        1
+                                    ? cachedAndRemoteSearchList
+                                        .searchs![index].names![1]
+                                    : '',
+                                style: TextStyles.h4MedAccGrayDark),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(
+                  indent: 57,
+                  endIndent: 16,
+                  thickness: 0.3,
+                  height: 1,
+                );
+              },
+            ),
+          );
+        });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -93,11 +315,19 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           child: TextField(
             onChanged: (String value) {
+              if (value.isNotEmpty) {
+                isHideRecent = true;
+              } else {
+                isHideRecent = false;
+              }
+
               print('value: $value');
               context.read<SearchBloc>().add(
                     SearchEvent.fetch(
-                      length: '6',
-                      name: value.isEmpty ? 'Р-' : value,
+                      length: Constants.FETCH_SEARCH_LENGTH_WHILE_TYPING,
+                      name: value.isEmpty
+                          ? Constants.FETCH_SEARCH_INITIAL_NAME
+                          : value,
                     ),
                   );
             },
@@ -135,322 +365,106 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
-        SizedBox(
-          height: 16,
-        ),
-        Text(
-          I18N(context).searchRecent,
-          style: TextStyle(
-              color: AppColors.accentGrayDark,
-              fontFamily: 'Roboto',
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
-          maxLines: 1,
-        ),
+        //Блок поиска item's
+        isHideRecent
+            ? Container()
+            : Column(
+                children: [
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Text(
+                    I18N(context).searchRecent,
+                    style: TextStyle(
+                        color: AppColors.accentGrayDark,
+                        fontFamily: 'Roboto',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500),
+                    maxLines: 1,
+                  ),
+                ],
+              ),
         SizedBox(
           height: 16,
         ),
         Expanded(
           child: Column(
             children: [
-              isActive
-                  ? state.when(
-                      loading: () => Expanded(
-                            child: Column(
-                              children: [
-                                (cachedSearchList.searchs!.isNotEmpty)
-                                    ? AudiencesCachedList(
-                                        cachedSearchList:
-                                            cachedSearchList.copyWith(),
-                                        screenSize: screenSize,
-                                        searchController: _searchController)
-                                    : Container(),
-                                DefaultLoadingIndicator(),
-                              ],
-                            ),
-                          ),
-                      error: () => Expanded(
-                            child: Column(
-                              children: [
-                                (cachedSearchList.searchs!.isNotEmpty)
-                                    ? AudiencesCachedList(
-                                        cachedSearchList:
-                                            cachedSearchList.copyWith(),
-                                        screenSize: screenSize,
-                                        searchController: _searchController)
-                                    : Container(),
-                                DefaultErrorMessage(),
-                              ],
-                            ),
-                          ),
-                      loaded: (SearchList searchLoaded) {
-                        cachedAndRemoteSearchList = cachedSearchList.copyWith();
-                        if (cachedAndRemoteSearchList.searchs!.length > 5) {
-                          cachedAndRemoteSearchList.searchs!.removeRange(
-                              5, cachedAndRemoteSearchList.searchs!.length);
-                        }
-                        WidgetsBinding.instance
-                            .addPostFrameCallback((Duration timeStamp) {
-                          context
-                              .read<SearchModel>()
-                              .changeSearch(searchLoaded);
-                        });
-                        for (var element in searchLoaded.searchs!) {
-                          if (!cachedAndRemoteSearchList.searchs!
-                              .contains((element))) {
-                            cachedAndRemoteSearchList.searchs!.add(element);
-                          }
-                        }
-
-                        return Expanded(
-                          child: ListView.separated(
-                            padding: EdgeInsets.zero,
-                            itemCount:
-                                cachedAndRemoteSearchList.searchs!.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                height: 55,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: switch (
-                                                  cachedAndRemoteSearchList
-                                                      .searchs![index]
-                                                      .institute) {
-                                                'ИРИТ-РТФ' => InstituteColors
-                                                    .iritrtfOutside,
-                                                'ГУК' =>
-                                                  InstituteColors.gukOutside,
-                                                'УРАЛЭНИН' => InstituteColors
-                                                    .uraleninOutside,
-                                                'ИСА' =>
-                                                  InstituteColors.isaOutside,
-                                                'ИНМИТ-ХТИ' =>
-                                                  InstituteColors.inmitOutside,
-                                                'УГИ' =>
-                                                  InstituteColors.ugiOutside,
-                                                _ => InstituteColors
-                                                    .defaultOutside,
-                                              },
-                                            ),
-                                          ),
-                                          Center(
-                                            child: Container(
-                                              width: 12,
-                                              height: 12,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: switch (
-                                                    cachedAndRemoteSearchList
-                                                        .searchs![index]
-                                                        .institute) {
-                                                  'ИРИТ-РТФ' => InstituteColors
-                                                      .iritrtfInside,
-                                                  'ГУК' =>
-                                                    InstituteColors.gukInside,
-                                                  'УРАЛЭНИН' => InstituteColors
-                                                      .uraleninInside,
-                                                  'ИСА' =>
-                                                    InstituteColors.isaInside,
-                                                  'ИНМИТ-ХТИ' =>
-                                                    InstituteColors.inmitInside,
-                                                  'УГИ' =>
-                                                    InstituteColors.ugiInside,
-                                                  _ => InstituteColors
-                                                      .defaultInside,
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    SizedBox(
-                                      width: screenSize.width -
-                                          72 -
-                                          (cachedAndRemoteSearchList
-                                                      .searchs![index]
-                                                      .names!
-                                                      .length >
-                                                  1
-                                              ? cachedAndRemoteSearchList
-                                                          .searchs![index]
-                                                          .names![1]
-                                                          .length >
-                                                      15
-                                                  ? 100
-                                                  : 50
-                                              : 50),
-                                      child: ListTile(
-                                        title: Text(cachedAndRemoteSearchList
-                                            .searchs![index].names![0]),
-                                        onTap: () {
-                                          if (context
-                                                      .read<SearchModel>()
-                                                      .calledByEvent ==
-                                                  EEvent.fromRoute ||
-                                              context
-                                                      .read<SearchModel>()
-                                                      .calledByEvent ==
-                                                  EEvent.toRoute) {
-                                            cachedListData ??= [];
-                                            if (!cachedListData!.contains(
-                                                json.encode(
-                                                    cachedAndRemoteSearchList
-                                                        .searchs![index]))) {
-                                              cachedListData!.insert(
-                                                  0,
-                                                  (json.encode(
-                                                      cachedAndRemoteSearchList
-                                                          .searchs![index])));
-                                              sl<SharedPreferences>()
-                                                  .setStringList(
-                                                      Constants
-                                                          .CACHED_SEARCH_LIST,
-                                                      cachedListData!);
-                                            }
-                                            if (cachedListData!.length > 10) {
-                                              cachedListData!.removeAt(
-                                                  cachedListData!.length - 1);
-                                              sl<SharedPreferences>()
-                                                  .setStringList(
-                                                      Constants
-                                                          .CACHED_SEARCH_LIST,
-                                                      cachedListData!);
-                                            }
-                                            Navigator.pop(
-                                              context,
-                                              InstituteArguments(
-                                                institute: context
-                                                    .read<InstitutesModel>()
-                                                    .institutes
-                                                    .institutes!
-                                                    .where((inst) =>
-                                                        inst.name ==
-                                                        cachedAndRemoteSearchList
-                                                            .searchs![index]
-                                                            .institute)
-                                                    .first,
-                                                search:
-                                                    cachedAndRemoteSearchList
-                                                        .searchs![index],
-                                              ),
-                                            );
-                                          } else {
-                                            context
-                                                .read<SearchModel>()
-                                                .changeEvent(EEvent.search);
-                                            cachedListData ??= [];
-                                            if (!cachedListData!.contains(
-                                                json.encode(
-                                                    cachedAndRemoteSearchList
-                                                        .searchs![index]))) {
-                                              cachedListData!.insert(
-                                                  0,
-                                                  (json.encode(
-                                                      cachedAndRemoteSearchList
-                                                          .searchs![index])));
-                                              sl<SharedPreferences>()
-                                                  .setStringList(
-                                                      Constants
-                                                          .CACHED_SEARCH_LIST,
-                                                      cachedListData!);
-                                            }
-                                            if (cachedListData!.length > 10) {
-                                              cachedListData!.removeAt(
-                                                  cachedListData!.length - 1);
-                                              sl<SharedPreferences>()
-                                                  .setStringList(
-                                                      Constants
-                                                          .CACHED_SEARCH_LIST,
-                                                      cachedListData!);
-                                            }
-
-                                            Navigator.pushReplacementNamed(
-                                              context,
-                                              RoutePaths.institute,
-                                              arguments: InstituteArguments(
-                                                  institute: context
-                                                      .read<InstitutesModel>()
-                                                      .institutes
-                                                      .institutes!
-                                                      .where((inst) =>
-                                                          inst.name ==
-                                                          cachedAndRemoteSearchList
-                                                              .searchs![index]
-                                                              .institute)
-                                                      .first,
-                                                  search:
-                                                      cachedAndRemoteSearchList
-                                                          .searchs![index]),
-                                            );
-                                          }
-                                          log('Selected: ${cachedAndRemoteSearchList.searchs![index].names![0]}');
-                                          context
-                                              .read<SearchModel>()
-                                              .changeSelectedQuery(
-                                                  cachedAndRemoteSearchList
-                                                      .searchs![index]
-                                                      .names![0]);
-                                          _searchController.text =
-                                              cachedAndRemoteSearchList
-                                                  .searchs![index].names![0];
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(cachedAndRemoteSearchList
-                                              .searchs![index].institute!),
-                                          Text(cachedAndRemoteSearchList
-                                                      .searchs![index]
-                                                      .names!
-                                                      .length >
-                                                  1
-                                              ? cachedAndRemoteSearchList
-                                                  .searchs![index].names![1]
-                                              : ''),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return Divider(
-                                indent: 57,
-                                endIndent: 16,
-                                thickness: 0.3,
-                                height: 1,
-                              );
-                            },
-                          ),
-                        );
-                      })
-                  : Container(),
+              isActive ? searchListItems : Container(),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  void deleteOldCachedData() {
+    if (cachedListData!.length > 10) {
+      cachedListData!.removeAt(cachedListData!.length - 1);
+      sl<SharedPreferences>()
+          .setStringList(Constants.CACHED_SEARCH_LIST, cachedListData!);
+    }
+  }
+}
+
+class ErrorSearchListItemsWidget extends StatelessWidget {
+  const ErrorSearchListItemsWidget({
+    super.key,
+    required this.cachedSearchList,
+    required this.screenSize,
+    required TextEditingController searchController,
+  }) : _searchController = searchController;
+
+  final SearchList cachedSearchList;
+  final Size screenSize;
+  final TextEditingController _searchController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          (cachedSearchList.searchs!.isNotEmpty)
+              ? AudiencesCachedList(
+                  cachedSearchList: cachedSearchList.copyWith(),
+                  screenSize: screenSize,
+                  searchController: _searchController)
+              : Container(),
+          DefaultErrorMessage(),
+        ],
+      ),
+    );
+  }
+}
+
+class LoadingSearchListItemsWidget extends StatelessWidget {
+  const LoadingSearchListItemsWidget({
+    super.key,
+    required this.cachedSearchList,
+    required this.screenSize,
+    required TextEditingController searchController,
+    required this.isHideRecent,
+  }) : _searchController = searchController;
+
+  final SearchList cachedSearchList;
+  final Size screenSize;
+  final TextEditingController _searchController;
+  final bool isHideRecent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          (cachedSearchList.searchs!.isNotEmpty && !isHideRecent)
+              ? AudiencesCachedList(
+                  cachedSearchList: cachedSearchList.copyWith(),
+                  screenSize: screenSize,
+                  searchController: _searchController)
+              : Container(),
+          DefaultLoadingIndicator(),
+        ],
+      ),
     );
   }
 }

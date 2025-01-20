@@ -64,6 +64,10 @@ class Constants {
   static const String API_PATH_PATH = 'api/path';
   static const String API_PATH_SEARCH = 'api/search';
 
+  static const String FETCH_SEARCH_LENGTH = '20';
+  static const String FETCH_SEARCH_LENGTH_WHILE_TYPING = '6';
+  static const String FETCH_SEARCH_INITIAL_NAME = 'Р-';
+
   static const double CANVAS_SCALE = 0.15;
   static const double CANVAS_SVG_SCALE = 1;
   static const double CANVAS_TEXT_OFFSET_RATIO = 0.8;
@@ -72,6 +76,8 @@ class Constants {
   static const double PAINT_ROUTE_STROKE_WIDTH = 10;
   static const double PAINT_DOOR_STROKE_WIDTH = 5;
   static const double PAINT_SERVICE_STROKE_WIDTH = 5;
+
+  static const int CACHED_COUNT_OF_AUDIENCES = 5;
 
   static const String CACHED_SEARCH_LIST = "CACHED_SEARCH_LIST";
   static const String CACHED_LANGUAGE = "CACHED_LANGUAGE";

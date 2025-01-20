@@ -38,6 +38,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 
 	// Translations
 	String get Wait => 'Wait...';
+	String get Recent => 'Recent';
 	String get To => 'To';
 	String get From => 'From';
 	String get SearchForAudiencesAndPlaces => 'Search for audiences and places';
@@ -142,6 +143,7 @@ extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
 			case 'Wait': return 'Wait...';
+			case 'Recent': return 'Recent';
 			case 'To': return 'To';
 			case 'From': return 'From';
 			case 'SearchForAudiencesAndPlaces': return 'Search for audiences and places';

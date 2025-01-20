@@ -139,7 +139,7 @@ class _SearchScreenState extends State<SearchScreen> {
           height: 16,
         ),
         Text(
-          'Недавние',
+          I18N(context).searchRecent,
           style: TextStyle(
               color: AppColors.accentGrayDark,
               fontFamily: 'Roboto',

@@ -97,6 +97,7 @@ class I18N {
   I18N(this.context);
 
   String get searchHint => Translations.of(context).SearchForAudiencesAndPlaces;
+  String get searchRecent => Translations.of(context).Recent;
 
   String get fabCampusTitle => Translations.of(context).Fab.CampusTitle;
   String get fabRouteTitle => Translations.of(context).Fab.RouteTitle;

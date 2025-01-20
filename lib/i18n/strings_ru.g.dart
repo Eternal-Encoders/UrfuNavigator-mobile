@@ -34,6 +34,7 @@ class TranslationsRu implements Translations {
 
 	// Translations
 	@override String get Wait => 'Подождите...';
+	@override String get Recent => 'Недавние';
 	@override String get To => 'Куда';
 	@override String get From => 'Откуда';
 	@override String get SearchForAudiencesAndPlaces => 'Поиск аудиторий и мест';
@@ -138,6 +139,7 @@ extension on TranslationsRu {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
 			case 'Wait': return 'Подождите...';
+			case 'Recent': return 'Недавние';
 			case 'To': return 'Куда';
 			case 'From': return 'Откуда';
 			case 'SearchForAudiencesAndPlaces': return 'Поиск аудиторий и мест';

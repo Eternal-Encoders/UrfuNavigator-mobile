@@ -5,7 +5,6 @@ import 'package:urfu_navigator_mobile/feature/ui/bloc/floor/floor_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/bloc/path/path_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/screens/institute_screen.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_extended.dart';
-import 'package:urfu_navigator_mobile/feature/ui/widgets/fab_small.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/floors_navigation.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/institute_search.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart';
@@ -61,25 +60,25 @@ class InstitutePage extends StatelessWidget {
                           ),
                         ),
                       )),
-                  Positioned(
-                      bottom: 96,
-                      left: 16,
-                      child: RepaintBoundary(
-                        child: Theme(
-                          data: Theme.of(context).copyWith(
-                            colorScheme: ColorScheme.fromSeed(
-                                seedColor: AppColors.accentBlue,
-                                onPrimary: AppColors.accentBlueDark),
-                          ),
-                          child: const FABWidgetSmall(
-                            title: 'Инфо',
-                            icon: Icons.info_outline_rounded,
-                            backgroundColor: 0xffFCFCFC,
-                            color: 0xFF6D6D6D,
-                            semanticLabel: 'Информация об университете',
-                          ),
-                        ),
-                      )),
+                  // Positioned(
+                  //     bottom: 96,
+                  //     left: 16,
+                  //     child: RepaintBoundary(
+                  //       child: Theme(
+                  //         data: Theme.of(context).copyWith(
+                  //           colorScheme: ColorScheme.fromSeed(
+                  //               seedColor: AppColors.accentBlue,
+                  //               onPrimary: AppColors.accentBlueDark),
+                  //         ),
+                  //         child: const FABWidgetSmall(
+                  //           title: 'Инфо',
+                  //           icon: Icons.info_outline_rounded,
+                  //           backgroundColor: 0xffFCFCFC,
+                  //           color: 0xFF6D6D6D,
+                  //           semanticLabel: 'Информация об университете',
+                  //         ),
+                  //       ),
+                  //     )),
                   Positioned(
                       bottom: 160,
                       left: 16,

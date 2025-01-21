@@ -42,6 +42,8 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
   @override
   Widget build(BuildContext context) {
     final bool hasZeroFloor = widget.data.institute!.minFloor == 0;
+    final bool hasOneNegativeFloor = widget.data.institute!.minFloor == -1;
+    final int withOneNegativeFloor = widget.data.institute!.maxFloor! + 2;
     final int withZeroFloor = widget.data.institute!.maxFloor! + 1;
     final int withoutZeroFloor = widget.data.institute!.maxFloor!;
     if (context.read<SearchModel>().calledByEvent == EEvent.search) {
@@ -52,14 +54,23 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
           context.read<SearchModel>().fromFloor;
     }
     if (_selectedIndex == -1) {
-      _selectedIndex = hasZeroFloor ? withZeroFloor - 2 : withoutZeroFloor - 1;
+      if (hasOneNegativeFloor) {
+        _selectedIndex = withOneNegativeFloor - 3;
+      } else {
+        _selectedIndex =
+            hasZeroFloor ? withZeroFloor - 2 : withoutZeroFloor - 1;
+      }
     }
     return Container(
       clipBehavior: Clip.antiAlias,
       width: 44,
-      height:
-          (hasZeroFloor ? withZeroFloor : withoutZeroFloor) * _floorsHeight +
-              _constraints,
+      height: (hasZeroFloor
+                  ? withZeroFloor
+                  : hasOneNegativeFloor
+                      ? withOneNegativeFloor
+                      : withoutZeroFloor) *
+              _floorsHeight +
+          _constraints,
       decoration: BoxDecoration(
         color: AppColors.mainWhiteLight,
         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -75,11 +86,16 @@ class _FloorsNavigationState extends State<FloorsNavigation> {
       child: RepaintBoundary(
           child: NavigationRail(
         destinations: List<int>.generate(
-                hasZeroFloor ? withZeroFloor : withoutZeroFloor,
-                (int index) => hasZeroFloor ? index : index + 1)
-            .reversed
-            .toList()
-            .map((floor) {
+            hasZeroFloor
+                ? withZeroFloor
+                : hasOneNegativeFloor
+                    ? withOneNegativeFloor
+                    : withoutZeroFloor,
+            (int index) => hasZeroFloor
+                ? index
+                : hasOneNegativeFloor
+                    ? index - 1
+                    : index + 1).reversed.toList().map((floor) {
           return NavigationRailDestination(
             icon: RepaintBoundary(
               child: Text('$floor'),

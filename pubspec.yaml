@@ -1,7 +1,7 @@
 name: urfu_navigator_mobile
 description: "The flutter project for urfu_navigator"
 publish_to: 'none'
-version: 0.4.3
+version: 0.4.4
 
 environment:
   sdk: ^3.5.3

@@ -78,7 +78,7 @@ class OverlayProfile extends StatelessWidget {
                 hasDivider: true,
               ),
               SectionItemWidget(
-                title: I18N(context).settingsLanguageTitle,
+                title: I18N(context).settingsTitle,
                 subTitle: I18N(context).overlaySettingsSubtitle,
                 icon: Icons.settings_outlined,
                 hasDivider: true,

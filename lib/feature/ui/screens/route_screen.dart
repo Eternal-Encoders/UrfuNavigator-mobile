@@ -36,6 +36,7 @@ class _RouteScreenState extends State<RouteScreen> {
   final TextEditingController _toController = TextEditingController();
   late bool isActive;
   late bool isLoading;
+  late bool areValuesFilled;
   late String hintFrom;
   late String hintTo;
   InstituteArguments? fromInst = InstituteArguments(institute: null);
@@ -48,6 +49,7 @@ class _RouteScreenState extends State<RouteScreen> {
     super.initState();
     isActive = true;
     isLoading = false;
+    areValuesFilled = false;
 
     cachedListData =
         sl<SharedPreferences>().getStringList(Constants.CACHED_SEARCH_LIST);
@@ -97,6 +99,9 @@ class _RouteScreenState extends State<RouteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (fromInst!.search != null) {
+      print(fromInst!.search!.names![0]);
+    }
     Size screenSize = MediaQuery.of(context).size;
     var pathState = context.watch<PathBloc>().state;
     var areValuesFilled =
@@ -278,10 +283,13 @@ class _RouteScreenState extends State<RouteScreen> {
                           String temp = _fromController.text;
                           _fromController.text = _toController.text;
                           _toController.text = temp;
-                          var data = context.read<SearchModel>();
-                          int tempFloor = data.fromFloor;
-                          data.setFromFloor(data.toFloor);
-                          data.setToFloor(tempFloor);
+                          var temp2 = context.read<SearchModel>();
+                          int tempFloor = temp2.fromFloor;
+                          temp2.setFromFloor(temp2.toFloor);
+                          temp2.setToFloor(tempFloor);
+                          var temp3 = fromInst!;
+                          fromInst = toInst!;
+                          toInst = temp3;
                         },
                         icon: Icon(
                           Icons.compare_arrows_outlined,
@@ -357,250 +365,40 @@ class _RouteScreenState extends State<RouteScreen> {
           isActive
               ? Column(
                   children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            I18N(context).routeFoodTitle,
-                            style: TextStyle(
-                                color: AppColors.accentGray,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
+                              Text(
+                                I18N(context).routeFoodTitle,
+                                style: TextStyle(
+                                    color: AppColors.accentGray,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
-                                    height: 34,
-                                    child: ActionChip(
-                                        onPressed: () async {
-                                          setField(Constants
-                                              .ROUTE_CATEGORY_COFFEE_INITIAL_VALUE);
-                                        },
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 5),
-                                        labelStyle: TextStyles.h3MedOrange,
-                                        clipBehavior: Clip.antiAlias,
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                            color:
-                                                AppColors.secondPaleGrayLight,
-                                            width: 1,
-                                            style: BorderStyle.solid,
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                        ),
-                                        backgroundColor: Colors.transparent,
-                                        avatar: SvgIcons.coffeeOrangeSvg,
-                                        label: Text(I18N(context)
-                                            .routeCategoryCoffeeTitle)),
-                                  ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  SizedBox(
-                                    height: 34,
-                                    child: ActionChip(
-                                        onPressed: () async {
-                                          setField(Constants
-                                              .ROUTE_CATEGORY_VENDING_INITIAL_VALUE);
-                                        },
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 5),
-                                        labelStyle: TextStyles.h3MedOrange,
-                                        clipBehavior: Clip.antiAlias,
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                            color:
-                                                AppColors.secondPaleGrayLight,
-                                            width: 1,
-                                            style: BorderStyle.solid,
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                        ),
-                                        backgroundColor: Colors.transparent,
-                                        avatar: SvgIcons.vendingOrangeSvg,
-                                        label: Text(I18N(context)
-                                            .routeCategoryVendingTitle)),
-                                  ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  SizedBox(
-                                    height: 34,
-                                    child: ActionChip(
-                                        onPressed: () async {
-                                          setField(Constants
-                                              .ROUTE_CATEGORY_DINNING_INITIAL_VALUE);
-                                        },
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 5),
-                                        labelStyle: TextStyles.h3MedOrange,
-                                        clipBehavior: Clip.antiAlias,
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                            color:
-                                                AppColors.secondPaleGrayLight,
-                                            width: 1,
-                                            style: BorderStyle.solid,
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                        ),
-                                        backgroundColor: Colors.transparent,
-                                        avatar: SvgIcons.dinningOrangeSvg,
-                                        label: Text(I18N(context)
-                                            .routeCategoryDinningTitle)),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            I18N(context).routeSocietyPlacesTitle,
-                            style: TextStyle(
-                                color: AppColors.accentGray,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: screenSize.width * 0.45,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 34,
-                                      child: ActionChip(
-                                          onPressed: () async {
-                                            setField(Constants
-                                                .ROUTE_CATEGORY_TOILETM_INITIAL_VALUE);
-                                          },
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 5),
-                                          labelStyle: TextStyles.h3MedGreen,
-                                          clipBehavior: Clip.antiAlias,
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              color:
-                                                  AppColors.secondPaleGrayLight,
-                                              width: 1,
-                                              style: BorderStyle.solid,
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          backgroundColor: Colors.transparent,
-                                          avatar: SvgIcons.manGreenSvg,
-                                          label: Text(I18N(context)
-                                              .routeCategoryToiletmTitle)),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    SizedBox(
-                                      height: 34,
-                                      child: ActionChip(
-                                          onPressed: () async {
-                                            setField(Constants
-                                                .ROUTE_CATEGORY_TOILETW_INITIAL_VALUE);
-                                          },
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 5),
-                                          labelStyle: TextStyles.h3MedGreen,
-                                          clipBehavior: Clip.antiAlias,
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              color:
-                                                  AppColors.secondPaleGrayLight,
-                                              width: 1,
-                                              style: BorderStyle.solid,
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          backgroundColor: Colors.transparent,
-                                          avatar: SvgIcons.womanGreenSvg,
-                                          label: Text(I18N(context)
-                                              .routeCategoryToiletwTitle)),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    SizedBox(
-                                      height: 34,
-                                      child: ActionChip(
-                                          onPressed: () async {
-                                            setField(Constants
-                                                .ROUTE_CATEGORY_WARDEROB_INITIAL_VALUE);
-                                          },
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 5),
-                                          labelStyle: TextStyles.h3MedGreen,
-                                          clipBehavior: Clip.antiAlias,
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              color:
-                                                  AppColors.secondPaleGrayLight,
-                                              width: 1,
-                                              style: BorderStyle.solid,
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          backgroundColor: Colors.transparent,
-                                          avatar: SvgIcons.wardrobeGreenSvg,
-                                          label: Text(I18N(context)
-                                              .routeCategoryWardrobeTitle)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: screenSize.width * 0.45,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {},
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      child: SizedBox(
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
                                         height: 34,
                                         child: ActionChip(
                                             onPressed: () async {
                                               setField(Constants
-                                                  .ROUTE_CATEGORY_COWORKING_INITIAL_VALUE);
+                                                  .ROUTE_CATEGORY_COFFEE_INITIAL_VALUE);
                                             },
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 16, vertical: 5),
-                                            labelStyle: TextStyles.h3MedGreen,
+                                            labelStyle: TextStyles.h3MedOrange,
                                             clipBehavior: Clip.antiAlias,
                                             shape: RoundedRectangleBorder(
                                               side: BorderSide(
@@ -613,272 +411,541 @@ class _RouteScreenState extends State<RouteScreen> {
                                                   Radius.circular(20)),
                                             ),
                                             backgroundColor: Colors.transparent,
-                                            avatar: SvgIcons.notebookGreenSvg,
+                                            avatar: SvgIcons.coffeeOrangeSvg,
                                             label: Text(I18N(context)
-                                                .routeCategoryCoworkingTitle)),
+                                                .routeCategoryCoffeeTitle)),
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      SizedBox(
+                                        height: 34,
+                                        child: ActionChip(
+                                            onPressed: () async {
+                                              setField(Constants
+                                                  .ROUTE_CATEGORY_VENDING_INITIAL_VALUE);
+                                            },
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 5),
+                                            labelStyle: TextStyles.h3MedOrange,
+                                            clipBehavior: Clip.antiAlias,
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                color: AppColors
+                                                    .secondPaleGrayLight,
+                                                width: 1,
+                                                style: BorderStyle.solid,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                            ),
+                                            backgroundColor: Colors.transparent,
+                                            avatar: SvgIcons.vendingOrangeSvg,
+                                            label: Text(I18N(context)
+                                                .routeCategoryVendingTitle)),
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      SizedBox(
+                                        height: 34,
+                                        child: ActionChip(
+                                            onPressed: () async {
+                                              setField(Constants
+                                                  .ROUTE_CATEGORY_DINNING_INITIAL_VALUE);
+                                            },
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 5),
+                                            labelStyle: TextStyles.h3MedOrange,
+                                            clipBehavior: Clip.antiAlias,
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                color: AppColors
+                                                    .secondPaleGrayLight,
+                                                width: 1,
+                                                style: BorderStyle.solid,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                            ),
+                                            backgroundColor: Colors.transparent,
+                                            avatar: SvgIcons.dinningOrangeSvg,
+                                            label: Text(I18N(context)
+                                                .routeCategoryDinningTitle)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            I18N(context).routeServicesTitle,
-                            style: TextStyle(
-                                color: AppColors.accentGray,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Text(
+                                I18N(context).routeSocietyPlacesTitle,
+                                style: TextStyle(
+                                    color: AppColors.accentGray,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
                               SizedBox(
-                                width: screenSize.width * 0.45,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 34,
-                                      child: ActionChip(
-                                          onPressed: () async {
-                                            setField(Constants
-                                                .ROUTE_CATEGORY_PRINT_INITIAL_VALUE);
-                                          },
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 5),
-                                          labelStyle: TextStyles.h3MedBlue,
-                                          clipBehavior: Clip.antiAlias,
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              color:
-                                                  AppColors.secondPaleGrayLight,
-                                              width: 1,
-                                              style: BorderStyle.solid,
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
+                                height: 8,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: screenSize.width * 0.45,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 34,
+                                          child: ActionChip(
+                                              onPressed: () async {
+                                                setField(Constants
+                                                    .ROUTE_CATEGORY_TOILETM_INITIAL_VALUE);
+                                              },
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16, vertical: 5),
+                                              labelStyle: TextStyles.h3MedGreen,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: AppColors
+                                                      .secondPaleGrayLight,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              avatar: SvgIcons.manGreenSvg,
+                                              label: Text(I18N(context)
+                                                  .routeCategoryToiletmTitle)),
+                                        ),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        SizedBox(
+                                          height: 34,
+                                          child: ActionChip(
+                                              onPressed: () async {
+                                                setField(Constants
+                                                    .ROUTE_CATEGORY_TOILETW_INITIAL_VALUE);
+                                              },
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16, vertical: 5),
+                                              labelStyle: TextStyles.h3MedGreen,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: AppColors
+                                                      .secondPaleGrayLight,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              avatar: SvgIcons.womanGreenSvg,
+                                              label: Text(I18N(context)
+                                                  .routeCategoryToiletwTitle)),
+                                        ),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        SizedBox(
+                                          height: 34,
+                                          child: ActionChip(
+                                              onPressed: () async {
+                                                setField(Constants
+                                                    .ROUTE_CATEGORY_WARDEROB_INITIAL_VALUE);
+                                              },
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16, vertical: 5),
+                                              labelStyle: TextStyles.h3MedGreen,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: AppColors
+                                                      .secondPaleGrayLight,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              avatar: SvgIcons.wardrobeGreenSvg,
+                                              label: Text(I18N(context)
+                                                  .routeCategoryWardrobeTitle)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: screenSize.width * 0.45,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {},
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          child: SizedBox(
+                                            height: 34,
+                                            child: ActionChip(
+                                                onPressed: () async {
+                                                  setField(Constants
+                                                      .ROUTE_CATEGORY_COWORKING_INITIAL_VALUE);
+                                                },
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                    vertical: 5),
+                                                labelStyle:
+                                                    TextStyles.h3MedGreen,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                    color: AppColors
+                                                        .secondPaleGrayLight,
+                                                    width: 1,
+                                                    style: BorderStyle.solid,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20)),
+                                                ),
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                avatar:
+                                                    SvgIcons.notebookGreenSvg,
+                                                label: Text(I18N(context)
+                                                    .routeCategoryCoworkingTitle)),
                                           ),
-                                          backgroundColor: Colors.transparent,
-                                          avatar: SvgIcons.printerBlueSvg,
-                                          label: Text(I18N(context)
-                                              .routeCategoryPrintTitle)),
+                                        ),
+                                      ],
                                     ),
-                                    // SizedBox(
-                                    //   height: 8,
-                                    // ),
-                                    // // InkWell(
-                                    // //   onTap: () async {
-                                    // //     if (_fromController.text.isEmpty) {
-                                    // //       context
-                                    // //           .read<SearchModel>()
-                                    // //           .changeEvent(EEvent.fromRoute);
-
-                                    // //       var data = await Navigator.pushNamed(
-                                    // //           context, RoutePaths.search,
-                                    // //           arguments: I18N
-                                    // //               .ROUTE_CATEGORY_CHARGER_INITIAL_VALUE);
-
-                                    // //       if (data == null) return;
-
-                                    // //       setState(() {
-                                    // //         fromInst =
-                                    // //             data as InstituteArguments;
-                                    // //         WidgetsBinding.instance
-                                    // //             .addPostFrameCallback(
-                                    // //                 (Duration timeStamp) {
-                                    // //           _fromController.text =
-                                    // //               data.search!.names![0];
-                                    // //           context
-                                    // //               .read<SearchModel>()
-                                    // //               .setFromFloor(
-                                    // //                   fromInst!.search!.floor!);
-                                    // //         });
-                                    // //       });
-                                    // //     } else {
-                                    // //       context
-                                    // //           .read<SearchModel>()
-                                    // //           .changeEvent(EEvent.toRoute);
-
-                                    // //       var data = await Navigator.pushNamed(
-                                    // //           context, RoutePaths.search,
-                                    // //           arguments: I18N
-                                    // //               .ROUTE_CATEGORY_CHARGER_INITIAL_VALUE);
-
-                                    // //       if (data == null) return;
-
-                                    // //       setState(() {
-                                    // //         toInst = data as InstituteArguments;
-                                    // //         WidgetsBinding.instance
-                                    // //             .addPostFrameCallback(
-                                    // //                 (Duration timeStamp) {
-                                    // //           _toController.text =
-                                    // //               data.search!.names![0];
-                                    // //           context
-                                    // //               .read<SearchModel>()
-                                    // //               .setToFloor(
-                                    // //                   toInst!.search!.floor!);
-                                    // //         });
-                                    // //       });
-                                    // //     }
-                                    // //   },
-                                    // //   borderRadius:
-                                    // //       BorderRadius.all(Radius.circular(20)),
-                                    // //   child: RouteCategoryCard(
-                                    // //     title: I18N
-                                    // //         .ROUTE_CATEGORY_CHARGER_TITLE,
-                                    // //     textStyle: TextStyles.h3MedBlue,
-                                    // //     icon: SvgIcons.chargerBlueSvg,
-                                    // //   ),
-                                    // // ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    SizedBox(
-                                      height: 34,
-                                      child: ActionChip(
-                                          onPressed: () async {
-                                            setField(Constants
-                                                .ROUTE_CATEGORY_ATM_INITIAL_VALUE);
-                                          },
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 5),
-                                          labelStyle: TextStyles.h3MedBlue,
-                                          clipBehavior: Clip.antiAlias,
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              color:
-                                                  AppColors.secondPaleGrayLight,
-                                              width: 1,
-                                              style: BorderStyle.solid,
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          backgroundColor: Colors.transparent,
-                                          avatar: SvgIcons.atmBlueSvg,
-                                          label: Text(I18N(context)
-                                              .routeCategoryAtmTitle)),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            I18N(context).routeAdministrationTitle,
-                            style: TextStyle(
-                                color: AppColors.accentGray,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                width: screenSize.width * 0.45,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 34,
-                                      child: ActionChip(
-                                          onPressed: () async {
-                                            setField(Constants
-                                                .ROUTE_CATEGORY_STUDENTS_INITIAL_VALUE);
-                                          },
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 5),
-                                          labelStyle: TextStyles.h3MedFireLight,
-                                          clipBehavior: Clip.antiAlias,
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              color:
-                                                  AppColors.secondPaleGrayLight,
-                                              width: 1,
-                                              style: BorderStyle.solid,
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          backgroundColor: Colors.transparent,
-                                          avatar: SvgIcons.flagRedSvg,
-                                          label: Text(I18N(context)
-                                              .routeCategoryStudentsTitle)),
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                I18N(context).routeServicesTitle,
+                                style: TextStyle(
+                                    color: AppColors.accentGray,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
                               ),
                               SizedBox(
-                                width: screenSize.width * 0.45,
-                                child: Column(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 34,
-                                      child: ActionChip(
-                                          onPressed: () async {
-                                            setField(Constants
-                                                .ROUTE_CATEGORY_DEANERY_INITIAL_VALUE);
-                                          },
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 5),
-                                          labelStyle: TextStyles.h3MedFireLight,
-                                          clipBehavior: Clip.antiAlias,
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              color:
-                                                  AppColors.secondPaleGrayLight,
-                                              width: 1,
-                                              style: BorderStyle.solid,
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          backgroundColor: Colors.transparent,
-                                          avatar: SvgIcons.toolsRedSvg,
-                                          label: Text(I18N(context)
-                                              .routeCategoryDeaneryTitle)),
+                                height: 8,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: screenSize.width * 0.45,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 34,
+                                          child: ActionChip(
+                                              onPressed: () async {
+                                                setField(Constants
+                                                    .ROUTE_CATEGORY_PRINT_INITIAL_VALUE);
+                                              },
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16, vertical: 5),
+                                              labelStyle: TextStyles.h3MedBlue,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: AppColors
+                                                      .secondPaleGrayLight,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              avatar: SvgIcons.printerBlueSvg,
+                                              label: Text(I18N(context)
+                                                  .routeCategoryPrintTitle)),
+                                        ),
+                                        // SizedBox(
+                                        //   height: 8,
+                                        // ),
+                                        // // InkWell(
+                                        // //   onTap: () async {
+                                        // //     if (_fromController.text.isEmpty) {
+                                        // //       context
+                                        // //           .read<SearchModel>()
+                                        // //           .changeEvent(EEvent.fromRoute);
+
+                                        // //       var data = await Navigator.pushNamed(
+                                        // //           context, RoutePaths.search,
+                                        // //           arguments: I18N
+                                        // //               .ROUTE_CATEGORY_CHARGER_INITIAL_VALUE);
+
+                                        // //       if (data == null) return;
+
+                                        // //       setState(() {
+                                        // //         fromInst =
+                                        // //             data as InstituteArguments;
+                                        // //         WidgetsBinding.instance
+                                        // //             .addPostFrameCallback(
+                                        // //                 (Duration timeStamp) {
+                                        // //           _fromController.text =
+                                        // //               data.search!.names![0];
+                                        // //           context
+                                        // //               .read<SearchModel>()
+                                        // //               .setFromFloor(
+                                        // //                   fromInst!.search!.floor!);
+                                        // //         });
+                                        // //       });
+                                        // //     } else {
+                                        // //       context
+                                        // //           .read<SearchModel>()
+                                        // //           .changeEvent(EEvent.toRoute);
+
+                                        // //       var data = await Navigator.pushNamed(
+                                        // //           context, RoutePaths.search,
+                                        // //           arguments: I18N
+                                        // //               .ROUTE_CATEGORY_CHARGER_INITIAL_VALUE);
+
+                                        // //       if (data == null) return;
+
+                                        // //       setState(() {
+                                        // //         toInst = data as InstituteArguments;
+                                        // //         WidgetsBinding.instance
+                                        // //             .addPostFrameCallback(
+                                        // //                 (Duration timeStamp) {
+                                        // //           _toController.text =
+                                        // //               data.search!.names![0];
+                                        // //           context
+                                        // //               .read<SearchModel>()
+                                        // //               .setToFloor(
+                                        // //                   toInst!.search!.floor!);
+                                        // //         });
+                                        // //       });
+                                        // //     }
+                                        // //   },
+                                        // //   borderRadius:
+                                        // //       BorderRadius.all(Radius.circular(20)),
+                                        // //   child: RouteCategoryCard(
+                                        // //     title: I18N
+                                        // //         .ROUTE_CATEGORY_CHARGER_TITLE,
+                                        // //     textStyle: TextStyles.h3MedBlue,
+                                        // //     icon: SvgIcons.chargerBlueSvg,
+                                        // //   ),
+                                        // // ),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        SizedBox(
+                                          height: 34,
+                                          child: ActionChip(
+                                              onPressed: () async {
+                                                setField(Constants
+                                                    .ROUTE_CATEGORY_ATM_INITIAL_VALUE);
+                                              },
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16, vertical: 5),
+                                              labelStyle: TextStyles.h3MedBlue,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: AppColors
+                                                      .secondPaleGrayLight,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              avatar: SvgIcons.atmBlueSvg,
+                                              label: Text(I18N(context)
+                                                  .routeCategoryAtmTitle)),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                I18N(context).routeAdministrationTitle,
+                                style: TextStyle(
+                                    color: AppColors.accentGray,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: screenSize.width * 0.45,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 34,
+                                          child: ActionChip(
+                                              onPressed: () async {
+                                                setField(Constants
+                                                    .ROUTE_CATEGORY_STUDENTS_INITIAL_VALUE);
+                                              },
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16, vertical: 5),
+                                              labelStyle:
+                                                  TextStyles.h3MedFireLight,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: AppColors
+                                                      .secondPaleGrayLight,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              avatar: SvgIcons.flagRedSvg,
+                                              label: Text(I18N(context)
+                                                  .routeCategoryStudentsTitle)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: screenSize.width * 0.45,
+                                    child: Column(
+                                      // crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 34,
+                                          child: ActionChip(
+                                              onPressed: () async {
+                                                setField(Constants
+                                                    .ROUTE_CATEGORY_DEANERY_INITIAL_VALUE);
+                                              },
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16, vertical: 5),
+                                              labelStyle:
+                                                  TextStyles.h3MedFireLight,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: AppColors
+                                                      .secondPaleGrayLight,
+                                                  width: 1,
+                                                  style: BorderStyle.solid,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              avatar: SvgIcons.toolsRedSvg,
+                                              label: Text(I18N(context)
+                                                  .routeCategoryDeaneryTitle)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 32,
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            disabledColor: AppColors.secondPaleGrayLight,
+                            onPressed: () {
+                              areValuesFilled ? search() : null;
+                            },
+                            icon: Icon(Icons.search),
+                            focusColor: areValuesFilled
+                                ? Theme.of(context).focusColor
+                                : null,
+                            hoverColor: areValuesFilled
+                                ? Theme.of(context).hoverColor
+                                : null,
+                            splashColor: areValuesFilled
+                                ? Theme.of(context).splashColor
+                                : null,
+                            highlightColor: areValuesFilled
+                                ? Theme.of(context).highlightColor
+                                : null,
+                            iconSize: 48,
+                            color: areValuesFilled
+                                ? AppColors.accentOrange
+                                : AppColors.accentGray,
+                            style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(
+                                    areValuesFilled
+                                        ? AppColors.secondOrangeLight
+                                        : AppColors.secondPaleGrayLight)),
+                          ),
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
+                    )
                   ],
                 )
               : Container(
@@ -1022,6 +1089,9 @@ class _RouteScreenState extends State<RouteScreen> {
               ? pathState.when(loading: () {
                   return Container();
                 }, loaded: (pathLoaded) {
+                  setState(() {
+                    isLoading = false;
+                  });
                   WidgetsBinding.instance
                       .addPostFrameCallback((Duration timeStamp) {
                     context.read<SearchModel>().changeEvent(EEvent.route);
@@ -1047,5 +1117,14 @@ class _RouteScreenState extends State<RouteScreen> {
         ],
       ),
     );
+  }
+
+  search() {
+    setState(() {
+      isLoading = true;
+    });
+    context.read<PathBloc>().add(
+          PathEvent.fetch(from: fromInst!.search!.id!, to: toInst!.search!.id!),
+        );
   }
 }

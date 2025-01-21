@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
+import 'package:urfu_navigator_mobile/common/text_styles.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/arrow_back.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 
@@ -60,6 +61,7 @@ class SearchField extends StatelessWidget {
         cursorErrorColor: AppColors.accentGray,
         cursorWidth: 2,
         cursorHeight: 20,
+        style: TextStyles.h4MedAccGrayDark,
         decoration: InputDecoration(
           isDense: true,
           focusedBorder: InputBorder.none,

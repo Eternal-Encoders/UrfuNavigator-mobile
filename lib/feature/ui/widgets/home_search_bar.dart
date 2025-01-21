@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urfu_navigator_mobile/common/app_colors.dart';
+import 'package:urfu_navigator_mobile/common/text_styles.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
 
@@ -40,6 +41,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
             cursorErrorColor: AppColors.accentGray,
             cursorWidth: 2,
             cursorHeight: 20,
+            style: TextStyles.h4MedAccGrayDark,
             decoration: InputDecoration(
               isDense: true,
               focusedBorder: InputBorder.none,

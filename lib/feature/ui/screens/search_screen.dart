@@ -339,6 +339,7 @@ class _SearchScreenState extends State<SearchScreen> {
             cursorWidth: 2,
             cursorHeight: 20,
             controller: _searchController,
+            style: TextStyles.h4MedAccGrayDark,
             decoration: InputDecoration(
               isDense: true,
               focusedBorder: InputBorder.none,

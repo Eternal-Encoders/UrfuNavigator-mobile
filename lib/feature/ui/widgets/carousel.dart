@@ -49,7 +49,12 @@ class _CarouselInstitutesState extends State<CarouselInstitutes> {
               itemBuilder: (context, item) {
                 if (item == 0) {}
                 return Container(
-                  margin: item == 0 ? EdgeInsets.only(left: 16) : null,
+                  //TODO: if first or last
+                  margin: item == 0
+                      ? EdgeInsets.only(left: 16)
+                      : item == 5
+                          ? EdgeInsets.only(right: 16)
+                          : null,
                   decoration: BoxDecoration(
                     color: AppColors.mainWhiteLight,
                     borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -152,85 +157,85 @@ class _CarouselInstitutesState extends State<CarouselInstitutes> {
         });
   }
 
-  Container listUniversity(String imageRoute, String title) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      margin: EdgeInsets.all(0),
-      height: 140,
-      child: ListView.separated(
-        itemBuilder: (context, item) {
-          return Flexible(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-            ),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            width: 10,
-          );
-        },
-        itemCount: 6,
-      ),
-    );
-  }
+  // Container listUniversity(String imageRoute, String title) {
+  //   return Container(
+  //     clipBehavior: Clip.antiAlias,
+  //     margin: EdgeInsets.all(0),
+  //     height: 140,
+  //     child: ListView.separated(
+  //       itemBuilder: (context, item) {
+  //         return Flexible(
+  //           child: ListView(
+  //             scrollDirection: Axis.horizontal,
+  //             shrinkWrap: true,
+  //           ),
+  //         );
+  //       },
+  //       separatorBuilder: (BuildContext context, int index) {
+  //         return SizedBox(
+  //           width: 10,
+  //         );
+  //       },
+  //       itemCount: 6,
+  //     ),
+  //   );
+  // }
 
-  Card cardBody(String imageRoute, String title) {
-    return Card.outlined(
-      // elevation: 2,
-      borderOnForeground: false,
-      clipBehavior: Clip.antiAlias,
-      shape: const RoundedRectangleBorder(
-        side: BorderSide(
-            color: AppColors.white,
-            strokeAlign: BorderSide.strokeAlignCenter,
-            style: BorderStyle.solid,
-            width: 0),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(0),
-          topRight: Radius.circular(0),
-          bottomRight: Radius.circular(0),
-          bottomLeft: Radius.circular(0),
-        ),
-      ),
-      margin: const EdgeInsets.all(0),
-      child: RepaintBoundary(
-        child: SizedBox(
-          height: 132,
-          width: 100,
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
-            // textDirection: TextDirection.ltr,
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            // verticalDirection: VerticalDirection.down,
-            children: [
-              Image(
-                image: AssetImage(imageRoute),
-                height: 100,
-                width: 100,
-                fit: BoxFit.fill,
-              ),
-              SizedBox(
-                  width: 100,
-                  height: 32,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 14, top: 7),
-                    child: Text(
-                      maxLines: 1,
-                      title,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 12,
-                          color: AppColors.accentGray,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  )),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Card cardBody(String imageRoute, String title) {
+  //   return Card.outlined(
+  //     // elevation: 2,
+  //     borderOnForeground: false,
+  //     clipBehavior: Clip.antiAlias,
+  //     shape: const RoundedRectangleBorder(
+  //       side: BorderSide(
+  //           color: AppColors.white,
+  //           strokeAlign: BorderSide.strokeAlignCenter,
+  //           style: BorderStyle.solid,
+  //           width: 0),
+  //       borderRadius: BorderRadius.only(
+  //         topLeft: Radius.circular(0),
+  //         topRight: Radius.circular(0),
+  //         bottomRight: Radius.circular(0),
+  //         bottomLeft: Radius.circular(0),
+  //       ),
+  //     ),
+  //     margin: const EdgeInsets.all(0),
+  //     child: RepaintBoundary(
+  //       child: SizedBox(
+  //         height: 132,
+  //         width: 100,
+  //         child: Column(
+  //           // mainAxisAlignment: MainAxisAlignment.start,
+  //           // textDirection: TextDirection.ltr,
+  //           // crossAxisAlignment: CrossAxisAlignment.start,
+  //           // verticalDirection: VerticalDirection.down,
+  //           children: [
+  //             Image(
+  //               image: AssetImage(imageRoute),
+  //               height: 100,
+  //               width: 100,
+  //               fit: BoxFit.fill,
+  //             ),
+  //             SizedBox(
+  //                 width: 100,
+  //                 height: 32,
+  //                 child: Padding(
+  //                   padding: const EdgeInsets.only(left: 14, top: 7),
+  //                   child: Text(
+  //                     maxLines: 1,
+  //                     title,
+  //                     textAlign: TextAlign.left,
+  //                     style: const TextStyle(
+  //                         fontFamily: 'Roboto',
+  //                         fontSize: 12,
+  //                         color: AppColors.accentGray,
+  //                         fontWeight: FontWeight.w600),
+  //                   ),
+  //                 )),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

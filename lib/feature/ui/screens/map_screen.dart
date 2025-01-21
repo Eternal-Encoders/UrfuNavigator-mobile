@@ -100,7 +100,7 @@ List<PlacemarkMapObject> _getPlacemarkObjects(BuildContext context) {
   return _getMapPoints()
       .map(
         (point) => PlacemarkMapObject(
-          mapId: MapObjectId('MapObject $point'),
+          mapId: MapObjectId('MapObject ${point.name}'),
           point: Point(latitude: point.latitude, longitude: point.longitude),
           opacity: 1,
           zIndex: 2,

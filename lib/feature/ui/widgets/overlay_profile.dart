@@ -67,7 +67,8 @@ class OverlayProfile extends StatelessWidget {
                   title: I18N(context).overlayFeedbackTitle,
                   subTitle: I18N(context).overlayFeedbackSubtitle,
                   icon: Icons.feedback_outlined,
-                  handler: null,
+                  handler: () => launchUrl(Uri.parse(
+                      'https://forms.yandex.ru/cloud/678fc4bed04688196eb52c7b/')),
                   hasDivider: true,
                 ),
               ),
@@ -75,7 +76,8 @@ class OverlayProfile extends StatelessWidget {
                 title: I18N(context).reportTitle,
                 subTitle: I18N(context).overlayReportSubtitle,
                 icon: Icons.bug_report_outlined,
-                handler: null,
+                handler: () => launchUrl(Uri.parse(
+                    'https://forms.yandex.ru/cloud/678fc4bed04688196eb52c7b/')),
                 hasDivider: true,
               ),
               SectionItemWidget(

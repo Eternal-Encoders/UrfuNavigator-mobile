@@ -65,7 +65,7 @@ class Constants {
   static const String API_PATH_SEARCH = 'api/search';
 
   static const String FETCH_SEARCH_LENGTH = '20';
-  static const String FETCH_SEARCH_LENGTH_WHILE_TYPING = '6';
+  static const String FETCH_SEARCH_LENGTH_WHILE_TYPING = '50';
   static const String FETCH_SEARCH_INITIAL_NAME = 'Р-';
 
   static const double CANVAS_SCALE = 0.15;

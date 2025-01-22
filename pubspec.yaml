@@ -45,8 +45,11 @@ dependencies:
   flutter_launcher_icons: ^0.14.1
   # Json annotation
   json_annotation: ^4.9.0
+  # Localization
   slang: ^4.4.1
+  # Localization
   slang_flutter: ^4.4.0
+  # Localization
   slang_build_runner: ^4.4.0
 
 dev_dependencies:
@@ -67,5 +70,6 @@ flutter:
     - assets/img/urfu-bodies-img/
     - assets/img/points/
     - assets/img/favicon/
+    - assets/img/overlay-favicon/
     - assets/img/socials/
     - assets/svg/

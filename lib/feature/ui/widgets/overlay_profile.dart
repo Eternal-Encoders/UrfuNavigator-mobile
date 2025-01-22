@@ -51,7 +51,7 @@ class OverlayProfile extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Image.asset(
-                      'assets/img/favicon/favicon.png',
+                      'assets/img/overlay-favicon/favicon.png',
                     ),
                   ),
                 )

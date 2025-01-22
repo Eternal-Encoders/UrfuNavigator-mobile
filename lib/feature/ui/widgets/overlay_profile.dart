@@ -7,6 +7,7 @@ import 'package:urfu_navigator_mobile/feature/ui/provider/overlay_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/icon_exit.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/section_item.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OverlayVisibility extends StatelessWidget {
   OverlayVisibility({super.key});
@@ -101,14 +102,20 @@ class OverlayProfile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/img/socials/tg.png',
+                    IconButton(
+                      icon: Image.asset('assets/img/socials/tg.png'),
+                      iconSize: 48,
+                      onPressed: () =>
+                          launchUrl(Uri.parse('https://t.me/navigator_urfu')),
                     ),
                     SizedBox(
                       width: 24,
                     ),
-                    Image.asset(
-                      'assets/img/socials/vk.png',
+                    IconButton(
+                      icon: Image.asset('assets/img/socials/vk.png'),
+                      iconSize: 48,
+                      onPressed: () =>
+                          launchUrl(Uri.parse('https://vk.com/urfu_navigator')),
                     ),
                   ],
                 ),

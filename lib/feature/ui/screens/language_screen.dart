@@ -7,6 +7,7 @@ import 'package:urfu_navigator_mobile/feature/ui/widgets/arrow_back.dart';
 import 'package:urfu_navigator_mobile/i18n/strings.g.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({super.key});
@@ -156,7 +157,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     children: [
                       Material(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () => launchUrl(Uri.parse(
+                              'https://forms.yandex.ru/cloud/678fc4bed04688196eb52c7b/')),
                           child: Padding(
                             padding: const EdgeInsets.only(top: 10, bottom: 8),
                             child: Row(

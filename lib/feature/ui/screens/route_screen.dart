@@ -15,6 +15,7 @@ import 'package:urfu_navigator_mobile/feature/ui/bloc/path/path_bloc.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/institutes_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/provider/search_model.dart';
 import 'package:urfu_navigator_mobile/feature/ui/widgets/slider_text.dart';
+import 'package:urfu_navigator_mobile/feature/ui/widgets/state/loading_indicator.dart';
 import 'package:urfu_navigator_mobile/locator_service.dart';
 import 'package:urfu_navigator_mobile/types/institute_agruments.dart';
 import 'package:urfu_navigator_mobile/utils/const.dart';
@@ -1113,7 +1114,7 @@ class _RouteScreenState extends State<RouteScreen> {
                   )),
           isLoading
               ? pathState.when(loading: () {
-                  return Container();
+                  return DefaultLoadingIndicator();
                 }, loaded: (pathLoaded) {
                   setState(() {
                     isLoading = false;

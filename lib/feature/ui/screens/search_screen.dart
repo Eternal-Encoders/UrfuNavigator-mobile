@@ -96,21 +96,21 @@ class _SearchScreenState extends State<SearchScreen> {
             cachedAndRemoteSearchList = searchLoaded;
           } else {
             cachedAndRemoteSearchList = cachedSearchList.copyWith();
-          }
-          if (cachedAndRemoteSearchList.searchs!.length >
-              Constants.CACHED_COUNT_OF_AUDIENCES) {
-            cachedAndRemoteSearchList.searchs!.removeRange(
-                Constants.CACHED_COUNT_OF_AUDIENCES,
-                cachedAndRemoteSearchList.searchs!.length);
+            if (cachedAndRemoteSearchList.searchs!.length >
+                Constants.CACHED_COUNT_OF_AUDIENCES) {
+              cachedAndRemoteSearchList.searchs!.removeRange(
+                  Constants.CACHED_COUNT_OF_AUDIENCES,
+                  cachedAndRemoteSearchList.searchs!.length);
+            }
+            for (var element in searchLoaded.searchs!) {
+              if (!cachedAndRemoteSearchList.searchs!.contains((element))) {
+                cachedAndRemoteSearchList.searchs!.add(element);
+              }
+            }
           }
           WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
             context.read<SearchModel>().changeSearch(searchLoaded);
           });
-          for (var element in searchLoaded.searchs!) {
-            if (!cachedAndRemoteSearchList.searchs!.contains((element))) {
-              cachedAndRemoteSearchList.searchs!.add(element);
-            }
-          }
 
           return Expanded(
             child: ListView.separated(

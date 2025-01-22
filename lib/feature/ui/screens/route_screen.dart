@@ -915,33 +915,59 @@ class _RouteScreenState extends State<RouteScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          IconButton(
-                            disabledColor: AppColors.secondPaleGrayLight,
+                          OutlinedButton(
+                            // disabledColor: AppColors.secondPaleGrayLight,
                             onPressed: () {
                               areValuesFilled ? search() : null;
                             },
-                            icon: Icon(Icons.search),
-                            focusColor: areValuesFilled
-                                ? Theme.of(context).focusColor
-                                : null,
-                            hoverColor: areValuesFilled
-                                ? Theme.of(context).hoverColor
-                                : null,
-                            splashColor: areValuesFilled
-                                ? Theme.of(context).splashColor
-                                : null,
-                            highlightColor: areValuesFilled
-                                ? Theme.of(context).highlightColor
-                                : null,
-                            iconSize: 48,
-                            color: areValuesFilled
-                                ? AppColors.accentOrange
-                                : AppColors.accentGray,
-                            style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                    areValuesFilled
-                                        ? AppColors.secondOrangeLight
-                                        : AppColors.secondPaleGrayLight)),
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: areValuesFilled
+                                  ? AppColors.secondOrangeLight
+                                  : null,
+                              shape: CircleBorder(), // Круглая форма для кнопки
+                              side: BorderSide(
+                                  width: 1,
+                                  color: areValuesFilled
+                                      ? Colors.transparent
+                                      : const Color.fromARGB(255, 207, 207,
+                                          207)), // Настройка границы
+                            ),
+                            // icon: Icon(
+                            //   Icons.search,
+                            //   shadows: const [
+                            //     Shadow(
+                            //       color: Colors.white,
+                            //       blurRadius: 2.0,
+                            //     ),
+                            //   ],
+                            // ),
+                            // focusColor: areValuesFilled
+                            //     ? Theme.of(context).focusColor
+                            //     : null,
+                            // hoverColor: areValuesFilled
+                            //     ? Theme.of(context).hoverColor
+                            //     : null,
+                            // splashColor: areValuesFilled
+                            //     ? Theme.of(context).splashColor
+                            //     : null,
+                            // highlightColor: areValuesFilled
+                            //     ? Theme.of(context).highlightColor
+                            //     : null,
+                            // iconSize: 48,
+                            // color: areValuesFilled
+                            //     ? AppColors.accentOrange
+                            //     : AppColors.accentGray,
+                            child: Padding(
+                              padding: const EdgeInsets.all(
+                                  12.0), // Чтобы иконка не прилегала к границе
+                              child: Icon(
+                                Icons.search,
+                                size: 32,
+                                color: areValuesFilled
+                                    ? AppColors.accentOrange
+                                    : AppColors.accentGray,
+                              ),
+                            ),
                           ),
                         ],
                       ),

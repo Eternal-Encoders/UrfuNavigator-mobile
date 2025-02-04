@@ -54,18 +54,18 @@ class HomeScreen extends StatelessWidget {
                         color: 0xFFE77011,
                       ),
                     )),
-                Positioned(
-                    bottom: 240,
-                    // bottom: 300,
-                    right: 16,
-                    child: RepaintBoundary(
-                      child: FABWidgetExtended(
-                        title: I18N(context).fabCampusTitle,
-                        icon: Icons.sync_outlined,
-                        backgroundColor: 0xffFCFCFC,
-                        color: 0xFF6D6D6D,
-                      ),
-                    )),
+                // Positioned(
+                //     bottom: 240,
+                //     // bottom: 300,
+                //     right: 16,
+                //     child: RepaintBoundary(
+                //       child: FABWidgetExtended(
+                //         title: I18N(context).fabCampusTitle,
+                //         icon: Icons.sync_outlined,
+                //         backgroundColor: 0xffFCFCFC,
+                //         color: 0xFF6D6D6D,
+                //       ),
+                //     )),
                 const Positioned(
                     // bottom: 88,
                     bottom: 28,

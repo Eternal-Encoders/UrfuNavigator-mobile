@@ -29,19 +29,19 @@ jobs:
         run: |
           current_version=$(grep '^version:' pubspec.yaml | awk '{print $2}' | tr -d '\r')
           IFS='.' read -r major minor patch <<< "${current_version%-*}"
-          patch=$((patch + 1))
+          patch=$((patch))
           new_version="$major.$minor.$patch"
           echo "New version: $new_version"
           sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
 
-      - name: Commit Changes
-        run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add pubspec.yaml
-          git commit -m "Bump version to ${{ env.NEW_VERSION }}"
-          git push
+      # - name: Commit Changes
+      #   run: |
+      #     git config --local user.name "GitHub Actions"
+      #     git config --local user.email "actions@github.com"
+      #     git add pubspec.yaml
+      #     git commit -m "Bump version to ${{ env.NEW_VERSION }}"
+      #     git push
 
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2

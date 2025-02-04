@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         debugShowCheckedModeBanner: false,
         // showPerformanceOverlay: true,
-        title: 'UrfuApp',
+        title: 'УрФУНавигатор',
         // themeMode: ThemeMode.system,
         themeMode: ThemeMode.light,
         theme: ThemeData(

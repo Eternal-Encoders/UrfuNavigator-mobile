@@ -1,4 +1,4 @@
-package com.example.urfu_navigator_mobile;
+package com.urfu.navigator;
 
 import android.app.Application
 import com.yandex.mapkit.MapKitFactory
